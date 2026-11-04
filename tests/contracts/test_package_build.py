@@ -20,6 +20,8 @@ def test_wheel_contains_generated_rpc_and_offline_resources(tmp_path):
     wheel=next(tmp_path.glob('*.whl'))
     with ZipFile(wheel) as archive:
         files=set(archive.namelist())
+        metadata=archive.read('cirnet_contracts-0.1.1.dist-info/METADATA').decode('utf-8')
+    assert 'Name: cirnet-contracts' in metadata.splitlines()
     import json
     projections=json.loads((ROOT/'contracts/browser/artifacts.json').read_text(encoding='utf-8'))
     assert {'contracts/'+resource for resource in projections.values()} <= files

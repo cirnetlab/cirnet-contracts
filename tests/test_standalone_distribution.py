@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_distribution_has_no_consumer_source_and_separate_public_package():
     assert (ROOT / 'pyproject.toml').is_file(), 'Standalone Python distribution is missing'
     python = tomllib.loads((ROOT / 'pyproject.toml').read_text(encoding='utf-8'))
-    assert python['project']['name'] == 'netcircuit-contracts'
+    assert python['project']['name'] == 'cirnet-contracts'
     assert python['project']['version'] == '0.1.1'
     for path in ('apps', 'services', 'simulator'):
         assert not (ROOT / path).exists(), path

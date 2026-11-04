@@ -9,7 +9,8 @@ import sys
 def main():
     assert sys.flags.isolated == 1, 'Use python -I for the installed-wheel probe.'
     import contracts
-    distribution = importlib.metadata.distribution('netcircuit-contracts')
+    distribution = importlib.metadata.distribution('cirnet-contracts')
+    assert distribution.metadata['Name'] == 'cirnet-contracts'
     assert distribution.version == '0.1.1'
     package = Path(distribution.locate_file('contracts/__init__.py')).resolve().parent
     assert Path(contracts.__file__).resolve().parent == package

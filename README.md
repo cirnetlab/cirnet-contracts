@@ -6,12 +6,9 @@ System architecture and integrated release ownership remain in
 The historical names `TINIHI-Labs/net-Circuit-Contracts` and
 `net-Circuit-Remote/net-Circuit-Remote` in pinned migration/provenance records
 refer to the same preserved repositories, now under `CIRNETLAB/CIRNET-*`.
-Local checkout directory names, package/import names and protocol identifiers
-remain compatible.
-
-Standalone product release **0.1.1**, originally extracted from Remote revision
-`295797c`. The Python distribution is `netcircuit-contracts`; its import
-namespace remains `contracts`. The browser package is `@tinihi-labs/contracts`.
+Standalone product version **0.1.1** was originally extracted from Remote revision
+`295797c`. The current source builds the Python distribution `cirnet-contracts`
+with the import namespace `contracts`. The browser package is `@tinihi-labs/contracts`.
 Schemas, revisions, protocol versions, frozen wire anchors and public operation
 semantics retain their existing meaning. Build from a clean committed revision,
 verify the standalone and integrated gates, then compare against immutable
@@ -21,9 +18,9 @@ consumer access are recorded in the system release manifest; package checks
 do not establish physical support.
 
 Existing immutable [release v0.1.1](https://github.com/CIRNETLAB/CIRNET-Contracts/releases/tag/v0.1.1)
-retains its published source revision and artifact bytes. A fresh build after
-the repository rename must be compared with those artifacts before selection;
-the unchanged version number alone does not identify interchangeable bytes.
+records the original `netcircuit-contracts` distribution and its published source
+revision and artifact bytes. Select the renamed wheel through the system
+release manifest with the corresponding consumer wheels and exact digests.
 
 Python runtime requires 3.11+. Generator CI uses Python 3.12 and Node 22.
 For reproducible CI/release verification, install the complete `requirements-build.lock` with `pip --require-hashes` from a reviewed wheelhouse; `requirements-runtime.lock` independently pins the full runtime closure for Python 3.11/3.12 on Windows AMD64 and Linux x86_64. Install `tools/artifact-paths` with `--no-index --no-build-isolation --no-deps` after the locked build tools. The standalone workflow records the exact offline commands. Then run `npm ci --no-audit --no-fund` in

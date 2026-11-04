@@ -92,7 +92,7 @@ def generate(*, check=False, output_root=ROOT, openapi=None, node_tools=None):
     check_manifest()
     document = json.loads(Path(openapi).read_text(encoding='utf-8')) if openapi else resource_json('api/openapi.json')
     node_tools = Path(node_tools).resolve() if node_tools else ROOT/'packages/public-sdk'
-    with TemporaryDirectory(prefix='netcircuit-contracts-codegen-') as temporary:
+    with TemporaryDirectory(prefix='cirnet-contracts-codegen-') as temporary:
         stage = Path(temporary)
         bundle = stage/'public.json'
         bundles = {profile: schema_bundle(public_only=True, profile=profile)
