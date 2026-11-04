@@ -45,9 +45,9 @@ checkout. `scripts/check_public_sdk.mjs --output /absolute/external/owned-child`
 inspects the actual npm tarball and executes its extracted runtime without
 generator dependencies. It does not publish anything. Bootstrap
 `@tinihi-labs/artifact-paths@1.0.0-m1.0` as a separate dev artifact before this
-gate, or point `NETCIRCUIT_ARTIFACT_PATHS_MODULE` at that installed package's
+gate, or point `CIRNET_ARTIFACT_PATHS_MODULE` at that installed package's
 absolute module file URL. Outside a Git checkout, supply the shared allocator's
-explicit `NETCIRCUIT_ARTIFACTS_CONTEXT` owner/rootset. The gate delegates output
+explicit `CIRNET_ARTIFACTS_CONTEXT` owner/rootset. The gate delegates output
 validation to that implementation before creating files; it has no separate
 path-validation algorithm and adds no allocator dependency to the core wheel.
 
@@ -96,3 +96,28 @@ Remote workflow assertions are preserved under `migration/consumer-tests`, with
 the exact split in `migration/test-ownership.json`; that handoff directory is not
 part of the standalone test suite. No assertion was converted into an automatic
 pass to satisfy extraction.
+
+The development allocator distribution is `cirnet-artifact-paths`, imported as
+`cirnet_artifact_paths`. The old `netcircuit_artifact_paths` import and
+`NETCIRCUIT_*` environment settings remain compatibility inputs. New settings
+use `CIRNET_*`; when both are present the new value wins, including an empty
+value. `contracts.runtime_config.getenv` reads aliases without mutation and
+`export_environment` returns a copy with both names synchronized for child
+processes. The allocator creates `cirnet-*` sessions with
+`.cirnet-artifact-session.json` and verifies ownership before reading or
+cleaning either current or valid legacy sessions.
+
+Schema identities use `https://cirnet.local/`; the offline registry accepts the
+old `https://netcircuit.local/` identities and preserves fragment resolution.
+The browser SDK exports `schemaUriAliases` and `canonicalSchemaUri`. OpenAPI
+includes canonical `x-cirnet-contract` metadata alongside the retained legacy
+`x-netcircuit-contract` extension. Hardware RPC v2 uses `cirnet.hardware.v2`;
+generated server registration accepts both service routes, and synchronous
+stubs retry the old route only after `UNIMPLEMENTED`. Message field numbers,
+serialized bytes and protocol versions are unchanged. The original DC supply
+part descriptor stays in `historicalParts` for pinned legacy documents; the
+current catalog calls it `CIRNET-DC-SUPPLY`.
+
+## Namespace verification (2026-11-04)
+
+The final CIRNET source candidate passes 516 Python tests, deterministic schema/catalog/topology generation, the CI bootstrap check and extracted public SDK checks. RPC compatibility preserves nonblocking futures, cancellation, callbacks, early metadata and the original total deadline; retry is limited to UNIMPLEMENTED on the canonical route. The runtime wheel SHA256 is `e129eb9075083dccbce9a37a595abe04f405197c2c06a86e651cb47b9a8acead`. Original published artifacts and frozen compatibility inputs retain their identities. Raw diagnostics are external; hosted Actions were not awaited.

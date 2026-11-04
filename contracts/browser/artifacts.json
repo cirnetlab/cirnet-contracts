@@ -3,6 +3,7 @@
   "apps/web/src/contracts/generated/dto.ts": "browser/generated/dto.ts",
   "apps/web/src/contracts/generated/operations.ts": "browser/generated/operations.ts",
   "apps/web/src/contracts/generated/publicContractNames.ts": "browser/generated/publicContractNames.ts",
+  "apps/web/src/contracts/generated/schemaAliases.ts": "browser/generated/schemaAliases.ts",
   "apps/web/src/contracts/generated/validators.core.d.ts": "browser/generated/validators.core.d.ts",
   "apps/web/src/contracts/generated/validators.core.js": "browser/generated/validators.core.js",
   "apps/web/src/contracts/generated/validators.d.ts": "browser/generated/validators.d.ts",

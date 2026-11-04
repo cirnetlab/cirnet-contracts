@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/public/api/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/public/api/1.0/schema.json",
   "title": "Public application HTTP contracts 1.0",
   "$defs": {
     "HealthResponse": {
@@ -10,7 +10,10 @@
           "const": "ok"
         },
         "service": {
-          "const": "netcircuit-api"
+          "enum": [
+            "cirnet-api",
+            "netcircuit-api"
+          ]
         },
         "hardware_mode": {
           "enum": [
@@ -254,7 +257,7 @@
           "minLength": 1
         },
         "instrument_capabilities": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/InstrumentCapabilities"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/InstrumentCapabilities"
         }
       },
       "required": [
@@ -325,7 +328,7 @@
           "minLength": 1
         },
         "circuit_graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json"
         },
         "clock_config": {
           "anyOf": [
@@ -334,23 +337,23 @@
               "additionalProperties": false
             },
             {
-              "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
+              "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
             }
           ]
         },
         "generator_config": {
           "type": "array",
           "items": {
-            "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration"
+            "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration"
           }
         },
         "capture_config": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"
         },
         "test_vectors": {
           "type": "array",
           "items": {
-            "$ref": "https://netcircuit.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"
+            "$ref": "https://cirnet.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"
           }
         },
         "circuit_document_id": {
@@ -423,7 +426,7 @@
               "const": "generator"
             },
             "configuration": {
-              "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration"
+              "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration"
             }
           },
           "required": [
@@ -439,7 +442,7 @@
               "const": "clock"
             },
             "configuration": {
-              "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
+              "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
             }
           },
           "required": [
@@ -616,7 +619,7 @@
           "minimum": 0
         },
         "experiment": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ExperimentRecord"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ExperimentRecord"
         }
       },
       "required": [

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/design/visual/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/design/visual/1.0/schema.json",
   "title": "Persisted editor presentation namespaces 1.0",
   "$comment": "Opt-in namespace validators. Legacy graph metadata stays extensible; future namespaces are preserved without interpreting them.",
   "$defs": {

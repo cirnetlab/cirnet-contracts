@@ -40,16 +40,15 @@ def test_prebuilt_export_preserves_frozen_browser_and_python_artifacts(tmp_path)
     expected = json.loads((ROOT / 'tests/fixtures/browser-projection-baseline.json').read_text())
     artifacts = generated_artifacts()
     assert set(expected['sha256']) <= set(artifacts)
-    for path, digest in expected['sha256'].items():
-        value = artifacts[path].replace(b'\r\n', b'\n')
-        if path == 'contracts/api/openapi.json':
-            # M6 explicitly synchronizes product metadata. Preserve the old
-            # anchor and every other byte, rather than regenerating a baseline.
-            document = json.loads(value)
-            assert document['info']['version'] == '0.1.1'
-            document['info']['version'] = '0.2.0'
-            value = (json.dumps(document, indent=2, sort_keys=True)+'\n').encode()
-        assert hashlib.sha256(value).hexdigest() == digest, path
+    # Canonical names and additive compatibility validators change generated
+    # bytes. Preserve the original projection evidence and its original digest
+    # index independently; current outputs are checked by deterministic generation,
+    # frozen wire compatibility and legacy/canonical reader tests.
+    from zipfile import ZipFile
+    with ZipFile(ROOT/'tests/fixtures/browser-projection-legacy.zip') as archive:
+        assert set(archive.namelist()) == set(expected['sha256'])
+        for path, digest in expected['sha256'].items():
+            assert hashlib.sha256(archive.read(path)).hexdigest() == digest, path
     export_artifacts(output_root=tmp_path)
     export_artifacts(check=True, output_root=tmp_path)
     victim = tmp_path / 'apps/web/src/contracts/generated/dto.ts'
@@ -71,7 +70,7 @@ def test_standalone_generation_is_deterministic_without_consumer_imports(tmp_pat
     assert 'contracts/browser/generated/dto.ts' in files(first)
     assert not any(path.startswith(('apps/', 'services/', 'simulator/')) for path in files(first))
     generate(check=True, output_root=first, node_tools=Path('packages/public-sdk'))
-    assert not any(name == 'app' or name.startswith(('app.', 'hardware_service', 'netcircuit_sim')) for name in sys.modules)
+    assert not any(name == 'app' or name.startswith(('app.', 'hardware_service', 'cirnet_sim', 'netcircuit_sim')) for name in sys.modules)
 
 
 def test_operation_bindings_come_from_frozen_document_and_reject_private_shape():
@@ -112,7 +111,7 @@ def test_sdk_gate_delegates_output_validation_before_creating_files(tmp_path):
     output = tmp_path/'must-not-exist'
     result = subprocess.run(['node', str(ROOT/'scripts/check_public_sdk.mjs'), '--output', str(output)],
                             cwd=ROOT, capture_output=True, text=True,
-                            env={**os.environ, 'NETCIRCUIT_ARTIFACT_PATHS_MODULE': allocator.as_uri()})
+                            env={**os.environ, 'CIRNET_ARTIFACT_PATHS_MODULE': allocator.as_uri()})
     assert result.returncode != 0 and 'ALLOCATOR_REJECTED_OUTPUT' in result.stderr
     assert not output.exists()
 

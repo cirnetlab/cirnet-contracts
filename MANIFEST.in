@@ -9,3 +9,5 @@ recursive-include packages/public-sdk/scripts *.mjs
 recursive-include scripts *.py *.mjs
 include requirements-runtime.lock
 include requirements-build.lock
+include tests/fixtures/browser-projection-legacy.zip
+include tests/fixtures/README.md

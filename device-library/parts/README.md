@@ -38,7 +38,7 @@ For the A6D, canonical pad IDs use top-view perimeter numbering 1..8; actuator n
 
 ## Virtual DC source model v1
 
-`NETCIRCUIT-DC-SUPPLY`, revision 1, is an editor instrument with explicit PLUS/MINUS terminals, a bounded 0..15 V `voltage` property and a `power_on` boolean. Its default is 5 V enabled. MINUS is only the return of that source; it never creates a global earth reference. The model does not imply a particular real supply, current limit, protection circuitry or measurement precision. Its `model:dc-source-v1` source identifier refers to this specification.
+`CIRNET-DC-SUPPLY`, revision 1, is an editor instrument with explicit PLUS/MINUS terminals, a bounded 0..15 V `voltage` property and a `power_on` boolean. Its default is 5 V enabled. MINUS is only the return of that source; it never creates a global earth reference. The model does not imply a particular real supply, current limit, protection circuitry or measurement precision. Its `model:dc-source-v1` source identifier refers to this specification.
 
 ## Compatibility and verification
 
@@ -91,3 +91,5 @@ All 37 requested codes have numbered 14-pin PDIP top-view maps checked against p
 | `CD4077` | `CD4077BE` | CD4000B | [SCHS055E](https://www.ti.com/lit/ds/symlink/cd4077b.pdf), 2 (terminal diagram, top view), 1 (orderable PDIP variant), PDIP package drawing |
 | `CD4081` | `CD4081BE` | CD4000B | [SCHS057C](https://www.ti.com/lit/ds/symlink/cd4081b.pdf), 1 (top view / functional diagram), PDIP package drawing |
 | `CD4093` | `CD4093BE` | CD4000B | [SCHS115D](https://www.ti.com/lit/ds/symlink/cd4093b.pdf), 1 (top view / functional diagram), PDIP package drawing |
+
+The original `NETCIRCUIT-DC-SUPPLY` descriptor remains in `historicalParts` with its exact revision and content for pinned legacy documents.

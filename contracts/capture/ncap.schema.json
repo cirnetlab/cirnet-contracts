@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/capture/ncap/2.0/schema.json",
+  "$id": "https://cirnet.local/contracts/capture/ncap/2.0/schema.json",
   "title": "Versioned NCAP capture descriptors and binary layout authority",
   "$defs": {
     "AnalogCaptureChannel": {

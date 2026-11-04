@@ -692,7 +692,7 @@
       "shortName": "axial resistor"
     },
     {
-      "id": "NETCIRCUIT-DC-SUPPLY",
+      "id": "CIRNET-DC-SUPPLY",
       "revision": 1,
       "editorType": "DC_SUPPLY",
       "name": "Power Supply · isolated DC",
@@ -52210,6 +52210,80 @@
       },
       "shortName": "Transistor",
       "identityKind": "configurable-generic"
+    },
+    {
+      "id": "NETCIRCUIT-DC-SUPPLY",
+      "revision": 1,
+      "editorType": "DC_SUPPLY",
+      "name": "Power Supply · isolated DC",
+      "function": "isolated-dc-source",
+      "package": {
+        "id": "VIRTUAL-BENCH-DC",
+        "revision": 1,
+        "family": "terminal",
+        "bodyMm": {
+          "x": 46,
+          "y": 48,
+          "z": 46
+        },
+        "leadDiameterMm": 0.5,
+        "standoffMm": 0,
+        "pins": [
+          {
+            "id": "PLUS",
+            "number": "PLUS",
+            "name": "+",
+            "role": "power",
+            "positionMm": {
+              "x": -10,
+              "y": 20,
+              "z": 25
+            },
+            "domain": "POWER"
+          },
+          {
+            "id": "MINUS",
+            "number": "MINUS",
+            "name": "−",
+            "role": "ground",
+            "positionMm": {
+              "x": 10,
+              "y": 20,
+              "z": 25
+            },
+            "domain": "GROUND"
+          }
+        ],
+        "footprint": {
+          "id": "VIRTUAL-BENCH-DC-footprint",
+          "revision": 1,
+          "pitchMm": 20,
+          "mountable": false
+        }
+      },
+      "editor": {
+        "family": "structure",
+        "visual": "supply",
+        "color": "#9eaab5",
+        "defaults": {
+          "voltage": 5,
+          "power_on": true
+        },
+        "parameters": [
+          {
+            "key": "voltage",
+            "label": "DC output voltage (V)",
+            "kind": "number",
+            "min": 0,
+            "max": 15
+          },
+          {
+            "key": "power_on",
+            "label": "Output enabled",
+            "kind": "boolean"
+          }
+        ]
+      }
     }
   ]
 }

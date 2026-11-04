@@ -31,6 +31,11 @@ SINGLE_SCHEMAS = ('items', 'contains', 'additionalProperties', 'propertyNames', 
                   'if', 'then', 'else', 'unevaluatedProperties', 'unevaluatedItems', 'contentSchema')
 
 
+def canonical_uri(uri):
+    """Normalize the historical offline schema host, preserving fragments."""
+    return uri.replace('https://netcircuit.local/', 'https://cirnet.local/', 1)
+
+
 @lru_cache
 def entries():
     return json.loads((ROOT / 'manifest.json').read_text(encoding='utf-8'))['contracts']
@@ -52,7 +57,7 @@ def _documents():
 
 def load_schema(uri):
     """Return a detached canonical document or fragment by its absolute URI."""
-    document, pointer = urldefrag(uri)
+    document, pointer = urldefrag(canonical_uri(uri))
     value = deepcopy(_documents()[document])
     if pointer:
         for part in pointer.removeprefix('/').split('/'):
@@ -68,7 +73,10 @@ def offline_registry(profile='structural'):
         if profile != 'structural':
             from contracts.semantic_profiles import profile_schema
             value = profile_schema('', value, profile)
-        result = result.with_resource(uri, Resource.from_contents(value, default_specification=DRAFT202012))
+        resource = Resource.from_contents(value, default_specification=DRAFT202012)
+        result = result.with_resource(uri, resource)
+        legacy = uri.replace('https://cirnet.local/', 'https://netcircuit.local/', 1)
+        result = result.with_resource(legacy, resource)
     return result
 
 
@@ -85,7 +93,7 @@ def structural_validator(schema, *, profile='structural'):
     return _validator(schema, registry=offline_registry(profile))
 
 
-def check_schema(schema, *, base_uri='https://netcircuit.local/check.schema.json'):
+def check_schema(schema, *, base_uri='https://cirnet.local/check.schema.json'):
     """Fail generation on unsupported vocabulary or any unresolved offline ref."""
     Draft202012Validator.check_schema(schema)
     resources = offline_registry().with_resource(base_uri, Resource.from_contents(
@@ -182,7 +190,7 @@ def schema_bundle(*, public_only=False, profile='structural', ref_prefix='#/$def
     identities=[entry for entry in entries() if entry['kind']=='schema']
 
     def reference_target(uri):
-        document,pointer=urldefrag(uri)
+        document,pointer=urldefrag(canonical_uri(uri))
         matches=[entry for entry in identities if entry['uri']==document and (
             pointer==entry['pointer'] or pointer.startswith(entry['pointer']+'/'))]
         if not matches: raise ValueError(f'Unmanifested or private generator reference: {uri}')
@@ -234,7 +242,7 @@ def schema_bundle(*, public_only=False, profile='structural', ref_prefix='#/$def
             from contracts.semantic_profiles import profile_schema
             value = profile_schema(entry['id'], value, profile)
         definitions[entry['id']] = relocate(value, entry['uri'])
-    return {'$schema':DIALECT, '$id':'https://netcircuit.local/contracts/generated/' + profile,
+    return {'$schema':DIALECT, '$id':'https://cirnet.local/contracts/generated/' + profile,
             '$defs':definitions, 'type':'object',
             'properties':{name:{'$ref':ref_prefix+name} for name in definitions},
             'required':list(definitions), 'additionalProperties':False}

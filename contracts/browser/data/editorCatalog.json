@@ -905,7 +905,7 @@
         2.354330708661417
       ],
       "color": "#9eaab5",
-      "partDefinitionId": "NETCIRCUIT-DC-SUPPLY",
+      "partDefinitionId": "CIRNET-DC-SUPPLY",
       "partRevision": 1,
       "ports": [
         {

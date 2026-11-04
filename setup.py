@@ -4,6 +4,7 @@ Package metadata remains declared in pyproject.toml. Pip's setuptools backend
 executes this hook for regular and editable installs, including fresh checkouts.
 """
 from pathlib import Path
+import os
 import subprocess
 import sys
 
@@ -19,7 +20,8 @@ class BuildContracts(build_py):
                         str(Path(self.build_lib) / 'contracts/generated')], check=True)
 
 
-metadata_dir = Path(".build") / "metadata"
+build_root = Path(os.environ.get("CIRNET_BUILD_ROOT", os.environ.get("NETCIRCUIT_BUILD_ROOT", ".build")))
+metadata_dir = build_root / "metadata"
 metadata_dir.mkdir(parents=True, exist_ok=True)
 
 resource_files = [str(path.relative_to('contracts')).replace('\\', '/')
@@ -28,5 +30,5 @@ resource_files = [str(path.relative_to('contracts')).replace('\\', '/')
 
 setup(cmdclass={'build_py': BuildContracts}, package_data={'contracts': resource_files}, options={
     "egg_info": {"egg_base": str(metadata_dir)},
-    "build": {"build_base": ".build"},
+    "build": {"build_base": str(build_root)},
 })

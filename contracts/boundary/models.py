@@ -561,7 +561,7 @@ class HealthResponse(ContractBoundary):
     __validation_profile__: ClassVar[str] = 'transport'
     model_config = ConfigDict(extra='forbid')
     status: Literal['ok']
-    service: Literal['netcircuit-api']
+    service: Literal['cirnet-api', 'netcircuit-api']
     hardware_mode: Literal['simulation', 'hardware']
 
 class CircuitValidationResult(ContractBoundary):

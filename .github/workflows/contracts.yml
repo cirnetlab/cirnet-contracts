@@ -22,12 +22,12 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Allocate verification output before installing schema packages
         env:
-          NETCIRCUIT_ARTIFACTS_DIR: ${{ runner.temp }}/contracts-verification
+          CIRNET_ARTIFACTS_DIR: ${{ runner.temp }}/contracts-verification
         shell: bash
         run: |
           artifact_session="$(node tools/artifact-paths/artifact-paths.mjs)"
-          export NETCIRCUIT_ARTIFACTS_SESSION="$artifact_session"
-          echo "NETCIRCUIT_ARTIFACTS_SESSION=$artifact_session" >> "$GITHUB_ENV"
+          export CIRNET_ARTIFACTS_SESSION="$artifact_session"
+          echo "CIRNET_ARTIFACTS_SESSION=$artifact_session" >> "$GITHUB_ENV"
           echo "TMP=$artifact_session" >> "$GITHUB_ENV"
           echo "TEMP=$artifact_session" >> "$GITHUB_ENV"
           echo "TMPDIR=$artifact_session" >> "$GITHUB_ENV"
@@ -37,15 +37,15 @@ jobs:
           allocator_scratch="$(node tools/artifact-paths/artifact-paths.mjs allocator-tests)"
           echo "ALLOCATOR_TEST_SOURCE=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
           echo "ALLOCATOR_TEST_SCRATCH=$allocator_scratch" >> "$GITHUB_ENV"
-          echo "NETCIRCUIT_ARTIFACT_PATHS_MODULE=$(node --input-type=module -e 'import {resolve} from "node:path"; import {pathToFileURL} from "node:url"; console.log(pathToFileURL(resolve("tools/artifact-paths/netcircuit_artifact_paths/artifact-paths.mjs")).href)')" >> "$GITHUB_ENV"
+          echo "CIRNET_ARTIFACT_PATHS_MODULE=$(node --input-type=module -e 'import {resolve} from "node:path"; import {pathToFileURL} from "node:url"; console.log(pathToFileURL(resolve("tools/artifact-paths/cirnet_artifact_paths/artifact-paths.mjs")).href)')" >> "$GITHUB_ENV"
       - name: Install pinned verification tools and independent allocator
         run: |
-          python -m pip download --require-hashes --only-binary=:all: --dest "$NETCIRCUIT_ARTIFACTS_SESSION/build-wheelhouse" -r requirements-build.lock
-          python -m pip install --no-index --find-links "$NETCIRCUIT_ARTIFACTS_SESSION/build-wheelhouse" --require-hashes -r requirements-build.lock
+          python -m pip download --require-hashes --only-binary=:all: --dest "$CIRNET_ARTIFACTS_SESSION/build-wheelhouse" -r requirements-build.lock
+          python -m pip install --no-index --find-links "$CIRNET_ARTIFACTS_SESSION/build-wheelhouse" --require-hashes -r requirements-build.lock
           python -m pip install --no-index --no-build-isolation --no-deps ./tools/artifact-paths
       - name: Install locked standalone Node generator dependencies
         working-directory: packages/public-sdk
-        run: npm ci --no-audit --no-fund --cache "$NETCIRCUIT_ARTIFACTS_SESSION/npm-cache"
+        run: npm ci --no-audit --no-fund --cache "$CIRNET_ARTIFACTS_SESSION/npm-cache"
       - name: Check deterministic schema, catalog and operation generation
         run: |
           python -m contracts.codegen.generate_contracts --check
@@ -54,37 +54,37 @@ jobs:
           python scripts/check_public_compatibility.py
       - name: Pure contract and allocator tests
         run: |
-          python -m pytest -q --basetemp "$NETCIRCUIT_ARTIFACTS_SESSION/pytest"
-          python -m pytest -q -p no:cacheprovider .github/tests --basetemp "$NETCIRCUIT_ARTIFACTS_SESSION/ci-pytest"
+          python -m pytest -q --basetemp "$CIRNET_ARTIFACTS_SESSION/pytest"
+          python -m pytest -q -p no:cacheprovider .github/tests --basetemp "$CIRNET_ARTIFACTS_SESSION/ci-pytest"
           npm --prefix tools/artifact-paths test
-          python -m pytest -q -p no:cacheprovider tools/artifact-paths/test/test_python_bridge.py --basetemp "$NETCIRCUIT_ARTIFACTS_SESSION/allocator-pytest"
+          python -m pytest -q -p no:cacheprovider tools/artifact-paths/test/test_python_bridge.py --basetemp "$CIRNET_ARTIFACTS_SESSION/allocator-pytest"
       - name: Build actual wheel, sdist and public npm artifact
         run: |
-          python -m build --no-isolation --wheel --sdist --outdir "$NETCIRCUIT_ARTIFACTS_SESSION/dist"
-          node scripts/check_public_sdk.mjs --output "$NETCIRCUIT_ARTIFACTS_SESSION/npm-artifacts"
+          python -m build --no-isolation --wheel --sdist --outdir "$CIRNET_ARTIFACTS_SESSION/dist"
+          node scripts/check_public_sdk.mjs --output "$CIRNET_ARTIFACTS_SESSION/npm-artifacts"
       - name: Install complete wheel closure offline outside the checkout
         shell: bash
         run: |
-          python -m pip download --require-hashes --only-binary=:all: --dest "$NETCIRCUIT_ARTIFACTS_SESSION/wheelhouse" -r requirements-runtime.lock
-          python -m venv "$NETCIRCUIT_ARTIFACTS_SESSION/installed"
-          "$NETCIRCUIT_ARTIFACTS_SESSION/installed/bin/python" -I -m pip install --no-index --find-links "$NETCIRCUIT_ARTIFACTS_SESSION/wheelhouse" --require-hashes -r "$GITHUB_WORKSPACE/requirements-runtime.lock"
-          "$NETCIRCUIT_ARTIFACTS_SESSION/installed/bin/python" -I -m pip install --no-index --no-deps "$NETCIRCUIT_ARTIFACTS_SESSION/dist/cirnet_contracts-0.1.1-py3-none-any.whl"
-          sha256sum "$NETCIRCUIT_ARTIFACTS_SESSION/dist/"*
-          "$NETCIRCUIT_ARTIFACTS_SESSION/installed/bin/python" -I -m pip check
-          "$NETCIRCUIT_ARTIFACTS_SESSION/installed/bin/python" -I scripts/probe_installed_contracts.py
+          python -m pip download --require-hashes --only-binary=:all: --dest "$CIRNET_ARTIFACTS_SESSION/wheelhouse" -r requirements-runtime.lock
+          python -m venv "$CIRNET_ARTIFACTS_SESSION/installed"
+          "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I -m pip install --no-index --find-links "$CIRNET_ARTIFACTS_SESSION/wheelhouse" --require-hashes -r "$GITHUB_WORKSPACE/requirements-runtime.lock"
+          "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I -m pip install --no-index --no-deps "$CIRNET_ARTIFACTS_SESSION/dist/cirnet_contracts-0.1.1-py3-none-any.whl"
+          sha256sum "$CIRNET_ARTIFACTS_SESSION/dist/"*
+          "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I -m pip check
+          "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I scripts/probe_installed_contracts.py
       - name: Build the extracted sdist independently
         shell: bash
         run: |
-          mkdir "$NETCIRCUIT_ARTIFACTS_SESSION/sdist-build"
-          tar -xzf "$NETCIRCUIT_ARTIFACTS_SESSION/dist/cirnet_contracts-0.1.1.tar.gz" -C "$NETCIRCUIT_ARTIFACTS_SESSION/sdist-build"
-          python -m build --wheel --no-isolation --outdir "$NETCIRCUIT_ARTIFACTS_SESSION/sdist-wheel" "$NETCIRCUIT_ARTIFACTS_SESSION/sdist-build/cirnet_contracts-0.1.1"
+          mkdir "$CIRNET_ARTIFACTS_SESSION/sdist-build"
+          tar -xzf "$CIRNET_ARTIFACTS_SESSION/dist/cirnet_contracts-0.1.1.tar.gz" -C "$CIRNET_ARTIFACTS_SESSION/sdist-build"
+          python -m build --wheel --no-isolation --outdir "$CIRNET_ARTIFACTS_SESSION/sdist-wheel" "$CIRNET_ARTIFACTS_SESSION/sdist-build/cirnet_contracts-0.1.1"
       - name: Preserve external diagnostics on failure
-        if: failure() && env.NETCIRCUIT_ARTIFACTS_SESSION != ''
+        if: failure() && env.CIRNET_ARTIFACTS_SESSION != ''
         uses: actions/upload-artifact@v4
         with:
           name: contracts-${{ matrix.python }}-diagnostics
-          path: ${{ env.NETCIRCUIT_ARTIFACTS_SESSION }}
+          path: ${{ env.CIRNET_ARTIFACTS_SESSION }}
           retention-days: 7
       - name: Clean only this owned external session
-        if: always() && env.NETCIRCUIT_ARTIFACTS_SESSION != ''
-        run: node tools/artifact-paths/artifact-paths.mjs --cleanup "$NETCIRCUIT_ARTIFACTS_SESSION"
+        if: always() && env.CIRNET_ARTIFACTS_SESSION != ''
+        run: node tools/artifact-paths/artifact-paths.mjs --cleanup "$CIRNET_ARTIFACTS_SESSION"

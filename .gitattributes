@@ -5,3 +5,4 @@ contracts/browser/** text eol=lf
 packages/public-sdk/** text eol=lf
 contracts/boundary/capture_layout.py text eol=lf
 contracts/fingerprints.json text eol=lf
+tools/artifact-paths/cirnet_artifact_paths/*.mjs text eol=lf

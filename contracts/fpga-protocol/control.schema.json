@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/fpga-protocol/control.schema.json",
+  "$id": "https://cirnet.local/contracts/fpga-protocol/control.schema.json",
   "title": "Transport-independent logical FPGA control request; scaffold only",
   "description": "Software test envelope, not a frozen binary packet or board ABI. Physical driver remains unavailable.",
   "type": "object",

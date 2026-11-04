@@ -18256,7 +18256,7 @@ function validate709(data, { instancePath = "", parentData, parentDataProperty, 
 }
 validate709.evaluated = { "props": true, "dynamicProps": false, "dynamicItems": false };
 var HealthResponse = validate710;
-var schema68 = { "type": "object", "properties": { "status": { "const": "ok" }, "service": { "const": "netcircuit-api" }, "hardware_mode": { "enum": ["simulation", "hardware"] } }, "required": ["status", "service", "hardware_mode"], "additionalProperties": false };
+var schema68 = { "type": "object", "properties": { "status": { "const": "ok" }, "service": { "enum": ["cirnet-api", "netcircuit-api"] }, "hardware_mode": { "enum": ["simulation", "hardware"] } }, "required": ["status", "service", "hardware_mode"], "additionalProperties": false };
 function validate710(data, { instancePath = "", parentData, parentDataProperty, rootData = data, dynamicAnchors = {} } = {}) {
   let vErrors = null;
   let errors = 0;
@@ -18318,8 +18318,9 @@ function validate710(data, { instancePath = "", parentData, parentDataProperty, 
       }
     }
     if (data.service !== void 0) {
-      if ("netcircuit-api" !== data.service) {
-        const err5 = { instancePath: instancePath + "/service", schemaPath: "#/properties/service/const", keyword: "const", params: { allowedValue: "netcircuit-api" }, message: "must be equal to constant" };
+      let data1 = data.service;
+      if (!(data1 === "cirnet-api" || data1 === "netcircuit-api")) {
+        const err5 = { instancePath: instancePath + "/service", schemaPath: "#/properties/service/enum", keyword: "enum", params: { allowedValues: schema68.properties.service.enum }, message: "must be equal to one of the allowed values" };
         if (vErrors === null) {
           vErrors = [err5];
         } else {

@@ -15,7 +15,7 @@ def operation_bindings(document):
     references and parameter primitives, and rejects anonymous body DTOs.
     """
     canonical={name for name,schema in document['components']['schemas'].items()
-               if isinstance(schema,dict) and 'x-netcircuit-contract' in schema}
+               if isinstance(schema,dict) and ('x-cirnet-contract' in schema or 'x-netcircuit-contract' in schema)}
 
     def contract(schema):
         reference=schema.get('$ref','')
@@ -113,4 +113,4 @@ def operation_bindings(document):
            'export const apiOperations = '+json.dumps(records,indent=2)+' as const\n'+\
            'export type OperationName = keyof ApiOperations\n'
 
-
+

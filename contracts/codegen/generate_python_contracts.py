@@ -73,7 +73,7 @@ class BoundaryAdapter(ast.NodeTransformer):
 def generate(output):
     source, profiles = bundle()
     names = set(profiles)
-    with TemporaryDirectory(prefix='netcircuit-python-contracts-') as directory:
+    with TemporaryDirectory(prefix='cirnet-python-contracts-') as directory:
         directory = Path(directory)
         schema_path = directory / 'contracts.json'
         generated_path = directory / 'models.py'

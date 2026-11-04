@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "circuit.schema.json",
-  "title": "net*CIRCUIT Circuit Graph",
+  "title": "CIRNET Circuit Graph",
   "type": "object",
   "required": ["schema_version", "circuit_id", "modules", "connections"],
   "properties": {

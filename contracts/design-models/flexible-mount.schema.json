@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/design/flexible-mount/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/design/flexible-mount/1.0/schema.json",
   "title": "Flexible two-lead authoring assemblies 1.0",
   "$defs": {
     "BodyPose3D": {
@@ -11,7 +11,7 @@
       ],
       "properties": {
         "position": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
         },
         "rotation": {
           "type": "object",
@@ -58,7 +58,7 @@
           "type": "array",
           "maxItems": 8,
           "items": {
-            "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
+            "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
           }
         }
       },
@@ -128,7 +128,7 @@
           "minItems": 2,
           "maxItems": 2,
           "items": {
-            "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/pinContact"
+            "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/pinContact"
           }
         },
         "leads": {
@@ -154,7 +154,7 @@
           "minLength": 1
         },
         "bodyExitMm": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
         }
       },
       "additionalProperties": false

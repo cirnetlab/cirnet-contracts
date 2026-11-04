@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/design/signal-domains/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/design/signal-domains/1.0/schema.json",
   "title": "Explicit signal domains and simulation dispatch 1.0",
   "$defs": {
     "SignalDomain": {"enum": ["DIGITAL", "ANALOG", "POWER", "GROUND", "CLOCK", "MIXED"]},
@@ -43,12 +43,12 @@
       "type": "object",
       "properties": {
         "schema_version": {"const": "1.0"},
-        "graph": {"$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json"},
-        "capture_config": {"$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"},
-        "test_vectors": {"type": "array", "items": {"$ref": "https://netcircuit.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"}},
+        "graph": {"$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json"},
+        "capture_config": {"$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"},
+        "test_vectors": {"type": "array", "items": {"$ref": "https://cirnet.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"}},
         "clock_config": {"anyOf": [
           {"type": "object", "maxProperties": 0},
-          {"$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"}
+          {"$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"}
         ]},
         "inputs": {"type": "object", "additionalProperties": {"type": "integer", "enum": [0, 1]}}
       },
@@ -61,8 +61,8 @@
         "available": {"type": "boolean"},
         "state": {"enum": ["COMPLETE", "STOPPED"]},
         "duration_ns": {"type": "integer", "minimum": 0, "maximum": 1000000000},
-        "samples": {"type": "array", "maxItems": 100000, "items": {"$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/DigitalObservation"}},
-        "device_states": {"type": "object", "additionalProperties": {"$ref": "https://netcircuit.local/contracts/public/api/1.0/schema.json#/$defs/PhysicalDeviceState"}},
+        "samples": {"type": "array", "maxItems": 100000, "items": {"$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/DigitalObservation"}},
+        "device_states": {"type": "object", "additionalProperties": {"$ref": "https://cirnet.local/contracts/public/api/1.0/schema.json#/$defs/PhysicalDeviceState"}},
         "pin_values": {"type": "object", "additionalProperties": {"enum": [0, 1, "X"]}},
         "diagnostics": {"type": "array", "items": {"type": "string"}}
       },

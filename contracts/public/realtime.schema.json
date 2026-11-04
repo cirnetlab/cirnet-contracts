@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/public/realtime/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/public/realtime/1.0/schema.json",
   "title": "Bounded snapshot event protocol 1.0",
   "$comment": "Sequence and stream identity detect lost updates. Resync fetches authorized HTTP snapshots; execution commands are never replayed. Versionless legacy envelopes remain explicit compatibility inputs.",
   "$defs": {
@@ -156,7 +156,7 @@
           "const": "station.updated"
         },
         "station": {
-          "$ref": "https://netcircuit.local/contracts/public/api/1.0/schema.json#/$defs/StationDescriptor"
+          "$ref": "https://cirnet.local/contracts/public/api/1.0/schema.json#/$defs/StationDescriptor"
         }
       },
       "required": [
@@ -199,7 +199,7 @@
           "const": "experiment.updated"
         },
         "experiment": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ExperimentRecord"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ExperimentRecord"
         }
       },
       "required": [
@@ -440,7 +440,7 @@
                   ]
                 },
                 "capabilities": {
-                  "$ref": "https://netcircuit.local/contracts/public/api/1.0/schema.json#/$defs/PublicStationCapabilities"
+                  "$ref": "https://cirnet.local/contracts/public/api/1.0/schema.json#/$defs/PublicStationCapabilities"
                 }
               },
               "required": [
@@ -469,7 +469,7 @@
               "const": "experiment.updated"
             },
             "experiment": {
-              "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ExperimentRecord"
+              "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ExperimentRecord"
             }
           },
           "required": [

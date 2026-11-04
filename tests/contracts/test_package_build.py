@@ -15,7 +15,7 @@ ROOT=Path(__file__).resolve().parents[2]
 def test_wheel_contains_generated_rpc_and_offline_resources(tmp_path):
     result=subprocess.run([sys.executable,'-m','build','--wheel','--no-isolation','--outdir',str(tmp_path)],
                           cwd=ROOT,capture_output=True,text=True,
-                          env={**os.environ,'TMP':str(tmp_path),'TEMP':str(tmp_path)})
+                          env={**os.environ,'TMP':str(tmp_path),'TEMP':str(tmp_path),'CIRNET_BUILD_ROOT':str(tmp_path/'build')})
     assert result.returncode==0,result.stdout+result.stderr
     wheel=next(tmp_path.glob('*.whl'))
     with ZipFile(wheel) as archive:

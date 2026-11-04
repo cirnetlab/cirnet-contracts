@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/design/package-shape/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/design/package-shape/1.0/schema.json",
   "title": "Sealed procedural package shape 1.0",
   "$defs": {
     "PackageLeadSectionV1": {
@@ -49,10 +49,10 @@
           "minLength": 1
         },
         "positionMm": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
         },
         "normal": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/point"
         }
       },
       "additionalProperties": false

@@ -34,7 +34,7 @@ def main():
     resources = importlib.resources.files('contracts')
     snapshot = json.loads(resources.joinpath('api/openapi.json').read_text(encoding='utf-8'))
     assert operation_bindings(snapshot).encode() == generated_artifacts()['apps/web/src/contracts/generated/operations.ts']
-    assert not any(name == 'app' or name.startswith(('app.', 'hardware_service', 'netcircuit_sim')) for name in sys.modules)
+    assert not any(name == 'app' or name.startswith(('app.', 'hardware_service', 'cirnet_sim', 'netcircuit_sim')) for name in sys.modules)
     print(json.dumps({'installed_version': distribution.version, 'python': sys.version.split()[0],
                       'package_root': str(package), 'isolated': True,
                       'offline_registry': True, 'rpc': True, 'operation_snapshot': True}, sort_keys=True))

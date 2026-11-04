@@ -1120,7 +1120,7 @@ export interface TestVector {
  */
 export interface HealthResponse {
   status: 'ok'
-  service: 'netcircuit-api'
+  service: 'cirnet-api' | 'netcircuit-api'
   hardware_mode: 'simulation' | 'hardware'
 }
 /**

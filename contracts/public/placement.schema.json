@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/public/placement/2.0/schema.json",
+  "$id": "https://cirnet.local/contracts/public/placement/2.0/schema.json",
   "title": "Explicit graph 1.2 application boundaries 2.0",
   "$defs": {
     "CircuitSummaryV2": {
@@ -114,7 +114,7 @@
           "maximum": 9007199254740991
         },
         "graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
         }
       },
       "required": [
@@ -141,7 +141,7 @@
           "type": "array",
           "maxItems": 100,
           "items": {
-            "$ref": "https://netcircuit.local/contracts/public/placement/2.0/schema.json#/$defs/CircuitSummaryV2"
+            "$ref": "https://cirnet.local/contracts/public/placement/2.0/schema.json#/$defs/CircuitSummaryV2"
           }
         },
         "next_cursor": {
@@ -168,7 +168,7 @@
           "maxLength": 128
         },
         "graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
         }
       },
       "required": [
@@ -191,7 +191,7 @@
           "maxLength": 128
         },
         "graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
         }
       },
       "required": [
@@ -355,7 +355,7 @@
           "minLength": 1
         },
         "circuit_graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
         },
         "clock_config": {
           "anyOf": [
@@ -364,23 +364,23 @@
               "additionalProperties": false
             },
             {
-              "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
+              "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
             }
           ]
         },
         "generator_config": {
           "type": "array",
           "items": {
-            "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration"
+            "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration"
           }
         },
         "capture_config": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"
         },
         "test_vectors": {
           "type": "array",
           "items": {
-            "$ref": "https://netcircuit.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"
+            "$ref": "https://cirnet.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"
           }
         },
         "circuit_document_id": {
@@ -430,15 +430,15 @@
           "const": "2.0"
         },
         "graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
         },
         "capture_config": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/CaptureConfiguration"
         },
         "test_vectors": {
           "type": "array",
           "items": {
-            "$ref": "https://netcircuit.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"
+            "$ref": "https://cirnet.local/contracts/public/common/1.0/schema.json#/$defs/TestVector"
           }
         },
         "clock_config": {
@@ -448,7 +448,7 @@
               "maxProperties": 0
             },
             {
-              "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
+              "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/ClockConfiguration"
             }
           ]
         },

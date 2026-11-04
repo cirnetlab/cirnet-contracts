@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/public/instrument-control/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/public/instrument-control/1.0/schema.json",
   "title": "Owned instrument command acknowledgement 1.0",
   "$defs": {
     "InstrumentControlAccess": {
@@ -18,7 +18,7 @@
     "InstrumentGeneratorCommand": {
       "type": "object", "additionalProperties": false,
       "properties": {
-        "configuration": { "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration" }
+        "configuration": { "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration" }
       },
       "required": ["configuration"]
     },
@@ -33,7 +33,7 @@
         "accepted": { "type": "boolean" },
         "hardware_applied": { "type": "boolean" },
         "error_code": { "type": ["string", "null"], "minLength": 1 },
-        "configuration": { "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration" }
+        "configuration": { "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/GeneratorConfiguration" }
       },
       "required": ["schema_version", "experiment_id", "operation_key", "status", "revision", "accepted", "hardware_applied", "error_code", "configuration"]
     }

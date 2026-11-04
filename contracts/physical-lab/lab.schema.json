@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json",
+  "$id": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json",
   "title": "Lab-First domain contracts 1.0",
   "$defs": {
     "LabEndpoint": {

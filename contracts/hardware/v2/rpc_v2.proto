@@ -1,5 +1,5 @@
 syntax = "proto3";
-package netcircuit.hardware.v2;
+package cirnet.hardware.v2;
 
 enum ErrorCode {
   OK = 0;

@@ -46,7 +46,22 @@ def test_supported_baseline_remains_byte_exact():
     index=json.loads((baseline/'baseline.json').read_text())
     for path,digest in index['sha256'].items():
         assert hashlib.sha256((baseline/path.removeprefix('contracts/')).read_bytes()).hexdigest()==digest
-        assert hashlib.sha256((ROOT/path).read_bytes().replace(b'\r\n',b'\n')).hexdigest()==digest
+        current=(ROOT/path).read_bytes().replace(b'\r\n',b'\n')
+        # Canonical host/package spelling has explicit offline/RPC compatibility
+        # adapters; the supported old source bytes remain frozen above.
+        restored=current.replace(b'https://cirnet.local/',b'https://netcircuit.local/').replace(
+            b'package cirnet.hardware.v2;',b'package netcircuit.hardware.v2;')
+        title_aliases = {
+            'contracts/circuit-schema/circuit.schema.json': 'Circuit Graph',
+            'contracts/circuit-schema/connection.schema.json': 'Connection',
+            'contracts/circuit-schema/module.schema.json': 'Module',
+        }
+        if path in title_aliases:
+            title = title_aliases[path]
+            canonical_title = f'"title": "CIRNET {title}"'.encode()
+            assert restored.count(canonical_title) == 1
+            restored = restored.replace(canonical_title, f'"title": "net*CIRCUIT {title}"'.encode(), 1)
+        assert hashlib.sha256(restored).hexdigest()==digest
 
 
 def test_publication_failure_rolls_back_prior_artifacts(tmp_path, monkeypatch):

@@ -28,7 +28,7 @@ mkdirSync(outside)
 const context = { owner: 'allocator-integration', roots: [repoA, repoB, source] }
 function environment(extra = {}) {
   const env = { ...process.env }
-  for (const key of ['NETCIRCUIT_ARTIFACTS_DIR', 'NETCIRCUIT_ARTIFACTS_SESSION', 'NETCIRCUIT_ARTIFACTS_CONTEXT']) delete env[key]
+  for (const key of ['CIRNET_ARTIFACTS_DIR', 'CIRNET_ARTIFACTS_SESSION', 'CIRNET_ARTIFACTS_CONTEXT', 'NETCIRCUIT_ARTIFACTS_DIR', 'NETCIRCUIT_ARTIFACTS_SESSION', 'NETCIRCUIT_ARTIFACTS_CONTEXT']) delete env[key]
   return { ...env, ...extra }
 }
 function invoke(args = [], { cwd = outside, env = environment(), executable = cli } = {}) {
@@ -49,13 +49,13 @@ test('installed module allocates from arbitrary CWD with explicit involved roots
   const installed = join(root, 'installed', 'node_modules', '@tinihi-labs', 'artifact-paths')
   mkdirSync(installed, { recursive: true })
   cpSync(cli, join(installed, 'artifact-paths.mjs'))
-  mkdirSync(join(installed, 'netcircuit_artifact_paths'))
-  cpSync(join(packageRoot, 'netcircuit_artifact_paths/artifact-paths.mjs'), join(installed, 'netcircuit_artifact_paths/artifact-paths.mjs'))
+  mkdirSync(join(installed, 'cirnet_artifact_paths'))
+  cpSync(join(packageRoot, 'cirnet_artifact_paths/artifact-paths.mjs'), join(installed, 'cirnet_artifact_paths/artifact-paths.mjs'))
   const installedCli = join(installed, 'artifact-paths.mjs')
   const session = allocate(context, installedCli)
   try {
     assert.equal(dirname(session), realpathSync(outside))
-    assert.ok(existsSync(join(session, '.netcircuit-artifact-session.json')))
+    assert.ok(existsSync(join(session, '.cirnet-artifact-session.json')))
   } finally { cleanup(session, context, cli) }
 })
 
@@ -76,7 +76,7 @@ test('default Git CWD preserves repository-root behavior without package-locatio
   assert.equal(result.status, 0, result.stderr)
   const session = result.stdout.trim()
   try {
-    const inherited = environment({ NETCIRCUIT_ARTIFACTS_SESSION: session })
+    const inherited = environment({ CIRNET_ARTIFACTS_SESSION: session })
     const child = invoke(['screens'], { cwd: repoA, env: inherited })
     assert.equal(child.status, 0, child.stderr)
     assert.equal(child.stdout.trim(), join(session, 'screens'))
@@ -88,8 +88,8 @@ test('default Git CWD preserves repository-root behavior without package-locatio
 
 test('stable inherited owner/context lets child and relocated package share and clean a session', () => {
   const session = allocate()
-  const marker = JSON.parse(readFileSync(join(session, '.netcircuit-artifact-session.json'), 'utf8'))
-  const env = environment({ NETCIRCUIT_ARTIFACTS_SESSION: session, NETCIRCUIT_ARTIFACTS_CONTEXT: JSON.stringify(marker.context) })
+  const marker = JSON.parse(readFileSync(join(session, '.cirnet-artifact-session.json'), 'utf8'))
+  const env = environment({ CIRNET_ARTIFACTS_SESSION: session, CIRNET_ARTIFACTS_CONTEXT: JSON.stringify(marker.context) })
   const child = invoke(['python-child'], { env })
   assert.equal(child.status, 0, child.stderr)
   assert.equal(child.stdout.trim(), join(session, 'python-child'))
@@ -126,7 +126,7 @@ test('symlink and traversal rejection preserves neighboring user data', () => {
     assert.notEqual(invoke(['--cleanup', alias, ...ctxArgs()]).status, 0)
     const checkoutAlias = join(session, 'checkout')
     symlinkSync(repoB, checkoutAlias, process.platform === 'win32' ? 'junction' : 'dir')
-    const env = environment({ NETCIRCUIT_ARTIFACTS_SESSION: session, NETCIRCUIT_ARTIFACTS_CONTEXT: JSON.stringify(context) })
+    const env = environment({ CIRNET_ARTIFACTS_SESSION: session, CIRNET_ARTIFACTS_CONTEXT: JSON.stringify(context) })
     assert.notEqual(invoke(['checkout/forbidden'], { env }).status, 0)
     assert.notEqual(invoke(['../escape'], { env }).status, 0)
     assert.notEqual(invoke(['--cleanup', outside, ...ctxArgs()]).status, 0)
@@ -233,8 +233,8 @@ test('legacy v1 sessions remain usable only for their original single repository
 
 test('same-process cache cannot reuse a session belonging to another context', async () => {
   const api = await import(pathToFileURL(cli))
-  const saved = { session: process.env.NETCIRCUIT_ARTIFACTS_SESSION, context: process.env.NETCIRCUIT_ARTIFACTS_CONTEXT, directory: process.env.NETCIRCUIT_ARTIFACTS_DIR }
-  for (const key of ['NETCIRCUIT_ARTIFACTS_SESSION', 'NETCIRCUIT_ARTIFACTS_CONTEXT', 'NETCIRCUIT_ARTIFACTS_DIR']) delete process.env[key]
+  const saved = { ...process.env }
+  for (const key of Object.keys(process.env)) if (/^(?:CIRNET|NETCIRCUIT)_ARTIFACTS_/.test(key)) delete process.env[key]
   const firstContext = { owner: 'first', roots: [repoA, source] }
   const secondContext = { owner: 'second', roots: [repoA, source] }
   let first, second
@@ -245,9 +245,61 @@ test('same-process cache cannot reuse a session belonging to another context', a
   } finally {
     if (first) api.cleanupArtifactSession(first, { context: firstContext })
     if (second) api.cleanupArtifactSession(second, { context: secondContext })
-    for (const [name, value] of Object.entries(saved)) {
-      const key = { session: 'NETCIRCUIT_ARTIFACTS_SESSION', context: 'NETCIRCUIT_ARTIFACTS_CONTEXT', directory: 'NETCIRCUIT_ARTIFACTS_DIR' }[name]
-      if (value === undefined) delete process.env[key]; else process.env[key] = value
-    }
+    for (const key of Object.keys(process.env)) if (/^(?:CIRNET|NETCIRCUIT)_ARTIFACTS_/.test(key)) delete process.env[key]
+    Object.assign(process.env, saved)
+  }
+})
+
+
+test('canonical configuration wins while old v2 sessions remain valid and ownership checked', () => {
+  const canonical = allocate()
+  const legacy = mkdtempSync(join(outside, 'netcircuit-'))
+  const owned = JSON.parse(readFileSync(join(canonical, '.cirnet-artifact-session.json'), 'utf8'))
+  writeFileSync(join(legacy, '.netcircuit-artifact-session.json'), JSON.stringify({ ...owned, directory: realpathSync(legacy) }))
+  const env = environment({ CIRNET_ARTIFACTS_SESSION: canonical, CIRNET_ARTIFACTS_CONTEXT: JSON.stringify(owned.context),
+    NETCIRCUIT_ARTIFACTS_SESSION: legacy, NETCIRCUIT_ARTIFACTS_CONTEXT: 'invalid old JSON' })
+  try {
+    const child = invoke(['preferred'], { env })
+    assert.equal(child.status, 0, child.stderr)
+    assert.equal(child.stdout.trim(), join(canonical, 'preferred'))
+    const oldChild = invoke(['legacy'], { env: environment({NETCIRCUIT_ARTIFACTS_SESSION: legacy, NETCIRCUIT_ARTIFACTS_CONTEXT: JSON.stringify(owned.context)}) })
+    assert.equal(oldChild.status, 0, oldChild.stderr)
+    assert.equal(oldChild.stdout.trim(), join(legacy, 'legacy'))
+    const denied = invoke(['--cleanup', legacy, ...ctxArgs({owner:'wrong', roots:context.roots})])
+    assert.notEqual(denied.status, 0)
+    assert.ok(existsSync(legacy))
+  } finally { cleanup(canonical); cleanup(legacy) }
+})
+
+test('conflicting ownership markers cannot authorize cleanup', () => {
+  const session = allocate()
+  const owned = JSON.parse(readFileSync(join(session, '.cirnet-artifact-session.json'), 'utf8'))
+  writeFileSync(join(session, '.netcircuit-artifact-session.json'), JSON.stringify({...owned, context:{...owned.context, owner:'wrong'}}))
+  const result = invoke(['--cleanup', session, ...ctxArgs()])
+  assert.notEqual(result.status, 0)
+  assert.ok(existsSync(session))
+  writeFileSync(join(session, '.netcircuit-artifact-session.json'), JSON.stringify(owned))
+  cleanup(session)
+})
+
+
+test('implicit reuse synchronizes both environment prefixes for child processes', async () => {
+  const api = await import(pathToFileURL(cli))
+  const session = allocate()
+  const owned = JSON.parse(readFileSync(join(session, '.cirnet-artifact-session.json'), 'utf8'))
+  const saved = { ...process.env }
+  try {
+    for (const key of Object.keys(process.env)) if (/^(?:CIRNET|NETCIRCUIT)_ARTIFACTS_/.test(key)) delete process.env[key]
+    process.env.NETCIRCUIT_ARTIFACTS_SESSION = session
+    process.env.NETCIRCUIT_ARTIFACTS_CONTEXT = JSON.stringify(owned.context)
+    api.getArtifactDirectory('reused')
+    assert.equal(process.env.CIRNET_ARTIFACTS_SESSION, session)
+    assert.equal(process.env.NETCIRCUIT_ARTIFACTS_SESSION, session)
+    assert.equal(process.env.CIRNET_ARTIFACTS_CONTEXT, process.env.NETCIRCUIT_ARTIFACTS_CONTEXT)
+    assert.match(session, /[\\/]cirnet-[A-Za-z0-9]+$/)
+  } finally {
+    cleanup(session)
+    for (const key of Object.keys(process.env)) if (/^(?:CIRNET|NETCIRCUIT)_ARTIFACTS_/.test(key)) delete process.env[key]
+    Object.assign(process.env, saved)
   }
 })

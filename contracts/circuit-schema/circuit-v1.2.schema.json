@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/circuit/1.2/schema.json",
+  "$id": "https://cirnet.local/contracts/circuit/1.2/schema.json",
   "title": "CircuitGraph 1.2 with explicit flexible assemblies",
   "type": "object",
   "required": [
@@ -28,7 +28,7 @@
       "type": "array",
       "maxItems": 10000,
       "items": {
-        "$ref": "https://netcircuit.local/contracts/circuit/1.x/connection.schema.json"
+        "$ref": "https://cirnet.local/contracts/circuit/1.x/connection.schema.json"
       }
     },
     "metadata": {
@@ -76,18 +76,18 @@
         "mount": {
           "oneOf": [
             {
-              "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/mount"
+              "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/mount"
             },
             {
-              "$ref": "https://netcircuit.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/FlexibleMountV1"
+              "$ref": "https://cirnet.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/FlexibleMountV1"
             },
             {
-              "$ref": "https://netcircuit.local/contracts/design/flexible-mount/1.1/schema.json#/$defs/FlexibleMountV2"
+              "$ref": "https://cirnet.local/contracts/design/flexible-mount/1.1/schema.json#/$defs/FlexibleMountV2"
             }
           ]
         },
         "physicalDescriptor": {
-          "$ref": "https://netcircuit.local/contracts/design/flexible-mount/1.1/schema.json#/$defs/PhysicalDescriptorV1"
+          "$ref": "https://cirnet.local/contracts/design/flexible-mount/1.1/schema.json#/$defs/PhysicalDescriptorV1"
         }
       },
       "additionalProperties": true,
@@ -138,7 +138,7 @@
           "then": {
             "properties": {
               "properties": {
-                "$ref": "https://netcircuit.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/ComponentDesignPropertiesV1"
+                "$ref": "https://cirnet.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/ComponentDesignPropertiesV1"
               }
             }
           }
@@ -194,10 +194,10 @@
     "AnySupportedCircuitGraph": {
       "oneOf": [
         {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json"
         },
         {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json"
         }
       ]
     }

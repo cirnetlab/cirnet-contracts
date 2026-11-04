@@ -1,1 +1,1 @@
-"""Shared versioned net*CIRCUIT domain contracts."""
+"""Shared versioned CIRNET domain contracts."""

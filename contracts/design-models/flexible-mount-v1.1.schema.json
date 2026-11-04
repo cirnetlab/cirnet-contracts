@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/design/flexible-mount/1.1/schema.json",
+  "$id": "https://cirnet.local/contracts/design/flexible-mount/1.1/schema.json",
   "title": "Automatic component routing 1.1",
   "$defs": {
     "AutomaticRoutingIntentV1": {
@@ -84,14 +84,14 @@
           "const": 2
         },
         "bodyPose": {
-          "$ref": "https://netcircuit.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/BodyPose3D"
+          "$ref": "https://cirnet.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/BodyPose3D"
         },
         "contacts": {
           "type": "array",
           "minItems": 2,
           "maxItems": 2,
           "items": {
-            "$ref": "https://netcircuit.local/contracts/circuit/1.x/module.schema.json#/$defs/pinContact"
+            "$ref": "https://cirnet.local/contracts/circuit/1.x/module.schema.json#/$defs/pinContact"
           }
         },
         "leads": {
@@ -99,7 +99,7 @@
           "minItems": 2,
           "maxItems": 2,
           "items": {
-            "$ref": "https://netcircuit.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/FlexibleLeadIntent"
+            "$ref": "https://cirnet.local/contracts/design/flexible-mount/1.0/schema.json#/$defs/FlexibleLeadIntent"
           }
         },
         "routing": {

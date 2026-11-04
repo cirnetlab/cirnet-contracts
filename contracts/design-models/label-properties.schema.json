@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/design/label-properties/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/design/label-properties/1.0/schema.json",
   "title": "LabelPropertiesV1",
   "description": "Plain visual annotation properties. Position and rotation remain module fields; boardId is only a visual association, never an electrical mount.",
   "type": "object",

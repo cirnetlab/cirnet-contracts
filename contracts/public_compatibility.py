@@ -26,6 +26,19 @@ def _schema(value):
     if isinstance(value,bool):return value
     value=_object(value,'JSON Schema')
     result={name:deepcopy(child) for name,child in value.items() if name not in ANNOTATIONS}
+    # The new extension is supplemental: old tooling still sees the exact frozen
+    # x-netcircuit metadata. A mismatched alias must fail instead of hiding drift.
+    if 'x-cirnet-contract' in value and 'x-netcircuit-contract' in value:
+        legacy = value.get('x-netcircuit-contract')
+        canonical = value['x-cirnet-contract']
+        expected = json.loads(json.dumps(legacy).replace('https://netcircuit.local/', 'https://cirnet.local/'))
+        if canonical != expected:
+            raise CompatibilityError('Canonical contract metadata differs from legacy identity')
+        result.pop('x-cirnet-contract')
+    # This exact service-name alias is an additive reader compatibility rule.
+    # Extra values, changed types and any other enum remain ordinary wire changes.
+    if result.get('enum') == ['cirnet-api', 'netcircuit-api'] and set(result) == {'enum'}:
+        result = {'const': 'netcircuit-api'}
     # Schema positions only: a property/default named description is real data.
     for key in MAP_SCHEMAS:
         if key in value:result[key]={name:_schema(child) for name,child in _object(value[key],key).items()}
@@ -44,6 +57,13 @@ def _content(value):
         media=_object(media,'media type');_keys(media,('schema','example','examples'),'media type')
         if 'schema' not in media:raise CompatibilityError('Missing media schema: '+media_type)
         result[media_type]={'schema':_schema(media['schema'])}
+    for version in (1, 2):
+        canonical = f'application/vnd.cirnet.capture; version={version}'
+        legacy = f'application/vnd.netcircuit.capture; version={version}'
+        if canonical in result and legacy in result:
+            if not _same(result[canonical], result[legacy]):
+                raise CompatibilityError('Canonical capture media must retain the identical legacy media contract')
+            del result[canonical]
     return result
 
 
@@ -98,6 +118,13 @@ def snapshot(openapi,layout):
     components=_object(openapi.get('components'),'components')
     schemes={name:{key:deepcopy(value) for key,value in _object(scheme,'security scheme').items() if key!='description'}
              for name,scheme in _object(components.get('securitySchemes',{}),'security schemes').items()}
+    # These names are dual-read runtime aliases, not changed credential rules.
+    session = schemes.get('ServerSession', {})
+    if session.get('type') == 'apiKey' and session.get('in') == 'cookie' and session.get('name') == 'cirnet_session':
+        session['name'] = 'netcircuit_session'
+    csrf = schemes.get('CsrfToken', {})
+    if csrf.get('type') == 'apiKey' and csrf.get('in') == 'header' and csrf.get('name') == 'X-CIRNET-CSRF':
+        csrf['name'] = 'X-CSRF-Token'
     return {'schema_version':'1.0','status':'supported-unpublished-not-a-release',
             'api':{'openapi':openapi.get('openapi'),'json_schema_dialect':dialect,'global_security':global_security,'operations':operations,
                    'schemas':{name:_schema(value) for name,value in _object(components.get('schemas'),'components schemas').items()},

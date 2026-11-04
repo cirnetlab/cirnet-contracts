@@ -20,6 +20,17 @@ def generate(output: Path) -> None:
             raise RuntimeError(f'Protobuf compilation failed ({code})')
         path = staging / 'rpc_v2_pb2_grpc.py'
         text = path.read_text(encoding='utf-8').replace('import rpc_v2_pb2 as', 'from . import rpc_v2_pb2 as')
+        # The canonical protobuf namespace changes route names, never message fields.
+        # Keep legacy servers and clients interoperable through these adapters.
+        text = text.replace('import grpc\n', 'import grpc\nfrom contracts.rpc_compat import compatibility_channel\n', 1)
+        anchor = '        self.GetCapabilities = channel.unary_unary('
+        if anchor not in text:
+            raise RuntimeError('Unsupported gRPC generator stub shape')
+        text = text.replace(anchor, '        channel = compatibility_channel(channel)\n' + anchor, 1)
+        anchor = "    server.add_registered_method_handlers('cirnet.hardware.v2.HardwareService', rpc_method_handlers)"
+        if anchor not in text:
+            raise RuntimeError('Unsupported gRPC generator registration shape')
+        text = text.replace(anchor, anchor + "\n    legacy_handler = grpc.method_handlers_generic_handler('netcircuit.hardware.v2.HardwareService', rpc_method_handlers)\n    server.add_generic_rpc_handlers((legacy_handler,))\n    server.add_registered_method_handlers('netcircuit.hardware.v2.HardwareService', rpc_method_handlers)", 1)
         path.write_text(text, encoding='utf-8', newline='\n')
         (staging / '__init__.py').write_text('', encoding='utf-8')
         for name in ('rpc_v2_pb2.py','rpc_v2_pb2_grpc.py','__init__.py'):

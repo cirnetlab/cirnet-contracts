@@ -14,3 +14,22 @@ The checker compares every existing operation ID, path/method, parameters, reque
 Schema and operation descriptions/titles/examples are editorial. Only actual schema positions are traversed, so a property named `description` or a default/example containing schema-like keys remains data. Ownership prose in the manifest is outside the wire snapshot. Booleans and numbers remain distinct. NCAP magic, prefix, endianness, records, versions and resource bounds are part of the supported format contract.
 
 The command has no write/update mode. A changed supported shape needs an explicit version and migration or a reviewed compatibility-policy decision; regenerating artifacts does not approve breaking an existing wire. Retain the old version and add the replacement alongside it. Do not replace this baseline merely to turn a failed check green. CI also checks the original schema/protobuf byte baseline, shared Python/browser fixtures, negative mutation tests, generated operations and installed-package resources; passing these anchors alone cannot prove electrical safety, physical capability or every consumer behavior.
+
+The CIRNET name migration retains these frozen bytes and digests. Current schema
+hosts and the RPC v2 package are canonicalized, with explicit offline URI aliases
+and dual RPC routes tested against legacy callers. Source identity comparison
+reverses only those exact spelling substitutions before checking the original
+digest. OpenAPI retains the original legacy metadata and adds its canonical
+alias; the checker rejects inconsistent alias metadata. The exact health service
+names `cirnet-api` and `netcircuit-api` are accepted together; no other shape or
+value widening is exempted from the frozen comparison.
+
+Canonical `cirnet_session` and `X-CIRNET-CSRF` security-scheme names are exact
+aliases of `netcircuit_session` and `X-CSRF-Token`; credential types, locations,
+requirements and runtime legacy acceptance remain required. The canonical capture
+media type is accepted only alongside an identical legacy media schema. Removing
+the legacy media, changing either schema or inventing another credential name
+fails compatibility. Runtime integration tests exercise dual cookie/header and
+capture Accept behavior in Remote.
+
+The three current graph schema titles use `CIRNET`; exact per-file title spelling aliases restore their original `net*CIRCUIT` titles only for the frozen-source digest comparison. Frozen schema bytes remain unchanged.

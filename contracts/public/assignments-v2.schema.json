@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/public/assignments/2.0/schema.json",
+  "$id": "https://cirnet.local/contracts/public/assignments/2.0/schema.json",
   "title": "Assignment authoring and flexible references 2.0",
   "$defs": {
     "AssignmentDefinitionV2": {
@@ -10,34 +10,34 @@
           "const": "2.0"
         },
         "assignment_id": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
         },
         "title": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
         },
         "reference_design_graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
         },
         "reference_topology_graph": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/reference_topology_graph"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/reference_topology_graph"
         },
         "expected_component_set": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_component_set"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_component_set"
         },
         "instructor_pin_profiles": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/instructor_pin_profiles"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/instructor_pin_profiles"
         },
         "lab_endpoints": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/lab_endpoints"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/lab_endpoints"
         },
         "expected_behavior": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_behavior"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_behavior"
         },
         "assessment_policy": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assessment_policy"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assessment_policy"
         },
         "component_resolution_mode": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/component_resolution_mode"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/component_resolution_mode"
         }
       },
       "required": [
@@ -52,7 +52,7 @@
     "AnySupportedAssignmentDefinition": {
       "anyOf": [
         {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition"
         },
         {
           "$ref": "#/$defs/AssignmentDefinitionV2"
@@ -66,10 +66,10 @@
           "const": "2.0"
         },
         "assignment_id": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
         },
         "title": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
         },
         "owner_id": {
           "type": "string",
@@ -131,10 +131,10 @@
           "const": "2.0"
         },
         "assignment_id": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
         },
         "title": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
         },
         "owner_id": {
           "type": "string",
@@ -283,34 +283,34 @@
           ]
         },
         "assignment_id": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
         },
         "title": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
         },
         "reference_design_graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
+          "$ref": "https://cirnet.local/contracts/circuit/1.2/schema.json#/$defs/AnySupportedCircuitGraph"
         },
         "reference_topology_graph": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/reference_topology_graph"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/reference_topology_graph"
         },
         "expected_component_set": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_component_set"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_component_set"
         },
         "instructor_pin_profiles": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/instructor_pin_profiles"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/instructor_pin_profiles"
         },
         "lab_endpoints": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/lab_endpoints"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/lab_endpoints"
         },
         "expected_behavior": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_behavior"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/expected_behavior"
         },
         "assessment_policy": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assessment_policy"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assessment_policy"
         },
         "component_resolution_mode": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/component_resolution_mode"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/component_resolution_mode"
         },
         "document_kind": {
           "const": "instructor"
@@ -352,13 +352,13 @@
           ]
         },
         "assignment_id": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assignment_id"
         },
         "title": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/title"
         },
         "assessment_policy": {
-          "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assessment_policy"
+          "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/AssignmentDefinition/properties/assessment_policy"
         },
         "lab_endpoints": {
           "type": "array",
@@ -366,16 +366,16 @@
             "type": "object",
             "properties": {
               "endpoint_id": {
-                "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/endpoint_id"
+                "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/endpoint_id"
               },
               "role": {
-                "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/role"
+                "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/role"
               },
               "channel": {
-                "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/channel"
+                "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/channel"
               },
               "required": {
-                "$ref": "https://netcircuit.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/required"
+                "$ref": "https://cirnet.local/contracts/physical-lab/1.0/lab.schema.json#/$defs/LabEndpoint/properties/required"
               }
             },
             "required": [

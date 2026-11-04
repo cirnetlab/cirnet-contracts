@@ -1,6 +1,6 @@
 # Physical part registry v1
 
-`physical-parts.json` owns physical pin identity, package and footprint revisions, package-local anchors, roles, internal contact connectivity and development provenance. Execution profiles are optional. `scripts/sync_editor_catalog.py` generates the lean `apps/web/src/data/editorParts.json` authoring descriptors, the editor catalog, and the complete execution/development snapshots. The lean descriptors omit manufacturer, datasheet, provenance and simulation data; placing, mounting and rendering a part does not require an engine profile. Numeric definition/package/footprint revisions begin at 1. A pinout or mechanical/electrical meaning change requires a new revision; existing mount bindings identify their exact part and package revisions.
+`physical-parts.json` owns physical pin identity, package and footprint revisions, package-local anchors, roles, internal contact connectivity and development provenance. Execution profiles are optional. `contracts.codegen.sync_editor_catalog` generates the lean `contracts/browser/data/editorParts.json` authoring descriptors, the editor catalog, and the complete execution/development snapshots. The lean descriptors omit manufacturer, datasheet, provenance and simulation data; placing, mounting and rendering a part does not require an engine profile. Numeric definition/package/footprint revisions begin at 1. A pinout or mechanical/electrical meaning change requires a new revision; existing mount bindings identify their exact part and package revisions.
 
 Coordinates are millimeters in a right-handed frame with Y up. Mountable lead tips lie at Y=0; `standoffMm` places the body above that plane. DIP length follows X, pin 1 is at -X/+Z, and numbering proceeds counterclockwise in top view. A 2.54 mm pitch equals the existing breadboard's 0.13 world units: `MM_TO_WORLD = 0.13 / 2.54`. The board is not rescaled. The isolated source is not mountable; its pin anchors locate actual front-panel terminals at Y=20 mm, Z=25 mm.
 
@@ -8,7 +8,7 @@ Physical pins have stable IDs, explicit numbers/names/roles, optional output dri
 
 All entries below can be placed and wired. All except `DC_SUPPLY` declare a breadboard footprint. Fixed packages retain one rigid footprint; discrete lead-forming profiles are declared in `package.footprint.leadForming`. The B3F variant is explicitly formed from its native 6.5 x 4.5 mm pattern to 7.62 x 5.08 mm; it is not a claim that an unformed B3F has a 2.54 mm native pitch. Mechanical mounting remains subject to the solver's contact, occupancy and body collision checks.
 
-The following source matrix preserves the original exact-part selection. It is not an exhaustive current catalog inventory. Current defaults, generic design descriptors and the additional slide switch are in `physical-parts.json`; pinned old revisions remain in `historicalParts`. [Flexible placement](https://github.com/net-Circuit-Remote/net-Circuit-Remote/blob/295797c/contracts/design-models/flexible-placement.md) is authoritative for automatic V2 geometry, sealed shapes, current defaults and explicit rebuild behavior. Counts come from `python scripts/sync_editor_catalog.py --check`; historical verification totals below retain their dated meaning.
+The following source matrix preserves the original exact-part selection. It is not an exhaustive current catalog inventory. Current defaults, generic design descriptors and the additional slide switch are in `physical-parts.json`; pinned old revisions remain in `historicalParts`. [Flexible placement](../../contracts/design-models/flexible-placement.md) is authoritative for automatic V2 geometry, sealed shapes, current defaults and explicit rebuild behavior. Counts come from `python -m contracts.codegen.sync_editor_catalog --check`; historical verification totals below retain their dated meaning.
 
 | Editor type / exact part | Package / pins | Virtual simulation | Pinout and geometry source |
 | --- | --- | --- | --- |
@@ -38,7 +38,7 @@ For the A6D, canonical pad IDs use top-view perimeter numbering 1..8; actuator n
 
 ## Virtual DC source model v1
 
-`NETCIRCUIT-DC-SUPPLY`, revision 1, is an editor instrument with explicit PLUS/MINUS terminals, a bounded 0..15 V `voltage` property and a `power_on` boolean. Its default is 5 V enabled. MINUS is only the return of that source; it never creates a global earth reference. The model does not imply a particular real supply, current limit, protection circuitry or measurement precision. Its `model:dc-source-v1` source identifier refers to this specification.
+`CIRNET-DC-SUPPLY`, revision 1, is an editor instrument with explicit PLUS/MINUS terminals, a bounded 0..15 V `voltage` property and a `power_on` boolean. Its default is 5 V enabled. MINUS is only the return of that source; it never creates a global earth reference. The model does not imply a particular real supply, current limit, protection circuitry or measurement precision. Its `model:dc-source-v1` source identifier refers to this specification.
 
 ## Compatibility and verification
 
@@ -46,7 +46,7 @@ The generated editor catalog combines retained functional/visual definitions wit
 
 R/C values are configurable design properties. Their legacy definition, package, footprint and pin IDs remain stable so saved mounts and wires retain their identity. `identityKind: configurable-generic` and development `provenance.referencePartNumber` distinguish that compatibility identity from a claim that every edited value is the original manufacturer's SKU. Changing R/C/W/V/tolerance does not change body dimensions or mounting geometry. Resistance, power and tolerance use `resistanceOhms`, `powerWatts`, `tolerancePercent`; capacitance and rating use `capacitanceFarads`, `voltageRatingVolts`.
 
-Regression coverage checks each HC08 pin and its logical mapping, power pins, LED terminals, switch pairs, SPDT common selection, actual display pinouts, unsupported model declarations, palette accessibility, generation provenance, duplicate pins, invalid dimensions, nonplanar mounting pins and output driver kinds. Run `python scripts/sync_editor_catalog.py --check`, `services/api/.venv/Scripts/python.exe -m pytest tests/frontend/test_editor_catalog.py tests/frontend/test_physical_catalog.py`, and the web tests from `apps/web`.
+Regression coverage checks each HC08 pin and its logical mapping, power pins, LED terminals, switch pairs, SPDT common selection, actual display pinouts, unsupported model declarations, palette accessibility, generation provenance, duplicate pins, invalid dimensions, nonplanar mounting pins and output driver kinds. Run `python -m contracts.codegen.sync_editor_catalog --check` and the standalone Contracts tests from this repository. Interface owns the installed-SDK catalog parity and browser tests; Remote owns integrated acceptance.
 
 ## Logic catalog source verification (15 October 2026)
 
@@ -91,3 +91,5 @@ All 37 requested codes have numbered 14-pin PDIP top-view maps checked against p
 | `CD4077` | `CD4077BE` | CD4000B | [SCHS055E](https://www.ti.com/lit/ds/symlink/cd4077b.pdf), 2 (terminal diagram, top view), 1 (orderable PDIP variant), PDIP package drawing |
 | `CD4081` | `CD4081BE` | CD4000B | [SCHS057C](https://www.ti.com/lit/ds/symlink/cd4081b.pdf), 1 (top view / functional diagram), PDIP package drawing |
 | `CD4093` | `CD4093BE` | CD4000B | [SCHS115D](https://www.ti.com/lit/ds/symlink/cd4093b.pdf), 1 (top view / functional diagram), PDIP package drawing |
+
+The original `NETCIRCUIT-DC-SUPPLY` descriptor remains in `historicalParts` with its exact revision and content for pinned legacy documents.

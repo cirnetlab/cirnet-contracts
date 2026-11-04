@@ -1791,6 +1791,7 @@ export const apiOperations = {
     "responseContract": null,
     "responseArray": false,
     "responseMedia": [
+      "application/vnd.cirnet.capture; version=1",
       "application/vnd.netcircuit.capture; version=1"
     ],
     "successStatuses": [
@@ -1799,6 +1800,11 @@ export const apiOperations = {
     "binary": true,
     "responses": {
       "200": {
+        "application/vnd.cirnet.capture; version=1": {
+          "contract": null,
+          "array": false,
+          "binary": true
+        },
         "application/vnd.netcircuit.capture; version=1": {
           "contract": null,
           "array": false,

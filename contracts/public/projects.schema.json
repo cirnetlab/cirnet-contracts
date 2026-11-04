@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/public/projects/1.0/schema.json",
+  "$id": "https://cirnet.local/contracts/public/projects/1.0/schema.json",
   "title": "Private projects and immutable circuit documents 1.0",
   "$defs": {
     "Project": {
@@ -210,7 +210,7 @@
           "maxLength": 128
         },
         "graph_schema_version": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
         },
         "revision": {
           "type": "integer",
@@ -268,7 +268,7 @@
           "maxLength": 128
         },
         "graph_schema_version": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
         },
         "revision": {
           "type": "integer",
@@ -286,7 +286,7 @@
           "maximum": 9007199254740991
         },
         "graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json"
         }
       },
       "required": [
@@ -340,7 +340,7 @@
           "maxLength": 128
         },
         "graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json"
         }
       },
       "required": [
@@ -363,7 +363,7 @@
           "maxLength": 128
         },
         "graph": {
-          "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json"
+          "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json"
         }
       },
       "required": [
@@ -451,7 +451,7 @@
         "graph_schema_version": {
           "anyOf": [
             {
-              "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
+              "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
             },
             {
               "type": "null"
@@ -542,7 +542,7 @@
           "else": {
             "properties": {
               "graph_schema_version": {
-                "$ref": "https://netcircuit.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
+                "$ref": "https://cirnet.local/contracts/circuit/1.x/circuit.schema.json#/properties/schema_version"
               }
             }
           }

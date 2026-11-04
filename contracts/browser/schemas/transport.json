@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://netcircuit.local/contracts/generated/transport",
+  "$id": "https://cirnet.local/contracts/generated/transport",
   "$defs": {
     "CircuitGraph": {
       "type": "object",
@@ -2419,7 +2419,10 @@
           "const": "ok"
         },
         "service": {
-          "const": "netcircuit-api"
+          "enum": [
+            "cirnet-api",
+            "netcircuit-api"
+          ]
         },
         "hardware_mode": {
           "enum": [
