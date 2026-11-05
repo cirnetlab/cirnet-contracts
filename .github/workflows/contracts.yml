@@ -60,6 +60,8 @@ jobs:
           python -m pytest -q -p no:cacheprovider tools/artifact-paths/test/test_python_bridge.py --basetemp "$CIRNET_ARTIFACTS_SESSION/allocator-pytest"
       - name: Build actual wheel, sdist and public npm artifact
         run: |
+          contracts_version=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          echo "CIRNET_CONTRACTS_VERSION=$contracts_version" >> "$GITHUB_ENV"
           python -m build --no-isolation --wheel --sdist --outdir "$CIRNET_ARTIFACTS_SESSION/dist"
           node scripts/check_public_sdk.mjs --output "$CIRNET_ARTIFACTS_SESSION/npm-artifacts"
       - name: Install complete wheel closure offline outside the checkout
@@ -68,7 +70,7 @@ jobs:
           python -m pip download --require-hashes --only-binary=:all: --dest "$CIRNET_ARTIFACTS_SESSION/wheelhouse" -r requirements-runtime.lock
           python -m venv "$CIRNET_ARTIFACTS_SESSION/installed"
           "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I -m pip install --no-index --find-links "$CIRNET_ARTIFACTS_SESSION/wheelhouse" --require-hashes -r "$GITHUB_WORKSPACE/requirements-runtime.lock"
-          "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I -m pip install --no-index --no-deps "$CIRNET_ARTIFACTS_SESSION/dist/cirnet_contracts-0.1.1-py3-none-any.whl"
+          "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I -m pip install --no-index --no-deps "$CIRNET_ARTIFACTS_SESSION/dist/cirnet_contracts-${CIRNET_CONTRACTS_VERSION}-py3-none-any.whl"
           sha256sum "$CIRNET_ARTIFACTS_SESSION/dist/"*
           "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I -m pip check
           "$CIRNET_ARTIFACTS_SESSION/installed/bin/python" -I scripts/probe_installed_contracts.py
@@ -76,8 +78,8 @@ jobs:
         shell: bash
         run: |
           mkdir "$CIRNET_ARTIFACTS_SESSION/sdist-build"
-          tar -xzf "$CIRNET_ARTIFACTS_SESSION/dist/cirnet_contracts-0.1.1.tar.gz" -C "$CIRNET_ARTIFACTS_SESSION/sdist-build"
-          python -m build --wheel --no-isolation --outdir "$CIRNET_ARTIFACTS_SESSION/sdist-wheel" "$CIRNET_ARTIFACTS_SESSION/sdist-build/cirnet_contracts-0.1.1"
+          tar -xzf "$CIRNET_ARTIFACTS_SESSION/dist/cirnet_contracts-${CIRNET_CONTRACTS_VERSION}.tar.gz" -C "$CIRNET_ARTIFACTS_SESSION/sdist-build"
+          python -m build --wheel --no-isolation --outdir "$CIRNET_ARTIFACTS_SESSION/sdist-wheel" "$CIRNET_ARTIFACTS_SESSION/sdist-build/cirnet_contracts-${CIRNET_CONTRACTS_VERSION}"
       - name: Preserve external diagnostics on failure
         if: failure() && env.CIRNET_ARTIFACTS_SESSION != ''
         uses: actions/upload-artifact@v4

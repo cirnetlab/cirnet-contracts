@@ -1,6 +1,6 @@
 # Canonical contracts and generated boundaries
 
-Standalone product release 0.1.1: the current package commands and public
+For the 0.1.2 release, current package commands and public
 resource mapping are documented in the [standalone README](../README.md).
 The retained text below records the source monorepo's generation and integrated
 release workflow; its consumer-source installation commands are historical and

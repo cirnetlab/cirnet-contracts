@@ -2,7 +2,7 @@
 
 Public CIRNET DTOs, operation metadata, capture-layout constants, precompiled
 offline structural/editor/transport validators, catalog projections and fixtures.
-Build version 0.1.1 alongside the exact Contracts Python artifact set.
+Build version 0.1.2 alongside the exact Contracts Python artifact set.
 Use the archive and SHA256 selected by the system manifest.
 The source repository is [cirnetlab/cirnet-contracts](https://github.com/cirnetlab/cirnet-contracts).
 Previously published archives retain their original package name and digest.

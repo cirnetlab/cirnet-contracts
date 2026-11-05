@@ -4,9 +4,10 @@ Current repository: [cirnetlab/cirnet-contracts](https://github.com/cirnetlab/ci
 System architecture and integrated release ownership remain in
 [CIRNET-Remote](https://github.com/cirnetlab/cirnet-remote).
 
-Standalone product version **0.1.1** was originally extracted from Remote revision
-`295797c`. The current source builds the Python distribution `cirnet-contracts`
-with the import namespace `contracts` and the browser package `@cirnet/contracts`.
+The standalone product originated at Remote revision `295797c`. Current source
+builds version **0.1.2** of the Python distribution `cirnet-contracts` and the
+browser package `@cirnet/contracts` for release `cirnet-contracts-v0.1.2`.
+The Python import namespace is `contracts`.
 Schemas, revisions, protocol versions, frozen wire anchors and public operation
 semantics retain their existing meaning. Build from a clean committed revision,
 verify the standalone and integrated gates, then compare against immutable
@@ -82,8 +83,8 @@ FastAPI registrations in Remote remain the operation authority.
 independently editable route model. Generate prerelease schema packages, export
 OpenAPI from Remote on that candidate, review/freeze the document, build final
 artifacts, then require Remote re-export on the exact final wheel to equal the
-frozen bytes. For the M6 release, Python/npm distribution versions and the Remote API
-application-info version align at 0.1.1. CircuitGraph/schema versions, Hardware
+frozen bytes. Python/npm distribution versions and the Remote API application-info
+version align at 0.1.2 for this release. CircuitGraph/schema versions, Hardware
 RPC, NCAP and other wire protocol versions remain unchanged.
 
 `contracts/fingerprints.json` records separate canonical-source/public-schema/

@@ -4,18 +4,21 @@ import importlib.resources
 import json
 from pathlib import Path
 import sys
+import tomllib
 
 
 def main():
     assert sys.flags.isolated == 1, 'Use python -I for the installed-wheel probe.'
     import contracts
+    source = Path(__file__).resolve().parents[1]
+    expected_version = tomllib.loads((source / 'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
     distribution = importlib.metadata.distribution('cirnet-contracts')
     assert distribution.metadata['Name'] == 'cirnet-contracts'
-    assert distribution.version == '0.1.1'
+    assert distribution.version == expected_version
     package = Path(distribution.locate_file('contracts/__init__.py')).resolve().parent
     assert Path(contracts.__file__).resolve().parent == package
     assert Path(str(importlib.resources.files('contracts'))).resolve() == package
-    assert not package.is_relative_to(Path(__file__).resolve().parents[1])
+    assert not package.is_relative_to(source)
     from contracts.registry import check_manifest, validate_contract
     from contracts.boundary.models import AnySupportedCircuitGraph
     from contracts.capture_layout import CAPTURE_LAYOUT

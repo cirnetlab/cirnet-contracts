@@ -5,7 +5,6 @@ import subprocess
 import sys
 import tomllib
 from zipfile import ZipFile
-from packaging.requirements import Requirement
 
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -13,15 +12,19 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def test_wheel_contains_generated_rpc_and_offline_resources(tmp_path):
+    version = tomllib.loads((ROOT / 'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
+    wheel_name = f'cirnet_contracts-{version}'
     result=subprocess.run([sys.executable,'-m','build','--wheel','--no-isolation','--outdir',str(tmp_path)],
                           cwd=ROOT,capture_output=True,text=True,
                           env={**os.environ,'TMP':str(tmp_path),'TEMP':str(tmp_path),'CIRNET_BUILD_ROOT':str(tmp_path/'build')})
     assert result.returncode==0,result.stdout+result.stderr
-    wheel=next(tmp_path.glob('*.whl'))
+    wheel = tmp_path / f'{wheel_name}-py3-none-any.whl'
+    assert list(tmp_path.glob('*.whl')) == [wheel]
     with ZipFile(wheel) as archive:
         files=set(archive.namelist())
-        metadata=archive.read('cirnet_contracts-0.1.1.dist-info/METADATA').decode('utf-8')
+        metadata=archive.read(f'{wheel_name}.dist-info/METADATA').decode('utf-8')
     assert 'Name: cirnet-contracts' in metadata.splitlines()
+    assert f'Version: {version}' in metadata.splitlines()
     import json
     projections=json.loads((ROOT/'contracts/browser/artifacts.json').read_text(encoding='utf-8'))
     assert {'contracts/'+resource for resource in projections.values()} <= files
