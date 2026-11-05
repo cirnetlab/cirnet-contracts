@@ -22,8 +22,8 @@ records the original `netcircuit-contracts` distribution and its published sourc
 revision and artifact bytes. Select the renamed wheel through the system
 release manifest with the corresponding consumer wheels and exact digests.
 
-Python runtime requires 3.11+. Generator CI uses Python 3.12 and Node 26.
-For reproducible CI/release verification, install the complete `requirements-build.lock` with `pip --require-hashes` from a reviewed wheelhouse; `requirements-runtime.lock` independently pins the full runtime closure for Python 3.11/3.12 on Windows AMD64 and Linux x86_64. Install `tools/artifact-paths` with `--no-index --no-build-isolation --no-deps` after the locked build tools. The standalone workflow records the exact offline commands. Then run `npm ci --no-audit --no-fund` in
+Python runtime requires 3.11+. Generator CI uses Python 3.14 and Node 26, with a separate Python 3.11 compatibility matrix entry.
+For reproducible CI/release verification, install the complete `requirements-build.lock` with `pip --require-hashes` from a reviewed wheelhouse; `requirements-runtime.lock` independently pins the full runtime closure for Python 3.11/3.12/3.14 on Windows AMD64 and Linux x86_64. Install `tools/artifact-paths` with `--no-index --no-build-isolation --no-deps` after the locked build tools. The standalone workflow records the exact offline commands. Then run `npm ci --no-audit --no-fund` in
 `packages/public-sdk`. Generation needs no Interface, API, Simulator or Hardware
 checkout:
 
@@ -132,3 +132,31 @@ Contracts generation, the full Python/SDK gates and hosted Actions are NOT_RUN
 for this toolchain policy change; schemas, generated payloads, package locks and
 published artifacts are unchanged. Raw evidence was inspected outside Git in
 the shared session owned by `cirnet-node26-compat-20261105`.
+
+## Python 3.14 verification (2026-11-05)
+
+Primary CI uses Python 3.14 and retains the 3.11 compatibility entry. A fresh
+normal-GIL CPython 3.14.6 Windows AMD64 environment passes deterministic
+generation/catalog/topology/compatibility, all 516 source tests and 209 isolated
+installed-wheel conformance tests. The exact source candidate also rebuilds
+from its independently extracted sdist to identical wheel bytes. All original
+RECORD payloads and installation archive hashes were verified.
+
+Sixteen official, downloaded-and-verified CPython 3.14 Windows/Linux wheel hashes
+extend the two existing locks without changing dependency versions or removing
+older hashes. All five producer lock closures pass offline binary-only hash
+verification for Windows AMD64 and glibc Linux x86_64. Consumer builds of the
+older pinned Contracts source use hash-only profiles bound to its original
+lock digests, recorded in their CI build manifests. Package/runtime/source
+release pins remain separate from these local verification candidates.
+
+The API audit found no use requiring replacement of a removed stdlib API or
+annotation behavior. Raw evidence is external under the session owned by
+`cirnet-python314-compat-20261105`; historical results remain unchanged.
+Hosted Actions and publication are NOT_RUN for this upgrade.
+
+Independent normal-GIL Linux 3.14.6 verification also passes all 516 tests,
+three CI bootstrap checks and all four deterministic commands. The actual
+consumer helper builds the original pinned source's Python wheel and SDK/npm
+package using the original lock digests plus the reviewed hash-only profile.
+No published source/artifact digest is replaced.

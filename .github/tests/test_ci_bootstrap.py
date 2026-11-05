@@ -5,6 +5,12 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def test_ci_tests_python_314_and_the_python_311_consumer_minimum():
+    workflow = (ROOT / '.github/workflows/contracts.yml').read_text(encoding='utf-8')
+    assert "python: ['3.11', '3.14']" in workflow
+    assert 'python-version: ${{ matrix.python }}' in workflow
+
+
 def test_ci_selects_node_26_before_allocating_diagnostics():
     workflow = (ROOT / '.github/workflows/contracts.yml').read_text(encoding='utf-8')
     steps = re.split(r'^      - ', workflow, flags=re.MULTILINE)[1:]
