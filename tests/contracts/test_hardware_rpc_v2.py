@@ -4,6 +4,8 @@ from pathlib import Path
 import subprocess
 import sys
 
+from google.protobuf.json_format import MessageToDict, ParseDict
+
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -51,6 +53,18 @@ def test_v2_capabilities_match_domain_and_errors_are_stable(tmp_path):
     errors = module.ErrorCode.keys()
     assert {'HARDWARE_UNAVAILABLE','INVALID_STATE','UNSAFE','SAFETY_INDETERMINATE',
             'UNEXECUTABLE','RESOURCE_CONFLICT','PROTOCOL_MISMATCH','TIMEOUT','DRIVER_ERROR'} <= set(errors)
+
+
+def test_generator_profile_preserves_optional_rpc_limit_presence(tmp_path):
+    pb = compiled(tmp_path)
+    base = {'channels': 2, 'runtime_reconfiguration_supported': False}
+    message = ParseDict(base, pb.GeneratorCapability())
+    decoded = MessageToDict(message, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
+    assert not {'frequency_min_hz', 'frequency_max_hz', 'amplitude_max_vpp', 'offset_min_v', 'offset_max_v', 'status'} & set(decoded)
+    limited = ParseDict({**base, 'offset_min_v': 0, 'frequency_max_hz': 10000}, pb.GeneratorCapability())
+    decoded = MessageToDict(limited, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
+    assert decoded['offset_min_v'] == 0 and decoded['frequency_max_hz'] == 10000
+    assert 'offset_max_v' not in decoded
 
 
 def test_codegen_is_repeatable(tmp_path):
