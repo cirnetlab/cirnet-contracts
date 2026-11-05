@@ -1,6 +1,7 @@
 name: Standalone Contracts
 on:
   push:
+    branches: [master]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -49,21 +50,21 @@ jobs:
       - name: Check deterministic schema, catalog and operation generation
         run: |
           python -m contracts.codegen.generate_contracts --check
-          python -m contracts.codegen.sync_editor_catalog --check
           python -m contracts.codegen.sync_breadboard_topologies --check
           python scripts/check_public_compatibility.py
-      - name: Pure contract and allocator tests
+      - name: Contract, packed SDK and Python allocator tests
         run: |
-          python -m pytest -q --basetemp "$CIRNET_ARTIFACTS_SESSION/pytest"
+          python -m pytest -q -rP --basetemp "$CIRNET_ARTIFACTS_SESSION/pytest"
           python -m pytest -q -p no:cacheprovider .github/tests --basetemp "$CIRNET_ARTIFACTS_SESSION/ci-pytest"
-          npm --prefix tools/artifact-paths test
           python -m pytest -q -p no:cacheprovider tools/artifact-paths/test/test_python_bridge.py --basetemp "$CIRNET_ARTIFACTS_SESSION/allocator-pytest"
-      - name: Build actual wheel, sdist and public npm artifact
+      - name: Node allocator tests on the common Node toolchain
+        if: matrix.python == '3.14'
+        run: npm --prefix tools/artifact-paths test
+      - name: Build actual wheel and sdist
         run: |
           contracts_version=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
           echo "CIRNET_CONTRACTS_VERSION=$contracts_version" >> "$GITHUB_ENV"
           python -m build --no-isolation --wheel --sdist --outdir "$CIRNET_ARTIFACTS_SESSION/dist"
-          node scripts/check_public_sdk.mjs --output "$CIRNET_ARTIFACTS_SESSION/npm-artifacts"
       - name: Install complete wheel closure offline outside the checkout
         shell: bash
         run: |

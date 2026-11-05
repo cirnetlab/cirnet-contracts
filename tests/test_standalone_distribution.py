@@ -111,6 +111,7 @@ def test_packed_sdk_is_public_and_executes_without_generator_dependencies(tmp_pa
     assert result.returncode == 0, result.stdout + result.stderr
     version = tomllib.loads((ROOT / 'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
     assert f'PUBLIC_SDK_PACK_OK cirnet-contracts-{version}.tgz ' in result.stdout
+    print(result.stdout, end='')
 
 
 def test_sdk_gate_delegates_output_validation_before_creating_files(tmp_path):
