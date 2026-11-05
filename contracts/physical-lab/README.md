@@ -4,7 +4,7 @@ JSON Schema 2020-12 definitions in lab.schema.json. DetectedTopologyGraph preser
 
 examples/v1-target-capabilities.json is a DESIGN TARGET, available=false, not runtime hardware evidence. Runtime channel/support/slot counts come from actual drivers/profiles. No electrical values are invented.
 
-The current [FPGA proposal mapping](https://github.com/net-Circuit-Remote/net-Circuit-Remote/blob/295797c/docs/architecture/fpga-contract-conformance.md)
+The current [FPGA proposal mapping](https://github.com/cirnetlab/cirnet-remote/blob/295797c/docs/architecture/fpga-contract-conformance.md)
 distinguishes the implemented InstrumentationExecutionPlan from the historical
 PhysicalExecutionPlan name, the proposed board image, and independent open
 ABI/freshness/hardware gates. NCAP v1 runtime production and sampled-v2 helpers

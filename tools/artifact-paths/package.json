@@ -1,5 +1,5 @@
 {
-  "name": "@tinihi-labs/artifact-paths",
+  "name": "@cirnet/artifact-paths",
   "version": "1.0.0-m1.0",
   "description": "Standalone CIRNET verification artifact allocator dev tooling",
   "type": "module",

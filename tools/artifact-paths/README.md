@@ -3,7 +3,7 @@
 This standalone package owns the shared artifact containment and session policy. It is a development dependency, independent of Contracts schemas and runtime packages. Node 22 or later and Git must be in PATH. Python 3.11 or later callers use the packaged Node implementation; Python does not duplicate path validation.
 
 ```js
-import { getArtifactDirectory, cleanupArtifactSession } from '@tinihi-labs/artifact-paths'
+import { getArtifactDirectory, cleanupArtifactSession } from '@cirnet/artifact-paths'
 const context = { owner: 'my-repo-verification', roots: ['/absolute/current-checkout'] }
 const session = getArtifactDirectory('', { context })
 const screenshots = getArtifactDirectory('screenshots')

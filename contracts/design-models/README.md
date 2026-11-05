@@ -5,7 +5,7 @@ Versioned flexible assemblies and generic component properties are described in
 coexist with the unchanged legacy graph and rigid mounting contracts below.
 
 Signal domains and typed local dispatch are described in
-[`signal-domains-and-simulation.md`](https://github.com/net-Circuit-Remote/net-Circuit-Remote/blob/295797c/docs/architecture/signal-domains-and-simulation.md).
+[`signal-domains-and-simulation.md`](https://github.com/cirnetlab/cirnet-remote/blob/295797c/docs/architecture/signal-domains-and-simulation.md).
 Run `scripts/sync_editor_catalog.py` to refresh their shared port-domain
 projection after changing canonical component metadata. Saved graph versions and
 unknown metadata remain preserved; declarations do not grant an execution model.

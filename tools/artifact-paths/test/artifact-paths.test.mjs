@@ -46,7 +46,7 @@ function cleanup(session, value = context, executable = cli) {
 }
 
 test('installed module allocates from arbitrary CWD with explicit involved roots', () => {
-  const installed = join(root, 'installed', 'node_modules', '@tinihi-labs', 'artifact-paths')
+  const installed = join(root, 'installed', 'node_modules', '@cirnet', 'artifact-paths')
   mkdirSync(installed, { recursive: true })
   cpSync(cli, join(installed, 'artifact-paths.mjs'))
   mkdirSync(join(installed, 'cirnet_artifact_paths'))

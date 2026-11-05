@@ -1,11 +1,11 @@
-# @tinihi-labs/contracts
+# @cirnet/contracts
 
 Public CIRNET DTOs, operation metadata, capture-layout constants, precompiled
 offline structural/editor/transport validators, catalog projections and fixtures.
-Release version 0.1.1 together with the exact Contracts Python artifact set.
-Use the immutable release archive and SHA256 recorded in the system manifest.
-The source repository is [CIRNETLAB/CIRNET-Contracts](https://github.com/CIRNETLAB/CIRNET-Contracts).
-The npm package name remains `@tinihi-labs/contracts` for compatibility.
+Build version 0.1.1 alongside the exact Contracts Python artifact set.
+Use the archive and SHA256 selected by the system manifest.
+The source repository is [cirnetlab/cirnet-contracts](https://github.com/cirnetlab/cirnet-contracts).
+Previously published archives retain their original package name and digest.
 
 Use the root exports for DTO types and metadata, `./validators` for transport,
 `./validators.editor` and `./validators.structural` for the other full profiles.

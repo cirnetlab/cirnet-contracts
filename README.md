@@ -1,14 +1,12 @@
 # CIRNET Contracts
 
-Current repository: [CIRNETLAB/CIRNET-Contracts](https://github.com/CIRNETLAB/CIRNET-Contracts).
+Current repository: [cirnetlab/cirnet-contracts](https://github.com/cirnetlab/cirnet-contracts).
 System architecture and integrated release ownership remain in
-[CIRNET-Remote](https://github.com/CIRNETLAB/CIRNET-Remote).
-The historical names `TINIHI-Labs/net-Circuit-Contracts` and
-`net-Circuit-Remote/net-Circuit-Remote` in pinned migration/provenance records
-refer to the same preserved repositories, now under `CIRNETLAB/CIRNET-*`.
+[CIRNET-Remote](https://github.com/cirnetlab/cirnet-remote).
+
 Standalone product version **0.1.1** was originally extracted from Remote revision
 `295797c`. The current source builds the Python distribution `cirnet-contracts`
-with the import namespace `contracts`. The browser package is `@tinihi-labs/contracts`.
+with the import namespace `contracts` and the browser package `@cirnet/contracts`.
 Schemas, revisions, protocol versions, frozen wire anchors and public operation
 semantics retain their existing meaning. Build from a clean committed revision,
 verify the standalone and integrated gates, then compare against immutable
@@ -17,10 +15,11 @@ require an explicit release decision; published bytes and tags stay preserved. P
 consumer access are recorded in the system release manifest; package checks
 do not establish physical support.
 
-Existing immutable [release v0.1.1](https://github.com/CIRNETLAB/CIRNET-Contracts/releases/tag/v0.1.1)
+Existing immutable [release v0.1.1](https://github.com/cirnetlab/cirnet-contracts/releases/tag/v0.1.1)
 records the original `netcircuit-contracts` distribution and its published source
-revision and artifact bytes. Select the renamed wheel through the system
-release manifest with the corresponding consumer wheels and exact digests.
+revision and artifact bytes. The published SDK keeps its original npm scope.
+Select artifacts through the system release manifest with the corresponding
+consumer wheels and exact digests.
 
 Python runtime requires 3.11+. Generator CI uses Python 3.14 and Node 26, with a separate Python 3.11 compatibility matrix entry.
 For reproducible CI/release verification, install the complete `requirements-build.lock` with `pip --require-hashes` from a reviewed wheelhouse; `requirements-runtime.lock` independently pins the full runtime closure for Python 3.11/3.12/3.14 on Windows AMD64 and Linux x86_64. Install `tools/artifact-paths` with `--no-index --no-build-isolation --no-deps` after the locked build tools. The standalone workflow records the exact offline commands. Then run `npm ci --no-audit --no-fund` in
@@ -44,7 +43,7 @@ and npm cache to owned external children. Diagnostics never belong in a source
 checkout. `scripts/check_public_sdk.mjs --output /absolute/external/owned-child`
 inspects the actual npm tarball and executes its extracted runtime without
 generator dependencies. It does not publish anything. Bootstrap
-`@tinihi-labs/artifact-paths@1.0.0-m1.0` as a separate dev artifact before this
+`@cirnet/artifact-paths@1.0.0-m1.0` as a separate dev artifact before this
 gate, or point `CIRNET_ARTIFACT_PATHS_MODULE` at that installed package's
 absolute module file URL. Outside a Git checkout, supply the shared allocator's
 explicit `CIRNET_ARTIFACTS_CONTEXT` owner/rootset. The gate delegates output

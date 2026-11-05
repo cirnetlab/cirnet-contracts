@@ -6,7 +6,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url'
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..')
 const output=process.argv[process.argv.indexOf('--output')+1]
 if(!output||!process.argv.includes('--output'))throw Error('An owned external --output is required')
-const {validateArtifactDirectory}=await import(process.env.CIRNET_ARTIFACT_PATHS_MODULE??process.env.NETCIRCUIT_ARTIFACT_PATHS_MODULE??'@tinihi-labs/artifact-paths')
+const {validateArtifactDirectory}=await import(process.env.CIRNET_ARTIFACT_PATHS_MODULE??process.env.NETCIRCUIT_ARTIFACT_PATHS_MODULE??'@cirnet/artifact-paths')
 validateArtifactDirectory(resolve(output))
 await mkdir(output,{recursive:true})
 const packageStage=resolve(output,'sdk-source')

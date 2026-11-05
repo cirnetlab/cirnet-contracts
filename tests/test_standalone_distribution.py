@@ -20,9 +20,14 @@ def test_distribution_has_no_consumer_source_and_separate_public_package():
     assert python['project']['version'] == '0.1.1'
     for path in ('apps', 'services', 'simulator'):
         assert not (ROOT / path).exists(), path
-    npm = json.loads((ROOT / 'packages/public-sdk/package.json').read_text())
-    assert npm['name'] == '@tinihi-labs/contracts' and npm['version'] == '0.1.1'
+    sdk = ROOT / 'packages/public-sdk'
+    npm = json.loads((sdk / 'package.json').read_text())
+    lock = json.loads((sdk / 'package-lock.json').read_text())
+    assert npm['name'] == '@cirnet/contracts' and npm['version'] == '0.1.1'
+    assert lock['name'] == lock['packages']['']['name'] == npm['name']
     assert npm['files'] == ['dist']
+    allocator = json.loads((ROOT / 'tools/artifact-paths/package.json').read_text())
+    assert allocator['name'] == '@cirnet/artifact-paths'
 
 
 def test_compatibility_export_requires_explicit_destination(monkeypatch):
@@ -102,7 +107,7 @@ def test_packed_sdk_is_public_and_executes_without_generator_dependencies(tmp_pa
     result = subprocess.run(['node', str(ROOT / 'scripts/check_public_sdk.mjs'), '--output', str(tmp_path)],
                             cwd=ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
-    assert 'PUBLIC_SDK_PACK_OK' in result.stdout
+    assert 'PUBLIC_SDK_PACK_OK cirnet-contracts-0.1.1.tgz ' in result.stdout
 
 
 def test_sdk_gate_delegates_output_validation_before_creating_files(tmp_path):
