@@ -1,5 +1,7 @@
 # CIRNET Contracts
 
+[English documentation](docs/en/index.md) · [Tài liệu tiếng Việt](docs/vi/index.md)
+
 Current repository: [cirnetlab/cirnet-contracts](https://github.com/cirnetlab/cirnet-contracts).
 System architecture and integrated release ownership remain in
 [CIRNET-Remote](https://github.com/cirnetlab/cirnet-remote).
