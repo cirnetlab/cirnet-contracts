@@ -5,6 +5,16 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[2]
 
 
+def test_ci_selects_node_26_before_allocating_diagnostics():
+    workflow = (ROOT / '.github/workflows/contracts.yml').read_text(encoding='utf-8')
+    steps = re.split(r'^      - ', workflow, flags=re.MULTILINE)[1:]
+    node = [index for index, step in enumerate(steps) if step.startswith('uses: actions/setup-node@')]
+    allocation = next(index for index, step in enumerate(steps)
+                      if 'node tools/artifact-paths/artifact-paths.mjs' in step)
+    assert len(node) == 1 and node[0] < allocation, 'select Node before the first allocator call'
+    assert re.search(r"^          node-version: ['\"]26['\"]$", steps[node[0]], re.MULTILINE)
+
+
 def test_standalone_ci_publishes_source_allocator_for_node_checks():
     workflow = (ROOT / '.github/workflows/contracts.yml').read_text()
     allocation = workflow.split('- name: Allocate verification output', 1)[1].split('- name:', 1)[0]

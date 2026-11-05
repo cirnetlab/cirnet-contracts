@@ -8,7 +8,7 @@ are not the supported standalone Contracts build path.
 
 JSON Schemas own shapes, FastAPI registrations own public operations, and protobuf owns local RPC fields. The machine-readable [manifest](https://github.com/net-Circuit-Remote/net-Circuit-Remote/blob/295797c/contracts/manifest.json) records identity, version, visibility, producer/consumers, profiles, artifacts and compatibility policy. Absolute URIs resolve from packaged resources without network access or the current directory. Historical relative schema IDs remain readable through the manifest registry.
 
-The generation CI uses Python 3.12 and Node 22; runtime contracts support Python 3.11+. The installed-package CI also tests Python 3.11. From the repository root, install the shared verification pins and four local packages, then the browser generator tools:
+The generation CI uses Python 3.12 and Node 26; runtime contracts support Python 3.11+. The installed-package CI also tests Python 3.11. From the repository root, install the shared verification pins and four local packages, then the browser generator tools:
 
 ```sh
 python -m pip install -r requirements-verification.txt -e . -e './services/api[test]' -e './simulator/circuit-simulator[test]' -e './services/hardware-service[dev]'

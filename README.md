@@ -22,7 +22,7 @@ records the original `netcircuit-contracts` distribution and its published sourc
 revision and artifact bytes. Select the renamed wheel through the system
 release manifest with the corresponding consumer wheels and exact digests.
 
-Python runtime requires 3.11+. Generator CI uses Python 3.12 and Node 22.
+Python runtime requires 3.11+. Generator CI uses Python 3.12 and Node 26.
 For reproducible CI/release verification, install the complete `requirements-build.lock` with `pip --require-hashes` from a reviewed wheelhouse; `requirements-runtime.lock` independently pins the full runtime closure for Python 3.11/3.12 on Windows AMD64 and Linux x86_64. Install `tools/artifact-paths` with `--no-index --no-build-isolation --no-deps` after the locked build tools. The standalone workflow records the exact offline commands. Then run `npm ci --no-audit --no-fund` in
 `packages/public-sdk`. Generation needs no Interface, API, Simulator or Hardware
 checkout:
@@ -121,3 +121,14 @@ current catalog calls it `CIRNET-DC-SUPPLY`.
 ## Namespace verification (2026-11-04)
 
 The final CIRNET source candidate passes 516 Python tests, deterministic schema/catalog/topology generation, the CI bootstrap check and extracted public SDK checks. RPC compatibility preserves nonblocking futures, cancellation, callbacks, early metadata and the original total deadline; retry is limited to UNIMPLEMENTED on the canonical route. The runtime wheel SHA256 is `e129eb9075083dccbce9a37a595abe04f405197c2c06a86e651cb47b9a8acead`. Original published artifacts and frozen compatibility inputs retain their identities. Raw diagnostics are external; hosted Actions were not awaited.
+
+## Node 26 LTS CI baseline (2026-11-05)
+
+Both checks in `.github/tests/test_ci_bootstrap.py` pass with portable Node
+26.13.0 on PATH. actionlint 1.7.12 passes the workflow with
+`-shellcheck= -pyflakes=`. CI selects major 26 before allocation. SDK/DEV package minima remain
+`>=22`, which already admits Node 26 and preserves consumer compatibility.
+Contracts generation, the full Python/SDK gates and hosted Actions are NOT_RUN
+for this toolchain policy change; schemas, generated payloads, package locks and
+published artifacts are unchanged. Raw evidence was inspected outside Git in
+the shared session owned by `cirnet-node26-compat-20261105`.
