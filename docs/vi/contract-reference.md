@@ -18,3 +18,26 @@
 | Tương thích | [Các mốc đã chốt](api/compatibility.md) bao quát định dạng truyền công khai, schema và cấu trúc NCAP được hỗ trợ. Dùng hợp đồng có phiên bản riêng cho thay đổi phá vỡ tương thích. |
 
 Phiên bản CircuitGraph, Assignment, Lab, RPC, NCAP và FPGA độc lập với phiên bản bản phân phối. Kiểm tra schema hoặc giao tiếp không xác nhận an toàn điện hoặc khả dụng vật lý.
+
+## Ứng viên Rust Contracts
+
+Crate `cirnet-contracts-native` đọc manifest chuẩn và profile schema từ
+thư mục nguồn được chỉ định. Crate phân giải ngoại tuyến cả hai host URI
+của schema, sinh kiểu Rust cho Hardware RPC và cung cấp descriptor chuẩn
+cùng descriptor cũ. Module NCAP xử lý capture số và capture lấy mẫu,
+trả thời điểm frame dưới dạng tử số thập phân chính xác và mẫu số nguyên.
+Chuỗi đầu vào dùng các giá trị vô hướng Unicode.
+
+Dựng bằng `cargo build --locked --release`. Toolchain được ghim trong
+`rust-toolchain.toml`. Lệnh `cirnet-contracts validate` đọc JSON từ đầu
+vào chuẩn và in kết quả đã kiểm hoặc lỗi có cấu trúc. Dùng
+`cirnet-contracts descriptor` hoặc `cirnet-contracts descriptor legacy`
+để đọc descriptor nhị phân tương ứng.
+
+Cài công cụ Node từ lockfile SDK trong thư mục ngoài repo có chủ sở hữu.
+Chạy `cirnet-contracts generate-sdk <source-root> <output-root> <node-tools>`
+để sinh dữ liệu từ nguồn chuẩn. Truyền thư mục `contracts/browser` đã
+sinh qua `--source` và thư mục công cụ đã khóa qua `--node-tools` cho
+bước dựng SDK. Quá trình dựng Rust và sinh SDK chạy được khi không có
+Python. Tính năng Cargo tùy chọn `python-tests` dựng binding để đối
+chứng với wheel cũ. Consumer chuyển tiếp tiếp tục dùng wheel Python 0.1.2.

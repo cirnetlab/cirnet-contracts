@@ -1,13 +1,17 @@
 import {copyFile,mkdir,readFile,readdir,writeFile} from 'node:fs/promises'
+import {createRequire} from 'node:module'
 import {dirname,resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
-import {build} from 'esbuild'
-import ts from 'typescript'
+import {parseArgs} from 'node:util'
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../../..')
-const source=resolve(root,'contracts/browser')
-const outputIndex=process.argv.indexOf('--output')
-const output=outputIndex<0?resolve(root,'packages/public-sdk/dist'):resolve(process.argv[outputIndex+1])
+const {values}=parseArgs({options:{source:{type:'string'},output:{type:'string'},'node-tools':{type:'string'}}})
+const source=resolve(values.source??resolve(root,'contracts/browser'))
+const output=resolve(values.output??resolve(root,'packages/public-sdk/dist'))
+const toolRoot=resolve(values['node-tools']??resolve(root,'packages/public-sdk'))
+const require=createRequire(resolve(toolRoot,'package.json'))
+const {build}=require('esbuild')
+const ts=require('typescript')
 await mkdir(output,{recursive:true})
 const generated=resolve(source,'generated')
 const sources=['dto.ts','operations.ts','captureLayout.ts','publicContractNames.ts','schemaAliases.ts'].map(name=>resolve(generated,name))

@@ -1,6 +1,7 @@
 /.superpowers/
 /docs/superpowers/
 .build/
+/target/
 node_modules/
 packages/public-sdk/dist/
 __pycache__/

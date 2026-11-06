@@ -1,0 +1,68 @@
+[package]
+name = "cirnet-contracts-native"
+version = "0.1.2"
+edition = "2024"
+rust-version = "1.90"
+license-file = "LICENSE"
+description = "Native CIRNET contracts and wire formats"
+repository = "https://github.com/cirnetlab/cirnet-contracts"
+build = "native/build.rs"
+include = [
+    "native/**",
+    "contracts/**/*.json",
+    "contracts/**/*.proto",
+    "contracts/codegen/*.mjs",
+    "contracts/capture_codec.py",
+    "device-library/**/*.json",
+    "packages/public-sdk/package*.json",
+    "packages/public-sdk/scripts/*.mjs",
+    "packages/public-sdk/LICENSE",
+    "packages/public-sdk/README.md",
+    "LICENSE",
+    "README.md",
+]
+
+[lib]
+path = "native/src/lib.rs"
+crate-type = ["rlib", "cdylib"]
+
+[[bin]]
+name = "cirnet-contracts"
+path = "native/src/main.rs"
+
+[features]
+python-tests = ["dep:pyo3"]
+
+[dependencies]
+jsonschema = { version = "=0.37.4", default-features = false, features = ["arbitrary-precision"] }
+num-bigint = "=0.4.6"
+prost = "=0.14.1"
+prost-types = "=0.14.1"
+pyo3 = { version = "=0.27.2", optional = true, features = ["extension-module"] }
+ryu = "=1.0.23"
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = { version = "=1.0.145", features = ["arbitrary_precision", "preserve_order", "raw_value"] }
+sha2 = "=0.10.9"
+tempfile = "=3.27.0"
+url = "=2.5.7"
+
+[build-dependencies]
+prost-build = "=0.14.1"
+prost-types = "=0.14.1"
+protoc-bin-vendored = "=3.2.0"
+
+[[test]]
+name = "capture_parity"
+path = "native/tests/capture_parity.rs"
+
+[[test]]
+name = "validation_parity"
+path = "native/tests/validation_parity.rs"
+
+[[test]]
+name = "generator_parity"
+path = "native/tests/generator_parity.rs"
+
+[[test]]
+name = "hardware_v2_parity"
+path = "native/tests/hardware_v2_parity.rs"
