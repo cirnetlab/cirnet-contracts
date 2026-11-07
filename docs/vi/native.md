@@ -6,7 +6,13 @@ Crate `cirnet-contracts-native` 0.1.2 cung cấp trình xác thực ngoại tuy�
 
 ## Build và chạy
 
-Dùng [Rust 1.90.0](../../rust-toolchain.toml) và [Cargo.lock](../../Cargo.lock). Gán `CIRNET_ARTIFACTS_SESSION` bằng phiên ngoài kho do bộ cấp phát quản lý rồi chạy các lệnh POSIX sau tại thư mục gốc của kho mã. Giữ nguyên shell để chạy các bước tiếp theo. [Cấp phát phiên](verification.md#cấp-phát-phiên) và [dọn phiên sau khi xem kết quả](verification.md#xem-kết-quả-và-dọn-phiên).
+Môi trường phát triển dùng toolchain Rust và Cargo đã ghim ở phiên bản 1.99.1 cùng lockfile của kho mã. Crate khai báo Rust 1.90 là phiên bản trình biên dịch tối thiểu được hỗ trợ. [Bản ghim toolchain](../../rust-toolchain.toml) · [Manifest Cargo](../../Cargo.toml) · [Lockfile Cargo](../../Cargo.lock)
+
+Trên Windows 64 bit, dùng host `x86_64-pc-windows-msvc` cùng Visual Studio C++ Build Tools và Windows SDK. Chạy `rustc -Vv` và `cargo -Vv` tại thư mục gốc của kho mã để kiểm tra phiên bản và host.
+
+Nếu Rustup chỉ có bí danh `stable`, kiểm tra `rustup run stable rustc -vV` và `rustup run stable cargo -vV`. Dùng `rustup run stable cargo` cho các lệnh bên dưới khi bí danh trỏ tới 1.99.1 trên đúng host.
+
+Gán `CIRNET_ARTIFACTS_SESSION` bằng phiên ngoài kho do bộ cấp phát quản lý rồi chạy các lệnh POSIX sau tại thư mục gốc của kho mã. Giữ nguyên shell để chạy các bước tiếp theo. [Cấp phát phiên](verification.md#cấp-phát-phiên) và [dọn phiên sau khi xem kết quả](verification.md#xem-kết-quả-và-dọn-phiên).
 
 ~~~sh
 repo="$(pwd -P)"
@@ -82,4 +88,4 @@ Ví dụ dùng tên extension trên Linux. Trên Windows MSVC, sao chép `cirnet
 - **Mã nguồn hiện tại.** Commit triển khai Rust `e640f80b1199779659d3db7817fee16d13cc24c1` dựa trên `f559ec5b21ea7ecf50db4dc5c5e1dc7c5eb5ad39`. Khi ghi kết quả mới, dùng đúng commit của bản mã đã rà soát.
 - **Ứng viên đã kiểm chứng.** Gate 2 đạt trên R2 với snapshot nguồn có SHA-256 `d9d6de46c7cc4b46cf2fe0926ce962a5f2775a2bb8965a0e74e26f2a8447aca8`, gồm 42 ca Rust trên Windows, 146 ca đối chứng wheel đã cài, 35 ca runtime native trên Linux và đối chứng SDK đã khóa với Interface. Hồ sơ giữ kết quả chưa đạt của ứng viên đầu tiên khi chẩn đoán dữ liệu vi phạm nhiều ràng buộc. Các đầu vào khác vi phạm đồng thời nhiều ràng buộc schema vẫn có thể cho lỗi đầu tiên khác nhau. [Bằng chứng ứng viên giai đoạn 2 và R2](https://github.com/cirnetlab/cirnet-remote/blob/13a35145b6d15644c7be10d95a5410bf69e11867/docs/vi/architecture/native-migration.md#xác-minh-ứng-viên-giai-đoạn-2)
 - **Bản phát hành đã chọn.** Manifest hệ thống 0.1.4 của Remote chọn wheel Python và SDK npm của Contracts v0.1.2 từ `524cc7a5e2e65f39077feefe70c7fb2ae3a773d6`. Gói SDK R2 trùng với gói npm đã chọn. Tệp thực thi và crate R2 là artifact của ứng viên. [Manifest phát hành hệ thống](https://github.com/cirnetlab/cirnet-remote/blob/master/integration/release-set.json)
-- **CI và bản sửa đổi tài liệu này.** CI độc lập chạy quy trình Python và SDK hiện hành trên Linux với Python 3.11/3.14 và Node 26. Cargo, các ca SDK Rust chạy ngoài kho và đối chứng PyO3 nằm ngoài workflow này. Build Rust, kiểm thử đối chứng, CI trên GitHub và công bố bản phát hành đều **NOT RUN** trong bản sửa đổi tài liệu này. [Workflow độc lập](../../.github/workflows/contracts.yml)
+- **CI và kiểm chứng của bản sửa đổi tài liệu trước.** CI độc lập chạy quy trình Python và SDK hiện hành trên Linux với Python 3.11/3.14 và Node 26. Cargo, các ca SDK Rust chạy ngoài kho và đối chứng PyO3 nằm ngoài workflow này. Hồ sơ bản sửa đổi tài liệu `007d148` ghi **NOT RUN** cho build Rust, kiểm thử đối chứng, CI trên GitHub và công bố bản phát hành. [Workflow độc lập](../../.github/workflows/contracts.yml)

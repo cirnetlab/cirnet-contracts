@@ -6,7 +6,13 @@ The `cirnet-contracts-native` 0.1.2 crate provides an offline validator, NCAP1 a
 
 ## Build and run
 
-Use [Rust 1.90.0](../../rust-toolchain.toml) with [Cargo.lock](../../Cargo.lock). Set `CIRNET_ARTIFACTS_SESSION` to an allocator-owned external session before running these POSIX shell commands from the checkout root. Keep the same shell for the later commands. [Allocate a session](verification.md#allocate-a-session) and [clean it up after inspection](verification.md#inspect-and-clean-up).
+Development uses the pinned Rust and Cargo 1.99.1 toolchain with the committed lockfile. The crate declares Rust 1.90 as its minimum supported compiler version. [Toolchain pin](../../rust-toolchain.toml) · [Cargo manifest](../../Cargo.toml) · [Cargo lockfile](../../Cargo.lock)
+
+On 64-bit Windows, use the `x86_64-pc-windows-msvc` host with Visual Studio C++ Build Tools and a Windows SDK. Run `rustc -Vv` and `cargo -Vv` from the checkout to verify the version and host.
+
+If Rustup has only the `stable` alias installed, check `rustup run stable rustc -vV` and `rustup run stable cargo -vV`. Use `rustup run stable cargo` for the commands below while the alias resolves to 1.99.1 on the required host.
+
+Set `CIRNET_ARTIFACTS_SESSION` to an allocator-owned external session before running these POSIX shell commands from the checkout root. Keep the same shell for the later commands. [Allocate a session](verification.md#allocate-a-session) and [clean it up after inspection](verification.md#inspect-and-clean-up).
 
 ~~~sh
 repo="$(pwd -P)"
@@ -82,4 +88,4 @@ The example names the Linux extension. On Windows MSVC, copy `cirnet_contracts_n
 - **Current source.** Rust implementation commit `e640f80b1199779659d3db7817fee16d13cc24c1` builds on `f559ec5b21ea7ecf50db4dc5c5e1dc7c5eb5ad39`. Use the exact reviewed checkout revision when recording new results.
 - **Verified candidate.** Gate 2 passed on R2 for the recorded source snapshot `d9d6de46c7cc4b46cf2fe0926ce962a5f2775a2bb8965a0e74e26f2a8447aca8`, with 42 Windows Rust tests, 146 installed-wheel cases, 35 Linux native runtime tests and the sealed SDK/Interface comparison. The first candidate's compound-invalid diagnostic failure stays in the record. Other inputs with multiple simultaneous schema violations can still produce different first issues. [Stage 2 candidate and R2 evidence](https://github.com/cirnetlab/cirnet-remote/blob/13a35145b6d15644c7be10d95a5410bf69e11867/docs/en/architecture/native-migration.md#stage-2-candidate-verification)
 - **Selected release.** Remote's system 0.1.4 manifest selects the Contracts v0.1.2 Python wheel and npm SDK from `524cc7a5e2e65f39077feefe70c7fb2ae3a773d6`. The R2 SDK matched the selected npm archive. The R2 executable and crate are candidate artifacts. [System release manifest](https://github.com/cirnetlab/cirnet-remote/blob/master/integration/release-set.json)
-- **CI and this documentation revision.** Standalone CI runs the legacy Python and SDK lanes on Linux with Python 3.11/3.14 and Node 26. Cargo, the external Rust SDK tests and the PyO3 comparison are outside that workflow. Rust builds, parity tests, hosted CI and release publication are **NOT RUN** for this documentation revision. [Standalone workflow](../../.github/workflows/contracts.yml)
+- **CI and prior documentation verification.** Standalone CI runs the legacy Python and SDK lanes on Linux with Python 3.11/3.14 and Node 26. Cargo, the external Rust SDK tests and the PyO3 comparison are outside that workflow. Rust builds, parity tests, hosted CI and release publication were recorded as **NOT RUN** for documentation revision `007d148`. [Standalone workflow](../../.github/workflows/contracts.yml)

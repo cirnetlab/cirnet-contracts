@@ -16,6 +16,7 @@
 
 ### Changed
 
+- Pinned the native development toolchain to Rust and Cargo 1.99.1. The crate continues to declare Rust 1.90 as its minimum supported compiler version. [Native build guide](../en/native.md#build-and-run) · [Hướng dẫn build](../vi/native.md#build-và-chạy)
 - Paired the current documentation in English and Vietnamese, indexed earlier verification and introduced major-version changelogs. [Documentation conventions](../en/contributing/writing-documentation.md) · [Historical records](../en/history.md)
 
 ## v0.1.2
