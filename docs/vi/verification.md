@@ -55,4 +55,4 @@ Ghi bản sửa đổi đã thử, mã băm gói và phạm vi kiểm chứng. X
 node tools/artifact-paths/artifact-paths.mjs --cleanup "$CIRNET_ARTIFACTS_SESSION"
 ~~~
 
-[Quy trình độc lập](../../.github/workflows/contracts.yml) ghi đầy đủ các bước dựng và kiểm tra sau cài. [Kết quả theo ngày](../archive/2026-11-05-contracts-verification.md#namespace-verification-2026-11-04) phân biệt lần chạy cục bộ với bằng chứng về artifact đã công bố.
+[Quy trình độc lập](../../.github/workflows/contracts.yml) ghi đầy đủ các bước dựng và kiểm tra sau cài. [Kết quả theo ngày](../en/history/verification/2026-11-05-contracts-verification.md#namespace-verification-2026-11-04) phân biệt lần chạy cục bộ với bằng chứng về artifact đã công bố.

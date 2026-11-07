@@ -6,16 +6,16 @@ coexist with the unchanged legacy graph and rigid mounting contracts below.
 
 Signal domains and typed local dispatch are described in
 [`signal-domains-and-simulation.md`](https://github.com/cirnetlab/cirnet-remote/blob/295797c/docs/architecture/signal-domains-and-simulation.md).
-Run `scripts/sync_editor_catalog.py` to refresh their shared port-domain
-projection after changing canonical component metadata. Saved graph versions and
-unknown metadata remain preserved; declarations do not grant an execution model.
+The [catalog generator](../../docs/en/catalog.md) refreshes the shared port-domain
+projection. It preserves saved graph versions and unknown metadata. A port-domain
+declaration describes connectivity, while execution requires a registered model.
 The event scheduling budget may reach 1,000,000; digital capture remains bounded
 to 100,000 observations. Excess capture changes raise `CAPTURE_LIMIT`, with no
 partial/truncated capture returned (the Hardware Service reports `UNEXECUTABLE`).
 
-The canonical library is `device-library/parts/physical-parts.json`. Run
-`python scripts/sync_editor_catalog.py` after changing it. The generated
-`apps/web/src/data/editorParts.json` contains the editor descriptor: identity and
+The canonical library is [`device-library/parts/physical-parts.json`](../../device-library/parts/physical-parts.json).
+Run `python -B -m contracts.codegen.sync_editor_catalog` after changing it. The generated
+[`editorParts.json`](../browser/data/editorParts.json) contains the editor descriptor: identity and
 revision, short label/function, package/footprint, pin IDs and roles, polarity,
 and property parameters/defaults. Development provenance and optional execution
 profiles remain in the full registry snapshots. Rendering, placement, mounting
@@ -67,7 +67,7 @@ unsupported multiplier or an unsupported tolerance color keeps its design value
 and reports that it cannot be painted exactly. Values are never silently rounded
 to fit a color code. Zero ohms is rejected; a jumper needs its own component.
 
-# Optional execution presentation
+## Optional execution presentation
 
 `contracts/execution_profiles.py` adapts the full registry to the existing
 simulator. Declared profiles are preserved. A missing profile becomes explicitly
@@ -89,7 +89,7 @@ The existing `/api/circuits/physical-preview` endpoint and the generic Web
 Device state may include a reason and reported values; `model` is optional. The
 renderer consumes supplied states and never calculates a current, voltage or
 truth table. The function adapter type in
-`apps/web/src/services/execution/presentation.ts` permits a result provider to
+[Interface's presentation adapter](https://github.com/cirnetlab/cirnet-interface/blob/cad092eb95e27a2d348f65f605b1e70b2f428970/src/services/execution/presentation.ts) permits a result provider to
 feed that shape into the existing renderer. Physical execution continues through
 the established validation/compiler, Hardware Service and HardwareStation path;
 raw CircuitGraph is not an FPGA register command.

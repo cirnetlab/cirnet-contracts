@@ -1,6 +1,6 @@
 # Contracts verification archive
 
-English · [English history index](../en/history.md) · [Mục lục lịch sử tiếng Việt](../vi/history.md)
+English · [English history index](../../history.md) · [Mục lục lịch sử tiếng Việt](../../../vi/history.md)
 
 These dated results are reproduced verbatim from the [Contracts README at commit e640f80b1199779659d3db7817fee16d13cc24c1](https://github.com/cirnetlab/cirnet-contracts/blob/e640f80b1199779659d3db7817fee16d13cc24c1/README.md).
 

@@ -15,7 +15,7 @@ old assignment definitions and API wires retain their original versions.
 
 The canonical schema families registered in `contracts/manifest.json` own public DTO shapes: API, auth, projects/revisions, assignment authoring, history, realtime and instrument control. Lab domain definitions remain in `physical-lab/lab.schema.json`; the legacy API accepts Graph 1.0/1.1 and additive versioned operations also accept Graph 1.2. FastAPI route registrations own methods, paths and status codes. `openapi.json` is exported from those routes with canonical schemas and explicit validation profiles. Generated browser operation bindings choose the named response parser from the operation identity; callers cannot assert an unrelated generic response shape.
 
-Generate DTOs with `python scripts/generate_contracts.py`. Export or check operations with `python scripts/export_openapi.py` and `python scripts/export_openapi.py --check`. Export uses `create_app(schema_only=True)`, without database creation, experiment recovery or hardware connection.
+Generate DTOs from the reviewed handoff with `python -B -m contracts.codegen.generate_contracts`. Run `python -B scripts/export_openapi.py --check` in CIRNET Remote to verify the producer's operation registry. The Python exporter uses `create_app(schema_only=True)`, without database creation, experiment recovery or hardware connection. See the [Contracts verification guide](../../docs/en/verification.md) for the standalone checks.
 
 | Route | Request / success contract |
 |---|---|

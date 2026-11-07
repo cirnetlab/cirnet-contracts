@@ -55,4 +55,4 @@ Record the tested revision, archive digests and gate scope. Inspect the raw resu
 node tools/artifact-paths/artifact-paths.mjs --cleanup "$CIRNET_ARTIFACTS_SESSION"
 ~~~
 
-The [standalone workflow](../../.github/workflows/contracts.yml) records the full build and installed gates. [Dated results](../archive/2026-11-05-contracts-verification.md#namespace-verification-2026-11-04) distinguish local runs from published artifact evidence.
+The [standalone workflow](../../.github/workflows/contracts.yml) records the full build and installed gates. [Dated results](history/verification/2026-11-05-contracts-verification.md#namespace-verification-2026-11-04) distinguish local runs from published artifact evidence.
