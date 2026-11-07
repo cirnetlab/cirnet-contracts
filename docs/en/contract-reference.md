@@ -19,26 +19,13 @@ The [resource manifest](../../contracts/manifest.json) records identities, versi
 
 CircuitGraph, assignment, Lab, RPC, NCAP and FPGA versions evolve independently from the distribution version. A schema or transport check does not establish electrical safety or physical availability.
 
-## Rust Contracts candidate
+## Rust implementation
 
-The `cirnet-contracts-native` crate reads the canonical manifest and schema
-profiles from an explicit source root. It resolves both schema URI hosts
-offline. It generates Rust Hardware RPC types and exposes the canonical and
-legacy descriptors. The NCAP module handles digital and sampled captures
-and returns sampled frame time as an exact decimal numerator and an integer
-denominator. Input strings use Unicode scalar values.
+The `cirnet-contracts-native` crate resolves both schema URI hosts offline from an explicit source root and exposes the canonical and legacy Hardware RPC descriptors. Its NCAP module returns sampled frame time as an exact decimal numerator and integer denominator. Input strings use Unicode scalar values. [Build, CLI and parity guide](native.md)
 
-Build with `cargo build --locked --release`. The toolchain is pinned in
-`rust-toolchain.toml`. The `cirnet-contracts validate` command reads JSON
-from standard input and prints the validated result or a structured issue.
-Use `cirnet-contracts descriptor` or `cirnet-contracts descriptor legacy`
-to read the corresponding binary descriptor.
+## Resource ownership
 
-Install the Node tools from the SDK lockfile in an owned external directory.
-Run `cirnet-contracts generate-sdk <source-root> <output-root> <node-tools>`
-to generate projections from the canonical source. Pass the generated
-`contracts/browser` directory to the SDK build with `--source`, and pass
-the same locked tools directory with `--node-tools`. The Rust build and
-SDK generation run without Python. The optional Cargo feature
-`python-tests` builds the binding used to compare against the legacy wheel.
-Transition consumers continue to use the Python 0.1.2 wheel.
+- [Device Library](../../device-library/README.md) is the editable catalog source. Generation prepares the `contracts/catalog-source/` package mirror and the catalog projections together. Installed wheels read that mirror.
+- [Public SDK resources](../../packages/public-sdk/README.md) include public validators, operations and fixtures. `contracts/browser/artifacts.json` maps legacy snapshot paths to the installed resources exposed by `contracts.resources.generated_artifacts()`. Consumers take these artifacts from Contracts.
+- [Remote's OpenAPI handoff](../../contracts/api/README.md) comes from the FastAPI operation registrations. `contracts/fingerprints.json` records separate canonical-source, public-schema and OpenAPI fingerprints. The release manifest records distribution digests.
+- [Test ownership](../../migration/test-ownership.json) distinguishes standalone contract tests under `tests/contracts/` from the retained consumer and Remote workflow assertions under `migration/consumer-tests/`.

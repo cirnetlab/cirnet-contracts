@@ -4,9 +4,13 @@ English · [Tiếng Việt](../vi/verification.md)
 
 [Documentation index](index.md)
 
-Use a fresh Python environment outside the checkout with Node 26 and Git on PATH. Current CI covers Python 3.14 and 3.11. Use the reviewed hash-locked build and runtime dependency sets. Before producing any diagnostics, allocate a session. For a cross-repository check, set `CIRNET_ARTIFACTS_CONTEXT` to an explicit owner and every participating Git root before allocation.
+This guide covers the Python and SDK package path. For Cargo, native SDK generation and installed-wheel parity, use the [Rust verification guide](native.md).
 
-Run this block in a dedicated POSIX shell at the repository root. The shell exits on failure. Keep it open after a successful run for the installed checks and cleanup.
+## Allocate a session
+
+Use Node 26 and Git on PATH. For a cross-repository check, set `CIRNET_ARTIFACTS_CONTEXT` to an explicit owner and every participating Git root before allocation. The [allocator README](../../tools/artifact-paths/README.md) describes external parent selection and ownership checks.
+
+Run these commands in a dedicated POSIX shell at the repository root. The shell exits on failure. Keep it open for the verification steps and cleanup.
 
 ~~~sh
 set -e
@@ -18,6 +22,13 @@ export TMP="$CIRNET_ARTIFACTS_SESSION" TEMP="$CIRNET_ARTIFACTS_SESSION" TMPDIR="
 export PIP_CACHE_DIR="$CIRNET_ARTIFACTS_SESSION/pip-cache"
 export npm_config_cache="$CIRNET_ARTIFACTS_SESSION/npm-cache"
 export PYTHONDONTWRITEBYTECODE=1
+~~~
+
+## Check the Python and SDK packages
+
+Use a fresh Python environment outside the checkout and the reviewed hash-locked build and runtime dependency sets. The generator and source tests use the SDK's locked Node dependencies.
+
+~~~sh
 python -B -m pip download --require-hashes --only-binary=:all: -r requirements-build.lock --dest "$CIRNET_ARTIFACTS_SESSION/build-wheelhouse"
 python -B -m pip install --require-hashes --no-index --find-links "$CIRNET_ARTIFACTS_SESSION/build-wheelhouse" -r requirements-build.lock
 python -B -m pip install --no-index --no-build-isolation --no-deps ./tools/artifact-paths
@@ -36,10 +47,12 @@ The SDK check builds and unpacks the npm tarball in the owned session and runs i
 
 For the installed check, use a new environment and an external working directory. Install the complete `requirements-runtime.lock` closure offline by hash, then install the exact wheel with `--no-index --no-deps`. Run `pip check` and `python -I -B ABSOLUTE_CHECKOUT/scripts/probe_installed_contracts.py`. Build the extracted sdist independently and compare wheel bytes with the same reproducible inputs. In Remote, re-export the OpenAPI document on the exact final wheel and compare it to the frozen handoff.
 
+## Inspect and clean up
+
 Record the tested revision, archive digests and gate scope. Inspect the raw results, retain selected release artifacts separately and clean only your owned session.
 
 ~~~sh
 node tools/artifact-paths/artifact-paths.mjs --cleanup "$CIRNET_ARTIFACTS_SESSION"
 ~~~
 
-The [standalone workflow](../../.github/workflows/contracts.yml) records the full build and installed gates. [Dated results](../../README.md#namespace-verification-2026-11-04) distinguish local runs from published artifact evidence.
+The [standalone workflow](../../.github/workflows/contracts.yml) records the full build and installed gates. [Dated results](../archive/2026-11-05-contracts-verification.md#namespace-verification-2026-11-04) distinguish local runs from published artifact evidence.

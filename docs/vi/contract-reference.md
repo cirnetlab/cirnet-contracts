@@ -19,25 +19,13 @@
 
 Phiên bản CircuitGraph, Assignment, Lab, RPC, NCAP và FPGA độc lập với phiên bản bản phân phối. Kiểm tra schema hoặc giao tiếp không xác nhận an toàn điện hoặc khả dụng vật lý.
 
-## Ứng viên Rust Contracts
+## Triển khai Rust
 
-Crate `cirnet-contracts-native` đọc manifest chuẩn và profile schema từ
-thư mục nguồn được chỉ định. Crate phân giải ngoại tuyến cả hai host URI
-của schema, sinh kiểu Rust cho Hardware RPC và cung cấp descriptor chuẩn
-cùng descriptor cũ. Module NCAP xử lý capture số và capture lấy mẫu,
-trả thời điểm frame dưới dạng tử số thập phân chính xác và mẫu số nguyên.
-Chuỗi đầu vào dùng các giá trị vô hướng Unicode.
+Crate `cirnet-contracts-native` phân giải ngoại tuyến cả hai host URI của schema từ thư mục nguồn được chỉ định và cung cấp descriptor Hardware RPC chuẩn lẫn cũ. Module NCAP trả thời điểm frame lấy mẫu dưới dạng tử số thập phân chính xác và mẫu số nguyên. Chuỗi đầu vào dùng các giá trị vô hướng Unicode. [Hướng dẫn build, CLI và đối chứng](native.md)
 
-Dựng bằng `cargo build --locked --release`. Toolchain được ghim trong
-`rust-toolchain.toml`. Lệnh `cirnet-contracts validate` đọc JSON từ đầu
-vào chuẩn và in kết quả đã kiểm hoặc lỗi có cấu trúc. Dùng
-`cirnet-contracts descriptor` hoặc `cirnet-contracts descriptor legacy`
-để đọc descriptor nhị phân tương ứng.
+## Nguồn quản lý tài nguyên
 
-Cài công cụ Node từ lockfile SDK trong thư mục ngoài repo có chủ sở hữu.
-Chạy `cirnet-contracts generate-sdk <source-root> <output-root> <node-tools>`
-để sinh dữ liệu từ nguồn chuẩn. Truyền thư mục `contracts/browser` đã
-sinh qua `--source` và thư mục công cụ đã khóa qua `--node-tools` cho
-bước dựng SDK. Quá trình dựng Rust và sinh SDK chạy được khi không có
-Python. Tính năng Cargo tùy chọn `python-tests` dựng binding để đối
-chứng với wheel cũ. Consumer chuyển tiếp tiếp tục dùng wheel Python 0.1.2.
+- [Device Library](../../device-library/README.md) là nguồn danh mục có thể sửa. Quá trình sinh tạo bản sao `contracts/catalog-source/` trong gói cùng các bản chiếu danh mục. Wheel đã cài đọc bản sao đó.
+- [Tài nguyên SDK công khai](../../packages/public-sdk/README.md) gồm trình xác thực, thao tác và fixture công khai. `contracts/browser/artifacts.json` ánh xạ đường dẫn bản chụp cũ đến tài nguyên đã cài do `contracts.resources.generated_artifacts()` cung cấp. Consumer lấy artifact này từ Contracts.
+- [Bản OpenAPI Remote bàn giao](../../contracts/api/README.md) lấy từ các thao tác đã đăng ký trong FastAPI. `contracts/fingerprints.json` ghi riêng dấu vân tay của nguồn chuẩn, schema công khai và OpenAPI. Manifest phát hành lưu mã băm của các gói phân phối.
+- [Quyền sở hữu kiểm thử](../../migration/test-ownership.json) phân biệt kiểm thử hợp đồng độc lập trong `tests/contracts/` với kiểm thử của consumer và workflow Remote được giữ lại trong `migration/consumer-tests/`.

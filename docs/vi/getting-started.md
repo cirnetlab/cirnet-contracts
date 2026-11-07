@@ -4,7 +4,11 @@
 
 [Mục lục tài liệu](index.md)
 
-Mã nguồn hiện tại dựng gói Python `cirnet-contracts==0.1.2` và gói trình duyệt `@cirnet/contracts@0.1.2`. Tên import Python là `contracts`, yêu cầu Python từ 3.11. Dùng artifact và mã SHA256 từ danh mục phát hành hệ thống đã chọn. Dùng môi trường riêng cho các wheel `netcircuit-contracts` cũ vì cả hai bản phân phối đều sở hữu cùng tên import.
+## Các gói đã chọn
+
+[Manifest phát hành hệ thống 0.1.4](https://github.com/cirnetlab/cirnet-remote/blob/master/integration/release-set.json) chọn Contracts v0.1.2 từ mã nguồn `524cc7a5e2e65f39077feefe70c7fb2ae3a773d6`. Cài wheel và SDK đã chọn theo mã SHA-256 ghi trong manifest. [Bản v0.1.1](https://github.com/cirnetlab/cirnet-contracts/releases/tag/v0.1.1) đã công bố trước đây giữ tên bản phân phối Python và scope npm ban đầu.
+
+Mã nguồn hiện tại dựng gói Python `cirnet-contracts==0.1.2` và gói trình duyệt `@cirnet/contracts@0.1.2`. Tên import Python là `contracts`, yêu cầu Python từ 3.11. Dùng môi trường riêng cho các wheel `netcircuit-contracts` cũ vì cả hai bản phân phối đều sở hữu cùng tên import.
 
 Sau khi cài wheel Python đã chọn, chạy kiểm tra phiên bản bản phân phối từ ngoài bản sao kho mã.
 
@@ -13,6 +17,10 @@ python -I -B -c "from importlib.metadata import version; print(version('cirnet-c
 ~~~
 
 SDK trình duyệt cung cấp DTO công khai, trình xác thực ngoại tuyến, siêu dữ liệu thao tác và bố cục bản ghi đo, cùng các bản chiếu danh mục công khai. Gói gồm tập schema công khai cần để giải mọi tham chiếu và bộ dữ liệu kiểm thử có tên. Protobuf RPC, nguồn danh mục nội bộ và mốc tương thích thuộc tài nguyên phía Python. Xem [README gói SDK](../../packages/public-sdk/README.md).
+
+Bản sao kho hiện tại cũng có Contracts Rust với cùng phiên bản phân phối. Xem [hướng dẫn Rust](native.md) để build và kiểm chứng. Manifest đã chọn ghi artifact Python, npm và các gói cấp phát riêng.
+
+## Công cụ phát triển
 
 Bộ cấp phát DEV độc lập là `cirnet-artifact-paths` cho Python và `@cirnet/artifact-paths` cho Node. Công cụ này quản lý vị trí đầu ra tạm thời và dọn phiên có kiểm tra quyền sở hữu. Cài công cụ riêng với Contracts runtime. Thiết lập mới dùng `CIRNET_*` và được ưu tiên hơn `NETCIRCUIT_*` cũ, kể cả khi giá trị mới rỗng. Xem [README bộ cấp phát](../../tools/artifact-paths/README.md).
 

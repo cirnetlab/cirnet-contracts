@@ -4,9 +4,13 @@
 
 [Mục lục tài liệu](index.md)
 
-Dùng môi trường Python mới nằm ngoài bản sao kho mã, với Node 26 và Git trong PATH. CI hiện tại kiểm tra Python 3.14 và 3.11. Dùng bộ phụ thuộc dựng và chạy đã khóa mã băm và được rà soát. Cấp phát phiên trước khi tạo dữ liệu chẩn đoán. Khi kiểm tra nhiều kho, đặt `CIRNET_ARTIFACTS_CONTEXT` với chủ sở hữu tường minh và mọi gốc Git tham gia trước khi cấp phát.
+Trang này hướng dẫn kiểm chứng gói Python và SDK. Xem [hướng dẫn kiểm chứng Rust](native.md) cho Cargo, sinh SDK bằng Rust và đối chứng với wheel đã cài.
 
-Chạy khối lệnh này trong một shell POSIX riêng tại thư mục gốc của kho. Shell thoát khi có lỗi. Sau khi chạy thành công, giữ shell đó để kiểm tra bản đã cài và dọn dẹp.
+## Cấp phát phiên
+
+Dùng Node 26 và Git trong PATH. Khi kiểm tra nhiều kho, đặt `CIRNET_ARTIFACTS_CONTEXT` với chủ sở hữu tường minh và mọi gốc Git tham gia trước khi cấp phát. [README bộ cấp phát](../../tools/artifact-paths/README.md) mô tả cách chọn thư mục cha bên ngoài và cách kiểm tra quyền sở hữu.
+
+Chạy các lệnh sau trong một shell POSIX riêng tại thư mục gốc của kho. Shell thoát khi có lỗi. Giữ shell đó để chạy các bước kiểm chứng và dọn phiên.
 
 ~~~sh
 set -e
@@ -18,6 +22,13 @@ export TMP="$CIRNET_ARTIFACTS_SESSION" TEMP="$CIRNET_ARTIFACTS_SESSION" TMPDIR="
 export PIP_CACHE_DIR="$CIRNET_ARTIFACTS_SESSION/pip-cache"
 export npm_config_cache="$CIRNET_ARTIFACTS_SESSION/npm-cache"
 export PYTHONDONTWRITEBYTECODE=1
+~~~
+
+## Kiểm tra các gói Python và SDK
+
+Dùng môi trường Python mới nằm ngoài bản sao kho mã và bộ phụ thuộc dựng và chạy đã khóa mã băm, đã được rà soát. Bộ sinh và kiểm thử mã nguồn dùng phụ thuộc Node đã khóa của SDK.
+
+~~~sh
 python -B -m pip download --require-hashes --only-binary=:all: -r requirements-build.lock --dest "$CIRNET_ARTIFACTS_SESSION/build-wheelhouse"
 python -B -m pip install --require-hashes --no-index --find-links "$CIRNET_ARTIFACTS_SESSION/build-wheelhouse" -r requirements-build.lock
 python -B -m pip install --no-index --no-build-isolation --no-deps ./tools/artifact-paths
@@ -36,10 +47,12 @@ Bước kiểm tra SDK dựng và giải nén gói npm trong phiên sở hữu, 
 
 Để kiểm tra bản đã cài, dùng môi trường mới và thư mục làm việc bên ngoài kho. Cài đầy đủ phụ thuộc `requirements-runtime.lock` ngoại tuyến theo mã băm, rồi cài đúng wheel với `--no-index --no-deps`. Chạy `pip check` và `python -I -B ABSOLUTE_CHECKOUT/scripts/probe_installed_contracts.py`. Dựng độc lập từ sdist đã giải nén và so sánh từng byte của wheel với cùng đầu vào tái lập. Trong Remote, xuất lại OpenAPI với đúng wheel cuối cùng và đối chiếu với bản bàn giao đã chốt.
 
+## Xem kết quả và dọn phiên
+
 Ghi bản sửa đổi đã thử, mã băm gói và phạm vi kiểm chứng. Xem kết quả thô, giữ riêng artifact đã chọn để phát hành và chỉ dọn phiên thuộc quyền sở hữu của mình.
 
 ~~~sh
 node tools/artifact-paths/artifact-paths.mjs --cleanup "$CIRNET_ARTIFACTS_SESSION"
 ~~~
 
-[Quy trình độc lập](../../.github/workflows/contracts.yml) ghi đầy đủ các bước dựng và kiểm tra sau cài. [Kết quả theo ngày](../../README.md#namespace-verification-2026-11-04) phân biệt lần chạy cục bộ với bằng chứng về artifact đã công bố.
+[Quy trình độc lập](../../.github/workflows/contracts.yml) ghi đầy đủ các bước dựng và kiểm tra sau cài. [Kết quả theo ngày](../archive/2026-11-05-contracts-verification.md#namespace-verification-2026-11-04) phân biệt lần chạy cục bộ với bằng chứng về artifact đã công bố.

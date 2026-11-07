@@ -1,12 +1,23 @@
 # CIRNET Contracts documentation
 
-English · [Tiếng Việt](../vi/index.md)
+English · [Tiếng Việt](../vi/index.md) · [Repository README](../../README.md)
 
-- [Getting started](getting-started.md) identifies the Python, browser and development packages.
-- [Contract reference map](contract-reference.md) links schemas, protocol versions and compatibility policy.
-- [Circuit Graph](api/circuit-graph.md), [Physical Lab](api/physical-lab.md), [NCAP formats](api/ncap.md) and [compatibility anchors](api/compatibility.md) document the shared data and wire formats.
-- [Versioned assignments](assignment.md), [memory image](memory.md), [Hardware RPC](hardware-rpc.md) and [FPGA protocol](fpga-protocol.md) cover individual contract boundaries.
-- [Catalog authoring](catalog.md) explains the editable source and generated projections.
-- [Verification](verification.md) covers generation checks, SDK packaging and installed artifacts.
+## Guides
 
-The [original project README](../../README.md) keeps the full release handoff and dated verification results. The [M1 history](../../migration/history-provenance.md), [M1 verification](../../migration/verification.md) and [M6 release work](../../migration/m6-release-work.md) record historical migration evidence. The [former monorepo workflow](../../contracts/README.md) provides historical context.
+- [Getting started](getting-started.md) covers the selected release and the Python, browser and development packages.
+- [Catalog authoring](catalog.md) identifies the editable source and generated projections.
+
+## Reference
+
+- [Contract reference map](contract-reference.md) links the canonical sources, versions and compatibility policy.
+- [Circuit Graph](api/circuit-graph.md), [Physical Lab](api/physical-lab.md), [NCAP](api/ncap.md) and [compatibility anchors](api/compatibility.md) describe shared data and wire formats.
+- [Versioned assignments](assignment.md), [memory images](memory.md), [Hardware RPC](hardware-rpc.md) and [FPGA protocol](fpga-protocol.md) cover individual contracts.
+
+## Contributing
+
+- [Python and SDK verification](verification.md) covers generation checks, SDK packaging and installed artifacts.
+- [Rust Contracts](native.md) covers the build, CLI, parity fixtures, optional installed-wheel comparison and CI scope.
+
+## History
+
+- [Verification and migration records](history.md) links dated local checks, the original extraction and the Stage 2 candidate record.
