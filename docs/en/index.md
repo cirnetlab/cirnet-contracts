@@ -15,9 +15,11 @@ English · [Tiếng Việt](../vi/index.md) · [Repository README](../../README.
 
 ## Contributing
 
+- [Documentation conventions](contributing/writing-documentation.md) covers language pairs, release notes and evidence.
 - [Python and SDK verification](verification.md) covers generation checks, SDK packaging and installed artifacts.
 - [Rust Contracts](native.md) covers the build, CLI, parity fixtures, optional installed-wheel comparison and CI scope.
 
 ## History
 
+- [Release changelogs](../changelogs/README.md) lists published versions and changes in source since the latest release.
 - [Verification and migration records](history.md) links dated local checks, the original extraction and the Stage 2 candidate record.

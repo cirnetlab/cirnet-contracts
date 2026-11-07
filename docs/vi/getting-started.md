@@ -6,7 +6,9 @@
 
 ## Các gói đã chọn
 
-[Manifest phát hành hệ thống 0.1.4](https://github.com/cirnetlab/cirnet-remote/blob/master/integration/release-set.json) chọn Contracts v0.1.2 từ mã nguồn `524cc7a5e2e65f39077feefe70c7fb2ae3a773d6`. Cài wheel và SDK đã chọn theo mã SHA-256 ghi trong manifest. [Bản v0.1.1](https://github.com/cirnetlab/cirnet-contracts/releases/tag/v0.1.1) đã công bố trước đây giữ tên bản phân phối Python và scope npm ban đầu.
+Hệ thống 0.1.4 chọn Contracts v0.1.2 từ mã nguồn `524cc7a5e2e65f39077feefe70c7fb2ae3a773d6`. Đối chiếu SHA-256 của wheel và SDK đã chọn trước khi cài đặt. [Manifest hệ thống tại tag phát hành](https://github.com/cirnetlab/cirnet-remote/blob/38aea6120920f48cea817827ac2277cce4bef25e/integration/release-set.json)
+
+Bản v0.1.1 trước đó giữ tên bản phân phối Python và scope npm ban đầu. [Các bản đã công bố](../changelogs/README.md)
 
 Mã nguồn hiện tại dựng gói Python `cirnet-contracts==0.1.2` và gói trình duyệt `@cirnet/contracts@0.1.2`. Tên import Python là `contracts`, yêu cầu Python từ 3.11. Dùng môi trường riêng cho các wheel `netcircuit-contracts` cũ vì cả hai bản phân phối đều sở hữu cùng tên import.
 

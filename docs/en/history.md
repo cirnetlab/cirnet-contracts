@@ -2,6 +2,7 @@
 
 English · [Tiếng Việt](../vi/history.md) · [Documentation index](index.md)
 
+- [Release changelogs](../changelogs/README.md) record publication dates, tagged source and selected artifacts.
 - [M1 extraction provenance](../../migration/history-provenance.md) and [M1 verification](../../migration/verification.md) record the original extraction and test ownership.
 - [M6 release work](../../migration/m6-release-work.md) records the Python and SDK handoff. The [former monorepo workflow](history/archive/monorepo-contracts-workflow.md) provides earlier context.
 - [Stage 2 verification in CIRNET Remote](https://github.com/cirnetlab/cirnet-remote/blob/13a35145b6d15644c7be10d95a5410bf69e11867/docs/en/architecture/native-migration.md#stage-2-candidate-verification) records the first frozen candidate and the R2 acceptance matrix separately.

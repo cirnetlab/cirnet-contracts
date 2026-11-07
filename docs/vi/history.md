@@ -2,6 +2,7 @@
 
 [English](../en/history.md) · Tiếng Việt · [Mục lục tài liệu](index.md)
 
+- [Changelog phát hành](../changelogs/README.md) ghi ngày công bố, mã nguồn tại tag và các artifact đã chọn.
 - [Nguồn gốc đợt tách kho M1](../../migration/history-provenance.md) và [kiểm chứng M1](../../migration/verification.md) ghi lại quá trình tách kho và quyền sở hữu các bộ kiểm thử.
 - [Hồ sơ phát hành M6](../../migration/m6-release-work.md) ghi lại việc bàn giao Python và SDK. [Quy trình của kho hợp nhất trước đây](../en/history/archive/monorepo-contracts-workflow.md) cung cấp bối cảnh lịch sử.
 - [Kiểm chứng giai đoạn 2 trong CIRNET Remote](https://github.com/cirnetlab/cirnet-remote/blob/13a35145b6d15644c7be10d95a5410bf69e11867/docs/vi/architecture/native-migration.md#xác-minh-ứng-viên-giai-đoạn-2) lưu riêng kết quả ứng viên đầu tiên và ma trận nghiệm thu R2.

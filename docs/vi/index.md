@@ -15,9 +15,11 @@
 
 ## Đóng góp
 
+- [Quy ước tài liệu](contributing/writing-documentation.md) hướng dẫn duy trì cặp ngôn ngữ, ghi chú phát hành và bằng chứng.
 - [Kiểm chứng Python và SDK](verification.md) hướng dẫn kiểm tra sinh mã, đóng gói SDK và kiểm tra artifact đã cài.
 - [Contracts Rust](native.md) hướng dẫn build, lệnh CLI, fixture đối chứng, kiểm tra tùy chọn với wheel đã cài và phạm vi CI.
 
 ## Lịch sử
 
+- [Changelog phát hành](../changelogs/README.md) liệt kê các bản đã công bố và thay đổi trong mã nguồn kể từ bản mới nhất.
 - [Hồ sơ kiểm chứng và di chuyển](history.md) liên kết các đợt kiểm tra cục bộ theo ngày, hồ sơ tách kho và ứng viên giai đoạn 2.

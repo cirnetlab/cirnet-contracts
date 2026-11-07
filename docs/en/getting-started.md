@@ -6,7 +6,9 @@ English · [Tiếng Việt](../vi/getting-started.md)
 
 ## Selected packages
 
-The [system 0.1.4 release manifest](https://github.com/cirnetlab/cirnet-remote/blob/master/integration/release-set.json) selects Contracts v0.1.2 from source `524cc7a5e2e65f39077feefe70c7fb2ae3a773d6`. Install the selected wheel and SDK by their recorded SHA-256 digests. Earlier published [v0.1.1](https://github.com/cirnetlab/cirnet-contracts/releases/tag/v0.1.1) retains the original Python distribution and npm scope.
+System 0.1.4 selects Contracts v0.1.2 from source `524cc7a5e2e65f39077feefe70c7fb2ae3a773d6`. Check the selected wheel and SDK against the SHA-256 digests before installation. [Tagged system manifest](https://github.com/cirnetlab/cirnet-remote/blob/38aea6120920f48cea817827ac2277cce4bef25e/integration/release-set.json)
+
+The earlier v0.1.1 release retains the original Python distribution and npm scope. [Published versions](../changelogs/README.md)
 
 The current source builds Python `cirnet-contracts==0.1.2` and browser `@cirnet/contracts@0.1.2`. The Python import is `contracts` and requires Python 3.11 or later. Use a separate environment for older `netcircuit-contracts` wheels because both distributions own the same import namespace.
 
