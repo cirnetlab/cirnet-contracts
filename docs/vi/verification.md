@@ -8,7 +8,7 @@
 
 ## Chạy kiểm tra
 
-Chạy `cargo fmt --all --check`, `cargo test --locked` và bộ kiểm thử hồi quy SDK theo [hướng dẫn build native](native.md). Workflow Windows kiểm chứng gói native, crate, descriptor RPC và gói npm được sinh. Ứng viên hệ thống còn dùng đúng bản Remote xuất và ghi mã băm mã nguồn, manifest và crate Contracts.
+Chạy `cargo fmt --all --check`, `cargo test --locked` và bộ kiểm thử hồi quy SDK theo [hướng dẫn build native](native.md). Workflow Windows kiểm chứng gói native, crate, descriptor RPC và gói npm được sinh. Từ thư mục gốc của checkout, workflow đóng gói công cụ cấp phát dành cho phát triển bằng `npm pack ./tools/artifact-paths --ignore-scripts --pack-destination <sdk-output>`. Ứng viên hệ thống còn dùng đúng bản Remote xuất và ghi mã băm mã nguồn, manifest và crate Contracts.
 
 ## Rà soát và dọn dẹp
 

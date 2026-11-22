@@ -8,7 +8,7 @@ Set `CIRNET_ARTIFACTS_DIR` to an absolute directory outside all participating ch
 
 ## Run checks
 
-Run `cargo fmt --all --check`, `cargo test --locked` and the SDK regression suite from the [native build guide](native.md). The Windows workflow verifies the native package, the crate, the RPC descriptor and the generated npm package. The system candidate additionally builds against the exact Remote export and records the Contracts source, manifest and crate digests.
+Run `cargo fmt --all --check`, `cargo test --locked` and the SDK regression suite from the [native build guide](native.md). The Windows workflow verifies the native package, the crate, the RPC descriptor and the generated npm package. From the checkout root, it packs the development allocator with `npm pack ./tools/artifact-paths --ignore-scripts --pack-destination <sdk-output>`. The system candidate additionally builds against the exact Remote export and records the Contracts source, manifest and crate digests.
 
 ## Inspect and clean up
 

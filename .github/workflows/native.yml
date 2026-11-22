@@ -67,7 +67,7 @@ jobs:
           node scripts/check-native-package.mjs $bundle (Join-Path $env:CARGO_TARGET_DIR ('package/' + $receipt.crate.filename))
           & (Join-Path $bundle 'bin/cirnet-contracts.exe') generate-sdk $env:GITHUB_WORKSPACE $projection $env:CIRNET_SDK_NODE_TOOLS
           node scripts/check_public_sdk.mjs --source (Join-Path $projection 'contracts/browser') --node-tools $env:CIRNET_SDK_NODE_TOOLS --output $sdk
-          npm.cmd --prefix tools/artifact-paths pack --ignore-scripts --pack-destination $sdk
+          npm.cmd pack ./tools/artifact-paths --ignore-scripts --pack-destination $sdk
       - uses: actions/upload-artifact@v4
         if: github.event_name == 'workflow_dispatch' && inputs.retain_candidate
         with:
