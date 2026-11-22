@@ -1,0 +1,73 @@
+{
+  "name": "@cirnet/contracts",
+  "version": "0.3.0-dev.1",
+  "license": "SEE LICENSE IN LICENSE",
+  "description": "Public CIRNET DTOs, offline validators and versioned resources",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./dto": {
+      "types": "./dist/dto.d.ts",
+      "import": "./dist/dto.js"
+    },
+    "./operations": {
+      "types": "./dist/operations.d.ts",
+      "import": "./dist/operations.js"
+    },
+    "./capture-layout": {
+      "types": "./dist/captureLayout.d.ts",
+      "import": "./dist/captureLayout.js"
+    },
+    "./public-contract-names": {
+      "types": "./dist/publicContractNames.d.ts",
+      "import": "./dist/publicContractNames.js"
+    },
+    "./data/*.json": "./dist/data/*.json",
+    "./schemas/*.json": "./dist/schemas/*.json",
+    "./fixtures/*.json": "./dist/fixtures/*.json",
+    "./validators": {
+      "types": "./dist/validators.d.ts",
+      "import": "./dist/validators.js"
+    },
+    "./validators.core": {
+      "types": "./dist/validators.core.d.ts",
+      "import": "./dist/validators.core.js"
+    },
+    "./validators.editor": {
+      "types": "./dist/validators.editor.d.ts",
+      "import": "./dist/validators.editor.js"
+    },
+    "./validators.editor.core": {
+      "types": "./dist/validators.editor.core.d.ts",
+      "import": "./dist/validators.editor.core.js"
+    },
+    "./validators.structural": {
+      "types": "./dist/validators.structural.d.ts",
+      "import": "./dist/validators.structural.js"
+    },
+    "./validators.structural.core": {
+      "types": "./dist/validators.structural.core.d.ts",
+      "import": "./dist/validators.structural.core.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node ../../scripts/check_public_sdk.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "esbuild": "0.25.12",
+    "json-schema-to-typescript": "16.0.0",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

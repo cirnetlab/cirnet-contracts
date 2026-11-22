@@ -1,0 +1,33 @@
+{
+  "source_revision": "295797c",
+  "sha256": {
+    "apps/web/src/contracts/generated/captureLayout.ts": "32ed7f383ce5ff6086e89b18c4f9fc63bd5aa656743567a9d6b37b760db06f90",
+    "apps/web/src/contracts/generated/dto.ts": "19270f4521f5d8ec3b8c0941d4c9a6a73441f6317aa0a3550134d608781f33ff",
+    "apps/web/src/contracts/generated/operations.ts": "92090606dacb77bb8bfb9395cb4ebfa10dcb79d7deab0bf09a93436bfd325874",
+    "apps/web/src/contracts/generated/publicContractNames.ts": "bffe3d6f9797f223e8e8bffeda4d6085c752429a9f63df65cf0abe9b6f2d4f96",
+    "apps/web/src/contracts/generated/validators.core.d.ts": "7b12bba15693449a3c389f5283e46d28bfd0b5d94a23edf068dec4cd419bb164",
+    "apps/web/src/contracts/generated/validators.core.js": "3b0bca6b6a02946c9dd9fb99290d721c14e8c8c1907cf151e217da1bb5f6e0d5",
+    "apps/web/src/contracts/generated/validators.d.ts": "08007184da5252e5b4ce91f8380aba19dd12f1c1f544c0d8ec4447264e945c72",
+    "apps/web/src/contracts/generated/validators.editor.core.d.ts": "26b63b16d93dbac91a96747a690f05f4f6c5f07cf14b7000282dc4c5b457b954",
+    "apps/web/src/contracts/generated/validators.editor.core.js": "aefa935f0a799726cd55c29a9a1912059ef37bd4bae936258efb4b79e6c417e1",
+    "apps/web/src/contracts/generated/validators.editor.d.ts": "08007184da5252e5b4ce91f8380aba19dd12f1c1f544c0d8ec4447264e945c72",
+    "apps/web/src/contracts/generated/validators.editor.js": "bc1084f87e77fda4c40e299aabcb48006627dfb4e5537ed499c8aab2fd8b510b",
+    "apps/web/src/contracts/generated/validators.js": "be3ce233cd1e3046a60edcbb04679ca98fcb7719e9da99367e5ab1771db188da",
+    "apps/web/src/contracts/generated/validators.structural.core.d.ts": "62248673496acd6e7e2820bdcb282fa78de6f8af626937c0a1e2dcb00a8a966f",
+    "apps/web/src/contracts/generated/validators.structural.core.js": "7b304dba30581b5824b081bfd3a684355a32660b6b27758c6230f99118f52e4d",
+    "apps/web/src/contracts/generated/validators.structural.d.ts": "08007184da5252e5b4ce91f8380aba19dd12f1c1f544c0d8ec4447264e945c72",
+    "apps/web/src/contracts/generated/validators.structural.js": "4b2bea1e5f5ebfd08c72fd35936238b2c67809e1b4b296b68245176abc75a146",
+    "apps/web/src/data/breadboardMechanics.json": "7238a245b696704709942e8be93f39b35141344a87b20a2e462a022a02570b20",
+    "apps/web/src/data/breadboardTopologies.json": "b228daa4fec17a897d5c4481df9c4df9be7301cb0ed0ea71a02f67eb1536f3f9",
+    "apps/web/src/data/editorCatalog.json": "238adc310ca0a15817cc8f96bb2bf377342902b73286766e034df803e371aa33",
+    "apps/web/src/data/editorParts.json": "9a5916ef030b975f03c1c62cafb056e4299f312ca2bdac69460db2aa4e39be19",
+    "apps/web/src/data/flexibleMechanics.json": "11be08014ceb86b296e6e3a7996fcc3f5d8eff11fe434f0b63d69018cef33509",
+    "apps/web/src/data/labContracts.json": "23566751f99f64e7339962c5992f2e0559053b7233c7aabef0b4d9321cb782d7",
+    "apps/web/src/data/physicalParts.json": "12c7ae8a7a49d1b2895dad7d6d2c8b63920e2d355ee1f5df8388cc76469ec7d6",
+    "apps/web/src/data/signalPortCatalog.json": "a1033e5463b283e8c503c71a172183c3650b1891636f4bb8e6e1fded5fa86310",
+    "apps/web/src/types/lab.ts": "6c03076f690a4e9d47471b468015c7793828608dd6545bf953a0560bf04dc3d8",
+    "contracts/api/openapi.json": "f55fbf65d4988bc122b52936e69654a1024c8ac5d30240041629620b2a524e20",
+    "contracts/boundary/capture_layout.py": "2b2acdc51494e962f360987f3d1f4188b1bef7c955409ad238bd7d0c979d1061",
+    "contracts/boundary/models.py": "3357aa117cc8d977b0e9e4d0ae5934e5c334b2430f2bd2e2e6d35157ed6f7692"
+  }
+}

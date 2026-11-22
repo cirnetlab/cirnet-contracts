@@ -1,0 +1,15 @@
+# @cirnet/contracts
+
+Public CIRNET DTOs, operation metadata, capture-layout constants, precompiled
+offline structural/editor/transport validators, catalog projections and fixtures.
+The current source builds SDK 0.3.0-dev.1. For an already published system, use the
+archive and SHA-256 selected by that system's manifest.
+The source repository is [cirnetlab/cirnet-contracts-next](https://github.com/cirnetlab/cirnet-contracts-next).
+Previously published archives retain their original package name and digest.
+
+Use the root exports for DTO types and metadata, `./validators` for transport,
+`./validators.editor` and `./validators.structural` for the other full profiles.
+The corresponding `.core` entrypoints retain the bounded eager validator sets.
+JSON resources use `./data/*.json`, `./schemas/*.json` and `./fixtures/*.json`.
+Validators perform no runtime schema compilation or network reference lookup.
+Application semantic adapters continue to enforce their established domain rules.
