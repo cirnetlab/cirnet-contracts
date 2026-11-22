@@ -6,7 +6,7 @@ English · [Tiếng Việt](../vi/contract-reference.md)
 
 The [resource manifest](../../contracts/manifest.json) records identities, versions, ownership and visibility. Schema URIs use `https://cirnet.local/`. The offline registry also resolves legacy `https://netcircuit.local/` URIs without fetching schemas over the network.
 
-The [Ecosystem Architecture](https://github.com/cirnetlab/cirnet-rules/blob/887578e8c0aa06882cfa19138955fb54019fb428/docs/tai-lieu-kien-tuc-he-thong/cirnetlab-architecture-en.md) assigns shared contract ownership. The [Lab-First Architecture](https://github.com/cirnetlab/cirnet-rules/blob/887578e8c0aa06882cfa19138955fb54019fb428/docs/tai-lieu-kien-tuc-he-thong/cirnet-architecture-lab-first-en.md) defines how Lab services use those contracts.
+The [Ecosystem Architecture](https://github.com/cirnetlab/cirnet-remote-next/blob/master/docs/cirnetlab-architecture-en.md) assigns shared contract ownership. The [Lab-First Architecture](https://github.com/cirnetlab/cirnet-remote-next/blob/master/docs/cirnet-architecture-lab-first-en.md) defines how Lab services use those contracts.
 
 | Owner | Boundary |
 | --- | --- |
