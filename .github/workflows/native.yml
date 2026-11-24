@@ -23,6 +23,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '26'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14.4'
       - name: Prepare pinned tools and external outputs
         env:
           CIRNET_ARTIFACTS_DIR: ${{ runner.temp }}/contracts-next
@@ -55,6 +58,15 @@ jobs:
           Copy-Item packages/public-sdk/package.json, packages/public-sdk/package-lock.json $env:CIRNET_SDK_NODE_TOOLS
           npm.cmd --prefix $env:CIRNET_SDK_NODE_TOOLS ci --no-audit --no-fund
           cargo test --locked --test generator_parity -- --ignored
+      - name: Verify the development allocator and Python bridge
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $env:ALLOCATOR_TEST_SOURCE = $env:GITHUB_WORKSPACE
+          $env:ALLOCATOR_TEST_SCRATCH = Join-Path $env:CIRNET_ARTIFACTS_SESSION 'allocator-tests'
+          $env:PYTHONPATH = Join-Path $env:GITHUB_WORKSPACE 'tools/artifact-paths'
+          node --test tools/artifact-paths/test/artifact-paths.test.mjs
+          python -B -m unittest discover -s tools/artifact-paths/test -p test_python_bridge.py
       - name: Build and verify the native bundle, crate and SDK
         run: |
           $ErrorActionPreference = 'Stop'
