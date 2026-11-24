@@ -1,0 +1,1050 @@
+name: "rpc_v2.proto"
+package: "cirnet.hardware.v2"
+message_type {
+  name: "Target"
+  field {
+    name: "station_id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "stationId"
+  }
+  field {
+    name: "experiment_id"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "experimentId"
+  }
+}
+message_type {
+  name: "Breadboard"
+  field {
+    name: "id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "id"
+  }
+  field {
+    name: "model"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "model"
+  }
+}
+message_type {
+  name: "RoutingResource"
+  field {
+    name: "resource_id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "resourceId"
+  }
+  field {
+    name: "roles"
+    number: 2
+    label: LABEL_REPEATED
+    type: TYPE_STRING
+    json_name: "roles"
+  }
+  field {
+    name: "node_ids"
+    number: 3
+    label: LABEL_REPEATED
+    type: TYPE_STRING
+    json_name: "nodeIds"
+  }
+}
+message_type {
+  name: "InstrumentCapability"
+  field {
+    name: "channels"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "channels"
+  }
+  field {
+    name: "status"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    oneof_index: 0
+    json_name: "status"
+    proto3_optional: true
+  }
+  field {
+    name: "runtime_reconfiguration_supported"
+    number: 4
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "runtimeReconfigurationSupported"
+  }
+  oneof_decl {
+    name: "_status"
+  }
+  reserved_range {
+    start: 1
+    end: 2
+  }
+  reserved_name: "available"
+}
+message_type {
+  name: "GeneratorCapability"
+  field {
+    name: "channels"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "channels"
+  }
+  field {
+    name: "runtime_reconfiguration_supported"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "runtimeReconfigurationSupported"
+  }
+  field {
+    name: "status"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    oneof_index: 0
+    json_name: "status"
+    proto3_optional: true
+  }
+  field {
+    name: "supported_waveforms"
+    number: 4
+    label: LABEL_REPEATED
+    type: TYPE_STRING
+    json_name: "supportedWaveforms"
+  }
+  field {
+    name: "frequency_min_hz"
+    number: 5
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    oneof_index: 1
+    json_name: "frequencyMinHz"
+    proto3_optional: true
+  }
+  field {
+    name: "frequency_max_hz"
+    number: 6
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    oneof_index: 2
+    json_name: "frequencyMaxHz"
+    proto3_optional: true
+  }
+  field {
+    name: "amplitude_max_vpp"
+    number: 7
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    oneof_index: 3
+    json_name: "amplitudeMaxVpp"
+    proto3_optional: true
+  }
+  field {
+    name: "offset_min_v"
+    number: 8
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    oneof_index: 4
+    json_name: "offsetMinV"
+    proto3_optional: true
+  }
+  field {
+    name: "offset_max_v"
+    number: 9
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    oneof_index: 5
+    json_name: "offsetMaxV"
+    proto3_optional: true
+  }
+  oneof_decl {
+    name: "_status"
+  }
+  oneof_decl {
+    name: "_frequency_min_hz"
+  }
+  oneof_decl {
+    name: "_frequency_max_hz"
+  }
+  oneof_decl {
+    name: "_amplitude_max_vpp"
+  }
+  oneof_decl {
+    name: "_offset_min_v"
+  }
+  oneof_decl {
+    name: "_offset_max_v"
+  }
+}
+message_type {
+  name: "InstrumentCapabilities"
+  field {
+    name: "logic_analyzer"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.InstrumentCapability"
+    json_name: "logicAnalyzer"
+  }
+  field {
+    name: "oscilloscope"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.InstrumentCapability"
+    json_name: "oscilloscope"
+  }
+  field {
+    name: "generator"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.GeneratorCapability"
+    json_name: "generator"
+  }
+}
+message_type {
+  name: "StationCapabilities"
+  field {
+    name: "schema_version"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "schemaVersion"
+  }
+  field {
+    name: "station_id"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "stationId"
+  }
+  field {
+    name: "mode"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "mode"
+  }
+  field {
+    name: "available"
+    number: 4
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "available"
+  }
+  field {
+    name: "virtual_digital"
+    number: 5
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "virtualDigital"
+  }
+  field {
+    name: "virtual_analog"
+    number: 6
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "virtualAnalog"
+  }
+  field {
+    name: "physical_digital"
+    number: 7
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "physicalDigital"
+  }
+  field {
+    name: "physical_analog_routing"
+    number: 8
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "physicalAnalogRouting"
+  }
+  field {
+    name: "physical_execution_slots"
+    number: 9
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "physicalExecutionSlots"
+  }
+  field {
+    name: "topology_scan_supported"
+    number: 10
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "topologyScanSupported"
+  }
+  field {
+    name: "safety_gate_supported"
+    number: 11
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "safetyGateSupported"
+  }
+  field {
+    name: "guarded_run_supported"
+    number: 12
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "guardedRunSupported"
+  }
+  field {
+    name: "component_resolution_modes"
+    number: 13
+    label: LABEL_REPEATED
+    type: TYPE_STRING
+    json_name: "componentResolutionModes"
+  }
+  field {
+    name: "routing_resources"
+    number: 17
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.RoutingResource"
+    json_name: "routingResources"
+  }
+  field {
+    name: "hardware_rpc_version"
+    number: 18
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "hardwareRpcVersion"
+  }
+  field {
+    name: "fpga_protocol_version"
+    number: 19
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "fpgaProtocolVersion"
+  }
+  field {
+    name: "firmware_version"
+    number: 20
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "firmwareVersion"
+  }
+  field {
+    name: "hardware_profile_version"
+    number: 21
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "hardwareProfileVersion"
+  }
+  field {
+    name: "breadboards"
+    number: 22
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.Breadboard"
+    json_name: "breadboards"
+  }
+  field {
+    name: "instrument_capabilities"
+    number: 24
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.InstrumentCapabilities"
+    json_name: "instrumentCapabilities"
+  }
+  reserved_range {
+    start: 14
+    end: 15
+  }
+  reserved_range {
+    start: 15
+    end: 16
+  }
+  reserved_range {
+    start: 16
+    end: 17
+  }
+  reserved_range {
+    start: 23
+    end: 24
+  }
+  reserved_name: "logic_analyzer_channels"
+  reserved_name: "oscilloscope_channels"
+  reserved_name: "generator_channels"
+  reserved_name: "instruments"
+}
+message_type {
+  name: "PowerPolicy"
+  field {
+    name: "profile_id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "profileId"
+  }
+  field {
+    name: "guarded"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "guarded"
+  }
+}
+message_type {
+  name: "EndpointBinding"
+  field {
+    name: "endpoint_id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "endpointId"
+  }
+  field {
+    name: "node_id"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "nodeId"
+  }
+  field {
+    name: "role"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "role"
+  }
+}
+message_type {
+  name: "RoutingAllocation"
+  field {
+    name: "endpoint_id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "endpointId"
+  }
+  field {
+    name: "resource_id"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "resourceId"
+  }
+}
+message_type {
+  name: "InstrumentAllocation"
+  field {
+    name: "endpoint_id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "endpointId"
+  }
+  field {
+    name: "instrument"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "instrument"
+  }
+  field {
+    name: "channel"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "channel"
+  }
+}
+message_type {
+  name: "ClockConfiguration"
+  field {
+    name: "signal"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "signal"
+  }
+  field {
+    name: "period_ns"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "periodNs"
+  }
+  field {
+    name: "cycles"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "cycles"
+  }
+}
+message_type {
+  name: "GeneratorConfiguration"
+  field {
+    name: "channel"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "channel"
+  }
+  field {
+    name: "waveform"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "waveform"
+  }
+  field {
+    name: "frequency_hz"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    json_name: "frequencyHz"
+  }
+  field {
+    name: "amplitude_vpp"
+    number: 4
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    json_name: "amplitudeVpp"
+  }
+  field {
+    name: "offset_v"
+    number: 5
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    json_name: "offsetV"
+  }
+  field {
+    name: "phase_degrees"
+    number: 6
+    label: LABEL_OPTIONAL
+    type: TYPE_DOUBLE
+    oneof_index: 0
+    json_name: "phaseDegrees"
+    proto3_optional: true
+  }
+  field {
+    name: "enabled"
+    number: 7
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "enabled"
+  }
+  oneof_decl {
+    name: "_phase_degrees"
+  }
+}
+message_type {
+  name: "TriggerConfiguration"
+  field {
+    name: "signal"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "signal"
+  }
+  field {
+    name: "edge"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "edge"
+  }
+}
+message_type {
+  name: "CaptureConfiguration"
+  field {
+    name: "signals"
+    number: 1
+    label: LABEL_REPEATED
+    type: TYPE_STRING
+    json_name: "signals"
+  }
+  field {
+    name: "duration_ns"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "durationNs"
+  }
+  field {
+    name: "max_events"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    oneof_index: 0
+    json_name: "maxEvents"
+    proto3_optional: true
+  }
+  field {
+    name: "trigger"
+    number: 4
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.TriggerConfiguration"
+    oneof_index: 1
+    json_name: "trigger"
+    proto3_optional: true
+  }
+  oneof_decl {
+    name: "_max_events"
+  }
+  oneof_decl {
+    name: "_trigger"
+  }
+}
+message_type {
+  name: "TestVector"
+  field {
+    name: "time_ns"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_UINT32
+    json_name: "timeNs"
+  }
+  field {
+    name: "inputs"
+    number: 2
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.TestVector.InputsEntry"
+    json_name: "inputs"
+  }
+  nested_type {
+    name: "InputsEntry"
+    field {
+      name: "key"
+      number: 1
+      label: LABEL_OPTIONAL
+      type: TYPE_STRING
+      json_name: "key"
+    }
+    field {
+      name: "value"
+      number: 2
+      label: LABEL_OPTIONAL
+      type: TYPE_UINT32
+      json_name: "value"
+    }
+    options {
+      map_entry: true
+    }
+  }
+}
+message_type {
+  name: "RuntimeSafetyPolicy"
+  field {
+    name: "profile_id"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "profileId"
+  }
+  field {
+    name: "watchdog_required"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "watchdogRequired"
+  }
+}
+message_type {
+  name: "InstrumentationExecutionPlan"
+  field {
+    name: "schema_version"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "schemaVersion"
+  }
+  field {
+    name: "station_id"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "stationId"
+  }
+  field {
+    name: "experiment_id"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "experimentId"
+  }
+  field {
+    name: "power_policy"
+    number: 4
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.PowerPolicy"
+    json_name: "powerPolicy"
+  }
+  field {
+    name: "endpoint_bindings"
+    number: 5
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.EndpointBinding"
+    json_name: "endpointBindings"
+  }
+  field {
+    name: "routing_allocations"
+    number: 6
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.RoutingAllocation"
+    json_name: "routingAllocations"
+  }
+  field {
+    name: "instrument_allocations"
+    number: 7
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.InstrumentAllocation"
+    json_name: "instrumentAllocations"
+  }
+  field {
+    name: "clock_config"
+    number: 8
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.ClockConfiguration"
+    json_name: "clockConfig"
+  }
+  field {
+    name: "generator_config"
+    number: 9
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.GeneratorConfiguration"
+    json_name: "generatorConfig"
+  }
+  field {
+    name: "capture_config"
+    number: 10
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.CaptureConfiguration"
+    json_name: "captureConfig"
+  }
+  field {
+    name: "test_vectors"
+    number: 11
+    label: LABEL_REPEATED
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.TestVector"
+    json_name: "testVectors"
+  }
+  field {
+    name: "runtime_safety_policy"
+    number: 12
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.RuntimeSafetyPolicy"
+    json_name: "runtimeSafetyPolicy"
+  }
+}
+message_type {
+  name: "ExecutionDecision"
+  field {
+    name: "schema_version"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "schemaVersion"
+  }
+  field {
+    name: "decision"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "decision"
+  }
+  field {
+    name: "reasons"
+    number: 3
+    label: LABEL_REPEATED
+    type: TYPE_STRING
+    json_name: "reasons"
+  }
+}
+message_type {
+  name: "PrepareExecutionRequest"
+  field {
+    name: "target"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.Target"
+    json_name: "target"
+  }
+  field {
+    name: "plan"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.InstrumentationExecutionPlan"
+    json_name: "plan"
+  }
+  field {
+    name: "decision"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.ExecutionDecision"
+    json_name: "decision"
+  }
+}
+message_type {
+  name: "ConfigureInstrumentRequest"
+  field {
+    name: "target"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.Target"
+    json_name: "target"
+  }
+  field {
+    name: "instrument"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "instrument"
+  }
+  field {
+    name: "generator"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.GeneratorConfiguration"
+    json_name: "generator"
+  }
+  field {
+    name: "clock"
+    number: 4
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.ClockConfiguration"
+    json_name: "clock"
+  }
+  field {
+    name: "trigger"
+    number: 5
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.TriggerConfiguration"
+    json_name: "trigger"
+  }
+}
+message_type {
+  name: "ArmCaptureRequest"
+  field {
+    name: "target"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.Target"
+    json_name: "target"
+  }
+  field {
+    name: "configuration"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.CaptureConfiguration"
+    json_name: "configuration"
+  }
+}
+message_type {
+  name: "ConfigureVirtualRequest"
+  field {
+    name: "target"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_MESSAGE
+    type_name: ".cirnet.hardware.v2.Target"
+    json_name: "target"
+  }
+  field {
+    name: "design_graph_json"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_BYTES
+    json_name: "designGraphJson"
+  }
+}
+message_type {
+  name: "OperationReply"
+  field {
+    name: "accepted"
+    number: 1
+    label: LABEL_OPTIONAL
+    type: TYPE_BOOL
+    json_name: "accepted"
+  }
+  field {
+    name: "code"
+    number: 2
+    label: LABEL_OPTIONAL
+    type: TYPE_ENUM
+    type_name: ".cirnet.hardware.v2.ErrorCode"
+    json_name: "code"
+  }
+  field {
+    name: "state"
+    number: 3
+    label: LABEL_OPTIONAL
+    type: TYPE_STRING
+    json_name: "state"
+  }
+  field {
+    name: "result_json"
+    number: 4
+    label: LABEL_OPTIONAL
+    type: TYPE_BYTES
+    json_name: "resultJson"
+  }
+  field {
+    name: "capture_payload"
+    number: 5
+    label: LABEL_OPTIONAL
+    type: TYPE_BYTES
+    json_name: "capturePayload"
+  }
+}
+enum_type {
+  name: "ErrorCode"
+  value {
+    name: "OK"
+    number: 0
+  }
+  value {
+    name: "HARDWARE_UNAVAILABLE"
+    number: 1
+  }
+  value {
+    name: "INVALID_STATE"
+    number: 2
+  }
+  value {
+    name: "UNSAFE"
+    number: 3
+  }
+  value {
+    name: "SAFETY_INDETERMINATE"
+    number: 4
+  }
+  value {
+    name: "UNEXECUTABLE"
+    number: 5
+  }
+  value {
+    name: "RESOURCE_CONFLICT"
+    number: 6
+  }
+  value {
+    name: "PROTOCOL_MISMATCH"
+    number: 7
+  }
+  value {
+    name: "TIMEOUT"
+    number: 8
+  }
+  value {
+    name: "DRIVER_ERROR"
+    number: 9
+  }
+  value {
+    name: "NOT_IMPLEMENTED"
+    number: 10
+  }
+  value {
+    name: "INVALID_CONFIGURATION"
+    number: 11
+  }
+}
+service {
+  name: "HardwareService"
+  method {
+    name: "GetCapabilities"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.StationCapabilities"
+  }
+  method {
+    name: "EnterSafeState"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "ScanTopology"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "ReadRuntimeSafety"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "PrepareExecution"
+    input_type: ".cirnet.hardware.v2.PrepareExecutionRequest"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "ApplyRouting"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "GuardedPowerUp"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "ConfigureInstrument"
+    input_type: ".cirnet.hardware.v2.ConfigureInstrumentRequest"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "ConfigureVirtualCircuit"
+    input_type: ".cirnet.hardware.v2.ConfigureVirtualRequest"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "ArmCapture"
+    input_type: ".cirnet.hardware.v2.ArmCaptureRequest"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "StartExecution"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "StopExecution"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "ReadCapture"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+  method {
+    name: "Reset"
+    input_type: ".cirnet.hardware.v2.Target"
+    output_type: ".cirnet.hardware.v2.OperationReply"
+  }
+}
+syntax: "proto3"

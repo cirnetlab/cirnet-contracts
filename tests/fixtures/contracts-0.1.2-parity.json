@@ -1,0 +1,1606 @@
+{
+  "validation": {
+    "digital-zero": {
+      "value": {
+        "signal": "out",
+        "time_ns": 0,
+        "value": 0
+      }
+    },
+    "digital-one": {
+      "value": {
+        "signal": "out",
+        "time_ns": 0,
+        "value": 1
+      }
+    },
+    "digital-x": {
+      "value": {
+        "signal": "out",
+        "time_ns": 0,
+        "value": "X"
+      }
+    },
+    "digital-safe-integer-edge": {
+      "value": {
+        "signal": "out",
+        "time_ns": 9007199254740991,
+        "value": 0
+      }
+    },
+    "digital-bool-not-enum": {
+      "issue": {
+        "code": "SCHEMA_ENUM",
+        "path": "/value",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "digital-bool-not-time": {
+      "issue": {
+        "code": "SCHEMA_TYPE",
+        "path": "/time_ns",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "digital-numeric-string": {
+      "issue": {
+        "code": "SCHEMA_TYPE",
+        "path": "/time_ns",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "digital-null-time": {
+      "issue": {
+        "code": "SCHEMA_TYPE",
+        "path": "/time_ns",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "digital-extra-field": {
+      "issue": {
+        "code": "SCHEMA_ADDITIONALPROPERTIES",
+        "path": "",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "digital-unsafe-integer": {
+      "issue": {
+        "code": "SCHEMA_MAXIMUM",
+        "path": "/time_ns",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "digital-required-signal": {
+      "issue": {
+        "code": "SCHEMA_REQUIRED",
+        "path": "/signal",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "structural-preserves-legacy-large-integer": {
+      "value": {
+        "signal": "out",
+        "time_ns": 9007199254740992,
+        "value": 0
+      }
+    },
+    "clock-uint32-edge": {
+      "value": {
+        "signal": "CLK.OUT",
+        "period_ns": 4294967295,
+        "cycles": 1
+      }
+    },
+    "clock-uint32-overflow": {
+      "issue": {
+        "code": "SCHEMA_MAXIMUM",
+        "path": "/period_ns",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "clock-no-string-coercion": {
+      "issue": {
+        "code": "SCHEMA_TYPE",
+        "path": "/period_ns",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "clock-no-boolean-coercion": {
+      "issue": {
+        "code": "SCHEMA_TYPE",
+        "path": "/cycles",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "optional-binding-false-required": {
+      "value": {
+        "endpoint_id": "input",
+        "role": "INPUT_SOURCE",
+        "required": false
+      }
+    },
+    "binding-omitted": {
+      "value": {
+        "endpoint_id": "input",
+        "role": "INPUT_SOURCE"
+      }
+    },
+    "binding-null-is-not-omission": {
+      "issue": {
+        "code": "SCHEMA_TYPE",
+        "path": "/node_id",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "binding-forms-conflict": {
+      "issue": {
+        "code": "ENDPOINT_BINDING_CONFLICT",
+        "path": "",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "opaque-unknown": {
+      "value": {
+        "component_id": "U1",
+        "kind": "OPAQUE_PHYSICAL_COMPONENT",
+        "identity": "UNKNOWN",
+        "node_ids": [
+          "N1"
+        ]
+      }
+    },
+    "opaque-must-not-guess-identity": {
+      "issue": {
+        "code": "SCHEMA_CONST",
+        "path": "/identity",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "duplicate-observed-pins": {
+      "issue": {
+        "code": "DUPLICATE_ID",
+        "path": "/pins/1/pin_id",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "assignment-empty-endpoints": {
+      "value": {
+        "schema_version": "1.0",
+        "assignment_id": "a",
+        "title": "A",
+        "lab_endpoints": [],
+        "assessment_policy": "FUNCTIONAL_ONLY"
+      }
+    },
+    "duplicate-assignment-endpoints": {
+      "issue": {
+        "code": "DUPLICATE_ID",
+        "path": "/lab_endpoints/1/endpoint_id",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "capture-valid-zero-sample": {
+      "value": {
+        "schema_version": "1.0",
+        "capture_id": "capture",
+        "source": "simulation",
+        "instrument": "logic_analyzer",
+        "encoding": "digital_events",
+        "available": true,
+        "duration_ns": 10,
+        "sample_count": 1,
+        "samples": [
+          {
+            "signal": "out",
+            "time_ns": 0,
+            "value": 0
+          }
+        ]
+      }
+    },
+    "capture-count-mismatch": {
+      "issue": {
+        "code": "CAPTURE_COUNT_MISMATCH",
+        "path": "/sample_count",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "capture-time-outside-duration": {
+      "issue": {
+        "code": "CAPTURE_TIME_OUTSIDE_DURATION",
+        "path": "/samples/0/time_ns",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "capture-unavailable-null-reference": {
+      "value": {
+        "schema_version": "1.0",
+        "capture_id": "capture",
+        "source": "simulation",
+        "instrument": "logic_analyzer",
+        "encoding": "digital_events",
+        "available": false,
+        "duration_ns": 0,
+        "sample_count": 0,
+        "channel_count": 0,
+        "payload_ref": null,
+        "payload_byte_count": 0,
+        "sha256": null,
+        "signals": [],
+        "timestamp_ns": "9007199254740992000"
+      }
+    },
+    "capture-available-without-payload": {
+      "issue": {
+        "code": "CAPTURE_AVAILABILITY_MISMATCH",
+        "path": "/available",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "capture-wrong-instrument-encoding": {
+      "issue": {
+        "code": "CAPTURE_ENCODING_MISMATCH",
+        "path": "/encoding",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "capture-channel-count-mismatch": {
+      "issue": {
+        "code": "CAPTURE_CHANNEL_MISMATCH",
+        "path": "/signals",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "record-null-optionals-zero-revision": {
+      "value": {
+        "schema_version": "1.0",
+        "experiment_id": "e",
+        "circuit_id": "c",
+        "station_id": "s",
+        "assignment_id": null,
+        "mode": "simulation",
+        "state": "CREATED",
+        "state_history": [
+          "CREATED"
+        ],
+        "revision": 0,
+        "execution_decision": null,
+        "safety_verification": null,
+        "topology_verification": null,
+        "functional_verification": {
+          "schema_version": "1.0",
+          "status": "NOT_EVALUATED",
+          "issues": []
+        },
+        "capture": null,
+        "error_code": null,
+        "queue_position": null,
+        "lease_expires_at": null
+      }
+    },
+    "record-history-current-state-mismatch": {
+      "issue": {
+        "code": "STATE_HISTORY_MISMATCH",
+        "path": "/state_history",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "record-revision-bool": {
+      "issue": {
+        "code": "SCHEMA_TYPE",
+        "path": "/revision",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "record-negative-revision": {
+      "issue": {
+        "code": "SCHEMA_MINIMUM",
+        "path": "/revision",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "record-history-empty": {
+      "issue": {
+        "code": "SCHEMA_MINITEMS",
+        "path": "/state_history",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "observed-evidence-valid": {
+      "value": {
+        "schema_version": "1.0",
+        "scan_id": "scan",
+        "nodes": [
+          {
+            "node_id": "N1"
+          }
+        ],
+        "connections": [],
+        "components": [
+          {
+            "component_id": "U1",
+            "kind": "OPAQUE_PHYSICAL_COMPONENT",
+            "identity": "UNKNOWN",
+            "node_ids": [
+              "N1"
+            ]
+          }
+        ],
+        "ambiguities": []
+      }
+    },
+    "observed-evidence-dangling-pin": {
+      "issue": {
+        "code": "INVALID_NODE_REFERENCE",
+        "path": "/components/0",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "observed-evidence-duplicate-node": {
+      "issue": {
+        "code": "DUPLICATE_ID",
+        "path": "/nodes/1/node_id",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "generator-false-output-zero-amplitude": {
+      "value": {
+        "channel": 1,
+        "waveform": "SINE",
+        "frequency_hz": 1000,
+        "amplitude_vpp": 0,
+        "offset_v": 0,
+        "enabled": false
+      }
+    },
+    "generator-channel-bool-not-enum": {
+      "issue": {
+        "code": "SCHEMA_ENUM",
+        "path": "/channel",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "memory-depth-matches-data": {
+      "value": {
+        "version": "1.0",
+        "word_bits": 8,
+        "depth": 2,
+        "data": [
+          0,
+          255
+        ]
+      }
+    },
+    "memory-depth-data-mismatch": {
+      "issue": {
+        "code": "MEMORY_DEPTH_MISMATCH",
+        "path": "/data",
+        "profile": "structural",
+        "severity": "error"
+      }
+    },
+    "internal-station-capabilities": {
+      "value": {
+        "schema_version": "1.0",
+        "station_id": "v1",
+        "mode": "simulation",
+        "available": true,
+        "virtual_digital": true,
+        "virtual_analog": false,
+        "physical_digital": false,
+        "physical_analog_routing": false,
+        "physical_execution_slots": 0,
+        "topology_scan_supported": false,
+        "safety_gate_supported": false,
+        "guarded_run_supported": false,
+        "component_resolution_modes": [],
+        "hardware_rpc_version": "2.0",
+        "fpga_protocol_version": "UNAVAILABLE",
+        "firmware_version": "virtual-events-1.0",
+        "hardware_profile_version": "virtual-1.0",
+        "instrument_capabilities": {
+          "logic_analyzer": {
+            "channels": 4,
+            "runtime_reconfiguration_supported": false
+          },
+          "oscilloscope": {
+            "channels": 0,
+            "runtime_reconfiguration_supported": false
+          },
+          "generator": {
+            "channels": 0,
+            "runtime_reconfiguration_supported": false
+          }
+        },
+        "routing_resources": [
+          {
+            "resource_id": "internal_route",
+            "roles": [
+              "CLOCK"
+            ],
+            "node_ids": [
+              "internal_node"
+            ]
+          }
+        ]
+      }
+    },
+    "internal-station-invalid-generator-limits": {
+      "issue": {
+        "code": "PROFILE_LIMIT_ORDER",
+        "path": "/instrument_capabilities/generator/frequency_min_hz",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "public-station-capabilities": {
+      "value": {
+        "schema_version": "1.0",
+        "station_id": "v1",
+        "mode": "simulation",
+        "available": true,
+        "virtual_digital": true,
+        "virtual_analog": false,
+        "physical_digital": false,
+        "physical_analog_routing": false,
+        "physical_execution_slots": 0,
+        "topology_scan_supported": false,
+        "safety_gate_supported": false,
+        "guarded_run_supported": false,
+        "component_resolution_modes": [],
+        "hardware_rpc_version": "2.0",
+        "fpga_protocol_version": "UNAVAILABLE",
+        "firmware_version": "virtual-events-1.0",
+        "hardware_profile_version": "virtual-1.0",
+        "instrument_capabilities": {
+          "logic_analyzer": {
+            "channels": 4,
+            "runtime_reconfiguration_supported": false
+          },
+          "oscilloscope": {
+            "channels": 0,
+            "runtime_reconfiguration_supported": false
+          },
+          "generator": {
+            "channels": 0,
+            "runtime_reconfiguration_supported": false
+          }
+        }
+      }
+    },
+    "public-station-invalid-generator-limits": {
+      "issue": {
+        "code": "PROFILE_LIMIT_ORDER",
+        "path": "/instrument_capabilities/generator/frequency_min_hz",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "public-station-routing-resources-rejected": {
+      "issue": {
+        "code": "SCHEMA_ADDITIONALPROPERTIES",
+        "path": "",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "station-descriptor-identity-mismatch": {
+      "issue": {
+        "code": "STATION_IDENTITY_MISMATCH",
+        "path": "/capabilities",
+        "profile": "transport",
+        "severity": "error"
+      }
+    },
+    "operation-nested-experiment-history-mismatch": {
+      "issue": {
+        "code": "STATE_HISTORY_MISMATCH",
+        "path": "/experiment/state_history",
+        "profile": "transport",
+        "severity": "error"
+      }
+    }
+  },
+  "capture": {
+    "v1-unicode-channel-order-exact-uint53-X": {
+      "decoded": {
+        "samples": [
+          {
+            "signal": "é",
+            "time_ns": 0,
+            "value": "X"
+          },
+          {
+            "signal": "a",
+            "time_ns": 9007199254740991,
+            "value": 1
+          },
+          {
+            "signal": "a",
+            "time_ns": 3,
+            "value": 0
+          },
+          {
+            "signal": "é",
+            "time_ns": 3,
+            "value": 1
+          }
+        ],
+        "duration_ns": 9007199254740991
+      }
+    },
+    "v1-empty": {
+      "decoded": {
+        "samples": [],
+        "duration_ns": 0
+      }
+    },
+    "v1-one-event": {
+      "decoded": {
+        "samples": [
+          {
+            "signal": "x",
+            "time_ns": 8,
+            "value": 1
+          }
+        ],
+        "duration_ns": 20
+      }
+    },
+    "v1-duplicate-channel": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-empty-channel": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-extra-member": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-boolean-count": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-count-mismatch": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-unsafe-duration": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-lexical-sample_count-1e0": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-lexical-sample_count-1.0": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-lexical-sample_count-1.0000000000000000001": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-lexical-duration_ns-20e0": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-lexical-duration_ns-20.0000000000000000001": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-channel-outside-table": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-time-outside-duration": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-value-outside-enum": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-bad-magic": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-unknown-version": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-truncated": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-trailing-byte": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-header-over-bound": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-invalid-utf8": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-BOM": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-duplicate-key": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v1-header-null": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-int16-interleaved-negative-calibration": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              },
+              {
+                "id": "CH2",
+                "unit": "V",
+                "scale": -0.5,
+                "offset": 2,
+                "range_min": -20000,
+                "range_max": 20000,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "VALID",
+              "termination_reason": "COMPLETE",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 768,
+          "sha256": "d325d23a13a96aff6a7e9eb60a2fa4fbf0e02488c64d36cfea7e9fd96208e9d5"
+        },
+        "samples": [
+          -32768,
+          32767,
+          0,
+          -2,
+          32767,
+          0
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597764222979369",
+          3
+        ],
+        [
+          "27021597766222979369",
+          3
+        ],
+        [
+          "27021597768222979369",
+          3
+        ]
+      ]
+    },
+    "v2-uint16-extrema": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "UINT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "VALID",
+              "termination_reason": "COMPLETE",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 645,
+          "sha256": "2f3804af5b71b75d40bcea6fd5ec8b2350a76c979f37ed886bfd5cde98bb70c1"
+        },
+        "samples": [
+          0,
+          65535,
+          42
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597764222979369",
+          3
+        ],
+        [
+          "27021597766222979369",
+          3
+        ],
+        [
+          "27021597768222979369",
+          3
+        ]
+      ]
+    },
+    "v2-float32-extrema": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "FLOAT32",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 1,
+                "offset": 0,
+                "range_min": -3.5e+38,
+                "range_max": 3.5e+38,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "VALID",
+              "termination_reason": "COMPLETE",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 659,
+          "sha256": "4e827ee0757f56cadec093f4414d5695e907822f5dac2ec180a2e4be3858c7ee"
+        },
+        "samples": [
+          -3.4028234663852886e+38,
+          0.125,
+          3.4028234663852886e+38
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597764222979369",
+          3
+        ],
+        [
+          "27021597766222979369",
+          3
+        ],
+        [
+          "27021597768222979369",
+          3
+        ]
+      ]
+    },
+    "v2-empty": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 0,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "VALID",
+              "termination_reason": "COMPLETE",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 638,
+          "sha256": "23efed9a4b7b2561e041b6c45b0f4d35f4e500f4eeaf7aed0165c06cc9640165"
+        },
+        "samples": []
+      },
+      "frameTimes": []
+    },
+    "v2-loss-gaps-invalid-range-clipped": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "LOSS",
+              "termination_reason": "TRANSPORT_LOSS",
+              "lost_frames": 5,
+              "gaps": [
+                {
+                  "at_frame": 0,
+                  "missing_frames": 2
+                },
+                {
+                  "at_frame": 2,
+                  "missing_frames": 3
+                }
+              ],
+              "invalid_ranges": [
+                {
+                  "first_frame": 1,
+                  "frame_count": 1
+                }
+              ],
+              "clipped_channels": [
+                "CH1"
+              ]
+            }
+          },
+          "payload_byte_count": 754,
+          "sha256": "d79ca61007bc2709cec963e1836c8bd3b393eb556c8a6846df684fa0aced674c"
+        },
+        "samples": [
+          10,
+          32767,
+          20
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597768222979369",
+          3
+        ],
+        [
+          "27021597770222979369",
+          3
+        ],
+        [
+          "27021597778222979369",
+          3
+        ]
+      ]
+    },
+    "v2-partial-stopped": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "PARTIAL",
+              "termination_reason": "STOPPED",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 645,
+          "sha256": "5b3d3ebc822cd2411061e9d3c4090bfb6aa8efab790190ef9278db4958640bb5"
+        },
+        "samples": [
+          1,
+          2,
+          3
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597764222979369",
+          3
+        ],
+        [
+          "27021597766222979369",
+          3
+        ],
+        [
+          "27021597768222979369",
+          3
+        ]
+      ]
+    },
+    "v2-partial-invalid-range": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "PARTIAL",
+              "termination_reason": "COMPLETE",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [
+                {
+                  "first_frame": 0,
+                  "frame_count": 3
+                }
+              ],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 679,
+          "sha256": "3ef75a4260431fbe98d4685f01574d9e0ee6f2cfba563fe43b966494ec4f4fe4"
+        },
+        "samples": [
+          1,
+          2,
+          3
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597764222979369",
+          3
+        ],
+        [
+          "27021597766222979369",
+          3
+        ],
+        [
+          "27021597768222979369",
+          3
+        ]
+      ]
+    },
+    "v2-invalid-evidence-retained": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "unix_epoch",
+              "clock_id": null,
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "INVALID",
+              "termination_reason": "DRIVER_ERROR",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 650,
+          "sha256": "d5e1483d3a521c9e23c51f911394308435bd7dbac3d07f26bc5e359de2c00eb5"
+        },
+        "samples": [
+          1,
+          2,
+          3
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597764222979369",
+          3
+        ],
+        [
+          "27021597766222979369",
+          3
+        ],
+        [
+          "27021597768222979369",
+          3
+        ]
+      ]
+    },
+    "v2-capture-relative-clock": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "capture_relative",
+              "clock_id": null,
+              "anchor_ns": "0",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "VALID",
+              "termination_reason": "COMPLETE",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 632,
+          "sha256": "dcfbc9be2c7501dcd5d308160c6d676a9a221e4cca407114c9094ca3abb2f778"
+        },
+        "samples": [
+          1,
+          2,
+          3
+        ]
+      },
+      "frameTimes": [
+        [
+          "0",
+          3
+        ],
+        [
+          "2000000000",
+          3
+        ],
+        [
+          "4000000000",
+          3
+        ]
+      ]
+    },
+    "v2-device-clock-is-not-UTC": {
+      "decoded": {
+        "descriptor": {
+          "schema_version": "2.0",
+          "header": {
+            "format": "NCAP_SAMPLED_V2",
+            "capture_id": "golden-v2",
+            "generation": 7,
+            "source": "simulation",
+            "provenance": "synthetic_fixture",
+            "instrument": "oscilloscope",
+            "encoding": "INT16",
+            "byte_order": "little",
+            "layout": "frame_interleaved",
+            "frame_count": 3,
+            "channels": [
+              {
+                "id": "CH1",
+                "unit": "V",
+                "scale": 0.01,
+                "offset": 0,
+                "range_min": -10,
+                "range_max": 10,
+                "calibration_id": "fixture-cal-1"
+              }
+            ],
+            "time_axis": {
+              "reference": "device_clock",
+              "clock_id": "synthetic-device-clock",
+              "anchor_ns": "9007199254740993123",
+              "sample_rate_hz": {
+                "numerator": 3,
+                "denominator": 2
+              }
+            },
+            "quality": {
+              "status": "VALID",
+              "termination_reason": "COMPLETE",
+              "lost_frames": 0,
+              "gaps": [],
+              "invalid_ranges": [],
+              "clipped_channels": []
+            }
+          },
+          "payload_byte_count": 666,
+          "sha256": "1877e3fc567c66edf56e4bb0cbff7b3e411e95fb089d92117775186df7956590"
+        },
+        "samples": [
+          1,
+          2,
+          3
+        ]
+      },
+      "frameTimes": [
+        [
+          "27021597764222979369",
+          3
+        ],
+        [
+          "27021597766222979369",
+          3
+        ],
+        [
+          "27021597768222979369",
+          3
+        ]
+      ]
+    },
+    "v2-range-order": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-zero-scale": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-calibration-overflow": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-duplicate-channel": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-wrong-byte-order": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-unknown-encoding": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-interleave-mismatch": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-lost-count-mismatch": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-gap-beyond-data": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-invalid-range-overlap": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-invalid-range-outside": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-clipped-unknown-channel": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-valid-but-stopped": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-loss-without-frames": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-partial-without-evidence": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-wrong-provenance": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-zero-rate": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-anchor-leading-zero": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-extra-header-field": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-boolean-generation": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-unsafe-integer-calibration-token": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-device-clock-without-id": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-epoch-with-device-id": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-relative-nonzero-anchor": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-unit-trailing-LF": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-unit-NUL": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-unit-DEL": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-channel-id-trailing-LF": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-calibration-id-trailing-LF": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-capture-id-trailing-LF": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-anchor-trailing-LF": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-truncated": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-trailing-byte": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-wrong-version": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-duplicate-nested-key": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-integer-exponent": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-integer-decimal": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-lossy-calibration": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-UTF8-BOM": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-sha-mismatch": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-descriptor-generation-mismatch": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-float-NaN": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-float-positive-infinity": {
+      "error": "CAPTURE_CORRUPT"
+    },
+    "v2-float-negative-infinity": {
+      "error": "CAPTURE_CORRUPT"
+    }
+  },
+  "binary64": {
+    "1.0000000000000000001": {
+      "value": {
+        "signal": "out",
+        "time_ns": 1.0,
+        "value": 0
+      }
+    },
+    "1e-400": {
+      "value": {
+        "signal": "out",
+        "time_ns": 0.0,
+        "value": 0
+      }
+    },
+    "1.01e-9223372036854775807": {
+      "value": {
+        "signal": "out",
+        "time_ns": 0.0,
+        "value": 0
+      }
+    },
+    "9007199254740991.5": {
+      "issue": {
+        "code": "SCHEMA_MAXIMUM",
+        "path": "/time_ns"
+      }
+    }
+  },
+  "terminalLineFeed": {
+    "LabEndpoint": {
+      "input": {
+        "endpoint_id": "input\n",
+        "role": "INPUT_SOURCE"
+      },
+      "value": {
+        "endpoint_id": "input\n",
+        "role": "INPUT_SOURCE"
+      }
+    },
+    "TestVector": {
+      "input": {
+        "time_ns": 0,
+        "inputs": {
+          "input\n": 1
+        }
+      },
+      "value": {
+        "time_ns": 0,
+        "inputs": {
+          "input\n": 1
+        }
+      }
+    },
+    "LabelPropertiesV1": {
+      "input": {
+        "version": 1,
+        "text": "Hello",
+        "fontSizeMm": 3,
+        "textColor": "#20252A\n",
+        "backgroundColor": "#FAFAF7",
+        "paddingMm": 1
+      },
+      "value": {
+        "version": 1,
+        "text": "Hello",
+        "fontSizeMm": 3,
+        "textColor": "#20252A\n",
+        "backgroundColor": "#FAFAF7",
+        "paddingMm": 1
+      }
+    }
+  },
+  "flexibleWorldPoseOverflow": {
+    "axial-horizontal": {
+      "code": "INVALID_REFERENCE_DESIGN",
+      "path": "/reference_design_graph",
+      "severity": "error",
+      "profile": "transport",
+      "message": "Physical world pose is outside supported numerical bounds"
+    },
+    "sealed-generic_resistor-11": {
+      "code": "INVALID_REFERENCE_DESIGN",
+      "path": "/reference_design_graph",
+      "severity": "error",
+      "profile": "transport",
+      "message": "Physical world pose is outside supported numerical bounds"
+    }
+  },
+  "endpointFirstIssue": {
+    "structural": {
+      "endpoint_id": {
+        "input": {
+          "endpoint_id": "!"
+        },
+        "issue": {
+          "code": "SCHEMA_PATTERN",
+          "path": "/endpoint_id"
+        }
+      },
+      "channel": {
+        "input": {
+          "channel": 0
+        },
+        "issue": {
+          "code": "SCHEMA_MINIMUM",
+          "path": "/channel"
+        }
+      }
+    },
+    "transport": {
+      "endpoint_id": {
+        "input": {
+          "endpoint_id": "!"
+        },
+        "issue": {
+          "code": "SCHEMA_PATTERN",
+          "path": "/endpoint_id"
+        }
+      },
+      "channel": {
+        "input": {
+          "channel": 0
+        },
+        "issue": {
+          "code": "SCHEMA_MINIMUM",
+          "path": "/channel"
+        }
+      }
+    }
+  }
+}

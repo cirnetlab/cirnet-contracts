@@ -1,0 +1,97 @@
+name: Windows native Contracts
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      retain_candidate:
+        description: Retain verified development artifacts for an integration handoff
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14.4'
+      - name: Prepare pinned tools and external outputs
+        env:
+          CIRNET_ARTIFACTS_DIR: ${{ runner.temp }}/contracts-next
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $pin = [regex]::Match((Get-Content -Raw rust-toolchain.toml), '(?m)^channel\s*=\s*"([^"]+)"').Groups[1].Value
+          if (!$pin) { throw 'Missing Rust toolchain pin' }
+          rustup toolchain install $pin --profile minimal --component rustfmt --component clippy
+          $session = node tools/artifact-paths/artifact-paths.mjs
+          if (!$session) { throw 'Missing external artifact session' }
+          "CIRNET_ARTIFACTS_SESSION=$session" >> $env:GITHUB_ENV
+          "CARGO_TARGET_DIR=$session/cargo-target" >> $env:GITHUB_ENV
+          "TMP=$session" >> $env:GITHUB_ENV
+          "TEMP=$session" >> $env:GITHUB_ENV
+          "TMPDIR=$session" >> $env:GITHUB_ENV
+          "npm_config_cache=$session/npm-cache" >> $env:GITHUB_ENV
+          "CIRNET_SDK_NODE_TOOLS=$session/node-tools" >> $env:GITHUB_ENV
+          "CIRNET_SDK_TEST_OUTPUT=$session/sdk-tests" >> $env:GITHUB_ENV
+          $allocator = [uri]::new((Resolve-Path tools/artifact-paths/artifact-paths.mjs).Path).AbsoluteUri
+          "CIRNET_ARTIFACT_PATHS_MODULE=$allocator" >> $env:GITHUB_ENV
+      - name: Verify Rust and regenerate SDK fixtures
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          cargo fmt --all --check
+          cargo clippy --locked --all-targets
+          cargo test --locked
+          New-Item -ItemType Directory -Path $env:CIRNET_SDK_NODE_TOOLS, $env:CIRNET_SDK_TEST_OUTPUT | Out-Null
+          Copy-Item packages/public-sdk/package.json, packages/public-sdk/package-lock.json $env:CIRNET_SDK_NODE_TOOLS
+          npm.cmd --prefix $env:CIRNET_SDK_NODE_TOOLS ci --no-audit --no-fund
+          cargo test --locked --test generator_parity -- --ignored
+      - name: Verify the development allocator and Python bridge
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $env:ALLOCATOR_TEST_SOURCE = $env:GITHUB_WORKSPACE
+          $env:ALLOCATOR_TEST_SCRATCH = Join-Path $env:CIRNET_ARTIFACTS_SESSION 'allocator-tests'
+          $env:PYTHONPATH = Join-Path $env:GITHUB_WORKSPACE 'tools/artifact-paths'
+          node --test tools/artifact-paths/test/artifact-paths.test.mjs
+          python -B -m unittest discover -s tools/artifact-paths/test -p test_python_bridge.py
+      - name: Verify the native binding against frozen Contracts outcomes
+        run: ./scripts/test-native-parity.ps1
+      - name: Build and verify the native bundle, crate and SDK
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          $bundle = Join-Path $env:CIRNET_ARTIFACTS_SESSION 'contracts-native'
+          $projection = Join-Path $env:CIRNET_ARTIFACTS_SESSION 'sdk-projection'
+          $sdk = Join-Path $env:CIRNET_ARTIFACTS_SESSION 'sdk-pack'
+          node scripts/package-native.mjs $bundle
+          $receipt = Get-Content -Raw (Join-Path $bundle 'contracts-native-manifest.json') | ConvertFrom-Json
+          node scripts/check-native-package.mjs $bundle (Join-Path $env:CARGO_TARGET_DIR ('package/' + $receipt.crate.filename))
+          & (Join-Path $bundle 'bin/cirnet-contracts.exe') generate-sdk $env:GITHUB_WORKSPACE $projection $env:CIRNET_SDK_NODE_TOOLS
+          node scripts/check_public_sdk.mjs --source (Join-Path $projection 'contracts/browser') --node-tools $env:CIRNET_SDK_NODE_TOOLS --output $sdk
+          npm.cmd pack ./tools/artifact-paths --ignore-scripts --pack-destination $sdk
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_dispatch' && inputs.retain_candidate
+        with:
+          name: contracts-next-native-windows-x64
+          path: |
+            ${{ env.CIRNET_ARTIFACTS_SESSION }}/contracts-native
+            ${{ env.CARGO_TARGET_DIR }}/package/cirnet-contracts-native-*.crate
+            ${{ env.CIRNET_ARTIFACTS_SESSION }}/sdk-pack/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+      - name: Clean the owned session
+        if: always() && env.CIRNET_ARTIFACTS_SESSION != ''
+        run: node tools/artifact-paths/artifact-paths.mjs --cleanup $env:CIRNET_ARTIFACTS_SESSION
