@@ -24,7 +24,7 @@ Từ checkout Contracts, dùng Windows PowerShell 7, CPython 3.14.4 x64 và bộ
 
 ## Kiểm tra công cụ cấp phát dành cho phát triển
 
-Workflow Windows cũng chạy kiểm thử công cụ cấp phát Node và cầu nối Python. Đặt `ALLOCATOR_TEST_SOURCE` thành checkout Next, `ALLOCATOR_TEST_SCRATCH` thành thư mục trong phiên thuộc sở hữu và `PYTHONPATH` thành đường dẫn tuyệt đối của `tools/artifact-paths` để chạy các kiểm tra sau tại máy cục bộ:
+Workflow Windows cũng chạy kiểm thử công cụ cấp phát Node và cầu nối Python. Đặt `ALLOCATOR_TEST_SOURCE` thành checkout Contracts, `ALLOCATOR_TEST_SCRATCH` thành thư mục trong phiên thuộc sở hữu và `PYTHONPATH` thành đường dẫn tuyệt đối của `tools/artifact-paths` để chạy các kiểm tra sau tại máy cục bộ:
 
 ~~~powershell
 node --test tools/artifact-paths/test/artifact-paths.test.mjs

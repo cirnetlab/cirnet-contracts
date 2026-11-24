@@ -4,7 +4,7 @@ Public CIRNET DTOs, operation metadata, capture-layout constants, precompiled
 offline structural/editor/transport validators, catalog projections and fixtures.
 The current source builds SDK 0.3.0-dev.1. For an already published system, use the
 archive and SHA-256 selected by that system's manifest.
-The source repository is [cirnetlab/cirnet-contracts-next](https://github.com/cirnetlab/cirnet-contracts-next).
+The source repository is [cirnetlab/cirnet-contracts](https://github.com/cirnetlab/cirnet-contracts).
 Previously published archives retain their original package name and digest.
 
 Use the root exports for DTO types and metadata, `./validators` for transport,

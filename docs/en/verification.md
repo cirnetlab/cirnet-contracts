@@ -24,7 +24,7 @@ The 146 cases cover validation profiles, numeric boundaries, NCAP decoding and e
 
 ## Check the development allocator
 
-The Windows workflow also runs the Node allocator and Python bridge tests. Set `ALLOCATOR_TEST_SOURCE` to the Next checkout, `ALLOCATOR_TEST_SCRATCH` to a directory in the owned session and `PYTHONPATH` to the absolute `tools/artifact-paths` directory to run these checks locally:
+The Windows workflow also runs the Node allocator and Python bridge tests. Set `ALLOCATOR_TEST_SOURCE` to the Contracts checkout, `ALLOCATOR_TEST_SCRATCH` to a directory in the owned session and `PYTHONPATH` to the absolute `tools/artifact-paths` directory to run these checks locally:
 
 ~~~powershell
 node --test tools/artifact-paths/test/artifact-paths.test.mjs
