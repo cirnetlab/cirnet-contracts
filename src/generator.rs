@@ -56,8 +56,8 @@ impl Entry {
     }
 
     fn native_source_path(&self) -> &str {
-        // The frozen Python registry names its implementation. The native
-        // binding is generated from the owner-maintained NCAP wire layout.
+        // Older source roots name the Python codec in their manifest.
+        // Resolve those entries to the canonical NCAP layout as well.
         if self.id == "NcapV1" && self.kind == "binary" && self.path == "contracts/capture_codec.py"
         {
             "contracts/capture/layout.json"

@@ -150,8 +150,8 @@ pub(super) fn project(
         boards_bytes,
     );
 
-    // The source fingerprint includes both canonical Device Library inputs and
-    // the legacy manifest's derived registry paths.
+    // The source fingerprint includes the Device Library inputs and the
+    // generated runtime catalogs registered in the manifest.
     let [physical_parts, signal_ports] = PROJECTED_CATALOGS;
     artifacts.insert(physical_parts.into(), parts_bytes);
     add_json(artifacts, signal_ports, &domains, false)?;

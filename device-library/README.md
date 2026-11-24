@@ -4,9 +4,10 @@ Declarative metadata for virtual and physical devices.
 
 This folder separates legacy logical editor tools from selected physical parts. Physical pin numbers, package dimensions, lead profiles, internal contacts and model support are recorded for exact variants with source documents.
 
-The source files here are the only editable catalog authority. The packaged
-`contracts/catalog-source` mirror and browser projections are generated together;
-installed wheels read that immutable mirror without a source checkout.
+The source files here are the editable device catalog authority. The native
+generator reads this directory and writes the runtime catalog and browser
+projections. The [historical package mirror](../contracts/catalog-source/README.md)
+records the layout used by installed Python wheels.
 
 ## Phase 2 functional editor catalog
 

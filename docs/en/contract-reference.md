@@ -31,8 +31,15 @@ CircuitGraph, assignment, Lab, RPC, NCAP and FPGA versions evolve independently 
 
 The `cirnet-contracts-native` crate resolves both schema URI hosts offline from an explicit source root. The 0.3.0-dev.1 build exposes the canonical Hardware RPC descriptor. Its NCAP module returns sampled frame time as an exact decimal numerator and integer denominator. Input strings use Unicode scalar values. [Build, CLI and parity guide](native.md)
 
-## Resource ownership
+## Repository paths
 
-- [Device Library](../../device-library/README.md) is the editable catalog source. Generation prepares the `contracts/catalog-source/` package mirror and the catalog projections together. Installed wheels read that mirror.
-- [Public SDK resources](../../packages/public-sdk/README.md) include public validators, operations and fixtures. `contracts/browser/artifacts.json` maps legacy snapshot paths to the installed resources exposed by `contracts.resources.generated_artifacts()`. Consumers take these artifacts from Contracts.
-- [Remote's OpenAPI handoff](../../contracts/api/README.md) comes from the FastAPI operation registrations. `contracts/fingerprints.json` records separate canonical-source, public-schema and OpenAPI fingerprints. The release manifest records distribution digests.
+| Path | Responsibility |
+| --- | --- |
+| [`contracts/`](../../contracts/README.md) | Canonical schema families, validation profiles, Hardware RPC protobuf and NCAP layout. The active resource manifest registers source and projection paths. The checked-in OpenAPI handoff preserves the published FastAPI profile. Remote supplies its exact export for each native SDK build. |
+| [`device-library/`](../../device-library/README.md) and [`contracts/design-models/`](../../contracts/design-models/README.md) | Edit device definitions in Device Library and shared topology and mechanics in design models. The native generator projects physical parts and signal ports into the runtime catalog paths under `contracts/design-models/` and publishes browser catalogs in `contracts/browser/data/`. The [catalog-source mirror](../../contracts/catalog-source/README.md) records the historical Python package layout. |
+| `src/` and `build.rs` | Rust validation, NCAP codecs, SDK generation and the CLI. The Cargo build compiles the canonical RPC proto into Prost types and an embedded descriptor in Cargo's output directory. |
+| `contracts/browser/` and [`packages/public-sdk/`](../../packages/public-sdk/README.md) | Checked-in browser projections provide comparison inputs. Native generation writes a fresh browser projection from canonical sources and the selected OpenAPI export. The npm package builds from that projection. `contracts/browser/artifacts.json` documents the historical mapping of copied paths and Python package resources. |
+| `contracts/codegen/`, `scripts/` and [`tools/artifact-paths/`](../../tools/artifact-paths/README.md) | The Node emitter generates TypeScript and precompiled validators from the Rust generator's bundles. The scripts build and check the native and npm packages. The allocator is a separate development package for external outputs. [Build and verification commands](native.md) |
+| `contracts/fixtures/`, `contracts/design-models/fixtures/` and [`tests/fixtures/`](../../tests/fixtures/README.md) | Contract conformance inputs feed native tests and selected SDK fixtures. The test fixture directory holds parity oracles and historical browser evidence. Frozen schema and wire anchors live under [`contracts/compatibility/`](../../contracts/compatibility/README.md). |
+
+The tracked `contracts/fingerprints.json` preserves the historical fingerprint record. Each native generation writes its own canonical-source, public-schema and normalized OpenAPI fingerprints to the output tree. The release manifest records distribution digests. [Release and OpenAPI identities](api/compatibility.md#release-and-openapi-identities)

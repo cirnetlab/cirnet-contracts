@@ -31,8 +31,15 @@ Phiên bản CircuitGraph, Assignment, Lab, RPC, NCAP và FPGA độc lập vớ
 
 Crate `cirnet-contracts-native` phân giải ngoại tuyến cả hai host URI của schema từ thư mục nguồn được chỉ định. Bản build 0.3.0-dev.1 xuất descriptor Hardware RPC chuẩn. Module NCAP trả thời điểm frame lấy mẫu dưới dạng tử số thập phân chính xác và mẫu số nguyên. Chuỗi đầu vào dùng các giá trị vô hướng Unicode. [Hướng dẫn build, CLI và đối chứng](native.md)
 
-## Nguồn quản lý tài nguyên
+## Đường dẫn trong kho
 
-- [Device Library](../../device-library/README.md) là nguồn danh mục có thể sửa. Quá trình sinh tạo bản sao `contracts/catalog-source/` trong gói cùng các bản chiếu danh mục. Wheel đã cài đọc bản sao đó.
-- [Tài nguyên SDK công khai](../../packages/public-sdk/README.md) gồm trình xác thực, thao tác và fixture công khai. `contracts/browser/artifacts.json` ánh xạ đường dẫn bản chụp cũ đến tài nguyên đã cài do `contracts.resources.generated_artifacts()` cung cấp. Consumer lấy artifact này từ Contracts.
-- [Bản OpenAPI Remote bàn giao](../../contracts/api/README.md) lấy từ các thao tác đã đăng ký trong FastAPI. `contracts/fingerprints.json` ghi riêng dấu vân tay của nguồn chuẩn, schema công khai và OpenAPI. Manifest phát hành lưu mã băm của các gói phân phối.
+| Đường dẫn | Trách nhiệm |
+| --- | --- |
+| [`contracts/`](../../contracts/README.md) | Các nhóm schema chuẩn, profile xác thực, protobuf Hardware RPC và bố cục NCAP. Manifest tài nguyên hiện hành đăng ký đường dẫn nguồn và bản chiếu. Bản OpenAPI lưu trong kho bảo toàn profile FastAPI đã phát hành. Remote cung cấp đúng bản xuất cho mỗi lần build SDK native. |
+| [`device-library/`](../../device-library/README.md) và [`contracts/design-models/`](../../contracts/design-models/README.md) | Sửa định nghĩa thiết bị trong Device Library, còn cấu trúc liên kết và quy tắc cơ khí dùng chung nằm trong design models. Bộ sinh native chiếu dữ liệu linh kiện vật lý và cổng tín hiệu vào các đường dẫn danh mục runtime dưới `contracts/design-models/` và xuất danh mục trình duyệt ở `contracts/browser/data/`. [Bản sao catalog-source](../../contracts/catalog-source/README.md) ghi lại cấu trúc gói Python trước đây. |
+| `src/` và `build.rs` | Xác thực Rust, codec NCAP, bộ sinh SDK và CLI. Bản build Cargo biên dịch proto RPC chuẩn thành kiểu Prost và descriptor nhúng trong thư mục đầu ra của Cargo. |
+| `contracts/browser/` và [`packages/public-sdk/`](../../packages/public-sdk/README.md) | Các bản chiếu trình duyệt lưu trong kho là đầu vào đối chiếu. Quy trình sinh native ghi bản chiếu mới từ nguồn chuẩn và bản xuất OpenAPI được chọn. Gói npm được build từ bản chiếu đó. `contracts/browser/artifacts.json` ghi lại ánh xạ cũ giữa đường dẫn sao chép và tài nguyên gói Python. |
+| `contracts/codegen/`, `scripts/` và [`tools/artifact-paths/`](../../tools/artifact-paths/README.md) | Bộ sinh Node tạo TypeScript và trình xác thực biên dịch sẵn từ các bộ schema do Rust chuẩn bị. Các script build và kiểm tra gói native và npm. Công cụ cấp phát là gói phát triển riêng để lưu đầu ra bên ngoài kho. [Lệnh build và kiểm chứng](native.md) |
+| `contracts/fixtures/`, `contracts/design-models/fixtures/` và [`tests/fixtures/`](../../tests/fixtures/README.md) | Dữ liệu kiểm tra tuân thủ hợp đồng cung cấp đầu vào cho kiểm thử native và các fixture SDK được chọn. Thư mục fixture kiểm thử lưu kết quả chuẩn để đối chiếu và bằng chứng trình duyệt trước đây. Các mốc schema và định dạng truyền đã chốt nằm trong [`contracts/compatibility/`](../../contracts/compatibility/README.md). |
+
+Tệp `contracts/fingerprints.json` trong kho lưu bản ghi dấu vân tay trước đây. Mỗi lần sinh native ghi dấu vân tay riêng của nguồn chuẩn, schema công khai và OpenAPI đã chuẩn hóa vào cây đầu ra. Manifest phát hành ghi mã băm của các gói phân phối. [Định danh phát hành và OpenAPI](api/compatibility.md#định-danh-phát-hành-và-openapi)
