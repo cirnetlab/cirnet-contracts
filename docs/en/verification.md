@@ -34,3 +34,7 @@ python -B -m unittest discover -s tools/artifact-paths/test -p test_python_bridg
 ## Inspect and clean up
 
 Keep raw output in the external session. Inspect the manifest and test logs and record approved summaries with the exact artifact identity. When finished, remove the owned session using `node tools/artifact-paths/artifact-paths.mjs --cleanup <session>`.
+
+## Local development storage
+
+Set `CIRNET_LOCAL_STORAGE_ROOT` to an existing external local directory to allocate by canonical GitHub identity. The parent is selected from the explicit directory, `CIRNET_ARTIFACTS_DIR`, the configured repository namespace, then OS temporary storage. The configured root is validated even with an explicit override. A configured parent and inherited session must agree. Linked worktrees share a namespace and have separate session ownership.

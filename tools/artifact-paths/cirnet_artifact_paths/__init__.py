@@ -46,6 +46,8 @@ def artifact_directory(subdirectory='', directory=None, *, context=None):
     environment = dict(os.environ)
     _set_environment(environment, 'CIRNET_ARTIFACTS_SESSION', str(session))
     _set_environment(environment, 'CIRNET_ARTIFACTS_CONTEXT', json.dumps(selected))
+    if directory is not None and 'CIRNET_LOCAL_STORAGE_ROOT' in environment:
+        _set_environment(environment, 'CIRNET_ARTIFACTS_DIR', str(session.parent))
     result = Path(_invoke(subdirectory, environment=environment)) if subdirectory else session
     if directory is None:
         _set_environment(os.environ, 'CIRNET_ARTIFACTS_SESSION', str(session))

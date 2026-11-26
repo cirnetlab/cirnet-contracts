@@ -34,3 +34,7 @@ python -B -m unittest discover -s tools/artifact-paths/test -p test_python_bridg
 ## Rà soát và dọn dẹp
 
 Lưu đầu ra thô trong phiên bên ngoài kho. Rà soát manifest và log kiểm thử, sau đó ghi bản tóm tắt đã duyệt cùng định danh artifact chính xác. Khi hoàn tất, xóa phiên thuộc sở hữu bằng `node tools/artifact-paths/artifact-paths.mjs --cleanup <session>`.
+
+## Lưu trữ phát triển cục bộ
+
+Đặt `CIRNET_LOCAL_STORAGE_ROOT` thành thư mục cục bộ hiện hữu ngoài repo để cấp phát theo định danh GitHub chính tắc. Thứ tự chọn thư mục cha là giá trị chỉ định, `CIRNET_ARTIFACTS_DIR`, namespace của repo, rồi thư mục tạm hệ điều hành. Thư mục gốc cấu hình vẫn được kiểm tra khi ghi đè. Phiên thừa kế phải thuộc thư mục cha đã chọn. Worktree dùng chung namespace và có quyền sở hữu phiên riêng.

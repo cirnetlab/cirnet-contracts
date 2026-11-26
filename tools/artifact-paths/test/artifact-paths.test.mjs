@@ -28,7 +28,7 @@ mkdirSync(outside)
 const context = { owner: 'allocator-integration', roots: [repoA, repoB, source] }
 function environment(extra = {}) {
   const env = { ...process.env }
-  for (const key of ['CIRNET_ARTIFACTS_DIR', 'CIRNET_ARTIFACTS_SESSION', 'CIRNET_ARTIFACTS_CONTEXT', 'NETCIRCUIT_ARTIFACTS_DIR', 'NETCIRCUIT_ARTIFACTS_SESSION', 'NETCIRCUIT_ARTIFACTS_CONTEXT']) delete env[key]
+  for (const key of ['CIRNET_LOCAL_STORAGE_ROOT', 'CIRNET_ARTIFACTS_DIR', 'CIRNET_ARTIFACTS_SESSION', 'CIRNET_ARTIFACTS_CONTEXT', 'NETCIRCUIT_ARTIFACTS_DIR', 'NETCIRCUIT_ARTIFACTS_SESSION', 'NETCIRCUIT_ARTIFACTS_CONTEXT']) delete env[key]
   return { ...env, ...extra }
 }
 function invoke(args = [], { cwd = outside, env = environment(), executable = cli } = {}) {
@@ -302,4 +302,30 @@ test('implicit reuse synchronizes both environment prefixes for child processes'
     for (const key of Object.keys(process.env)) if (/^(?:CIRNET|NETCIRCUIT)_ARTIFACTS_/.test(key)) delete process.env[key]
     Object.assign(process.env, saved)
   }
+})
+
+
+test('configured storage derives Git owner, reuses an inherited session and rejects conflicts', () => {
+  const base = join(outside, 'configured-storage')
+  mkdirSync(base)
+  execFileSync('git', ['-C', repoA, 'remote', 'add', 'origin', 'https://github.com/cirnetlab/cirnet-contracts.git'])
+  execFileSync('git', ['-C', repoB, 'remote', 'add', 'origin', 'git@github.com:cirnetlab/cirnet-remote.git'])
+  const env = environment({ CIRNET_LOCAL_STORAGE_ROOT: base })
+  const first = invoke([], { cwd: repoA, env })
+  assert.equal(first.status, 0, first.stderr)
+  const session = first.stdout.trim()
+  assert.equal(dirname(session), join(base, '.cirnet-build-output', 'cirnet-contracts'))
+  const childEnv = { ...env, CIRNET_ARTIFACTS_SESSION: session }
+  const reused = invoke(['child'], { cwd: repoA, env: childEnv })
+  assert.equal(reused.status, 0, reused.stderr)
+  assert.equal(reused.stdout.trim(), join(session, 'child'))
+  assert.notEqual(invoke([], { cwd: repoB, env: childEnv }).status, 0)
+  assert.match(invoke(['--directory', outside], { cwd: repoA, env: childEnv }).stderr, /selected artifact parent/)
+  assert.match(invoke([], { cwd: repoA, env: { ...env, CIRNET_LOCAL_STORAGE_ROOT: join(base, 'missing') } }).stderr, /unavailable/)
+  assert.match(invoke([], { cwd: repoA, env: { ...env, CIRNET_LOCAL_STORAGE_ROOT: repoB } }).stderr, /outside/)
+  assert.match(invoke([], { cwd: unlisted, env }).stderr, /canonical CIRNETLAB origin/)
+  const integration = { owner: 'cirnet-native-candidate', roots: [repoA, repoB] }
+  const plan = invoke(['--parent-info', ...ctxArgs(integration)], { cwd: repoA, env })
+  assert.equal(plan.status, 0, plan.stderr)
+  assert.equal(plan.stdout.trim(), join(base, '.cirnet-build-output', 'cirnet-remote'))
 })

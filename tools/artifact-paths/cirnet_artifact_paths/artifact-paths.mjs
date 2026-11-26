@@ -2,13 +2,20 @@
 import { execFileSync, spawnSync } from 'node:child_process'
 import { existsSync, realpathSync, lstatSync, mkdirSync, mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { resolve, dirname, join, relative, isAbsolute, basename } from 'node:path'
+import { resolve, dirname, join, relative, isAbsolute, basename, parse } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { randomUUID } from 'node:crypto'
 
 const marker = '.cirnet-artifact-session.json'
 const legacyMarker = '.netcircuit-artifact-session.json'
-function getenv(name) { return process.env[name] ?? process.env[name.replace(/^CIRNET_/, 'NETCIRCUIT_')] }
+function getenv(name) {
+  const current = process.env[name]
+  const legacy = process.env[name.replace(/^CIRNET_/, 'NETCIRCUIT_')]
+  if (process.env.CIRNET_LOCAL_STORAGE_ROOT !== undefined && current !== undefined && legacy !== undefined && current !== legacy) {
+    throw new Error('Conflicting artifact configuration for ' + name + '.')
+  }
+  return current ?? legacy
+}
 function setenv(name, value) { process.env[name] = value; process.env[name.replace(/^CIRNET_/, 'NETCIRCUIT_')] = value }
 const sessions = new Map()
 function canonical(path) {
@@ -25,7 +32,9 @@ function inside(parent, child) {
 function gitEnvironment() {
   const environment = { ...process.env, LC_ALL: 'C', LANG: 'C' }
   for (const key of Object.keys(environment)) {
-    if (['GIT_DIR', 'GIT_WORK_TREE', 'GIT_COMMON_DIR', 'GIT_INDEX_FILE', 'GIT_OBJECT_DIRECTORY', 'GIT_ALTERNATE_OBJECT_DIRECTORIES'].includes(key.toUpperCase())) delete environment[key]
+    if (['GIT_DIR', 'GIT_WORK_TREE', 'GIT_COMMON_DIR', 'GIT_INDEX_FILE', 'GIT_OBJECT_DIRECTORY',
+      'GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_CONFIG_COUNT', 'GIT_CONFIG_PARAMETERS',
+      'GIT_CEILING_DIRECTORIES', 'GIT_DISCOVERY_ACROSS_FILESYSTEM', 'GIT_CONFIG'].includes(key.toUpperCase())) delete environment[key]
   }
   return environment
 }
@@ -62,8 +71,8 @@ export function getArtifactContext(options = {}) {
     return canonical(git(canonical(root), 'rev-parse', '--show-toplevel'))
   }))].sort()
   const context = { version: 1, owner: supplied.owner, roots }
-  const protectedRoots = protectedPaths(context)
-  if (current && !protectedRoots.some(root => root === current)) {
+  const protectedRoots = process.env.CIRNET_LOCAL_STORAGE_ROOT === undefined ? protectedPaths(context) : roots
+  if (current && !protectedRoots.includes(current)) {
     throw new Error('Artifact context omits the current Git repository; include every involved root.')
   }
   return context
@@ -98,9 +107,57 @@ function rejectGitDestination(directory) {
     throw new Error(`Cannot enumerate artifact destination Git context: ${result.stderr.trim()}`)
   }
 }
+function unaliasedPath(directory) {
+  if (typeof directory !== 'string' || !isAbsolute(directory) ||
+      (process.platform === 'win32' && !/^[A-Z]:[\\/]/i.test(directory)) ||
+      directory.slice(parse(directory).root.length).split(process.platform === 'win32' ? /[\\/]/ : '/')
+        .some(part => part === '..' || part === '.' || (process.platform === 'win32' && /[:]|[. ]$/.test(part)))) {
+    throw new Error('Expected an absolute local artifact path without traversal or aliases: ' + directory)
+  }
+  const absolute = resolve(directory)
+  for (let part = absolute; ; part = dirname(part)) {
+    const stat = lstatSync(part, { throwIfNoEntry: false })
+    if (stat?.isSymbolicLink()) throw new Error('Artifact path traverses a symbolic link or junction: ' + part)
+    if (dirname(part) === part) break
+  }
+  const actual = canonical(absolute)
+  const same = process.platform === 'win32' ? absolute.toLowerCase() === actual.toLowerCase() : absolute === actual
+  if (!same) throw new Error('Artifact path uses a filesystem alias: ' + directory)
+  return actual
+}
+
+const canonicalRepos = /^cirnet-(?:rules|contracts|remote|interface|simulator|hardware|embedded-hardware|cli)$/
+
+function configuredArtifactParent(context) {
+  const value = process.env.CIRNET_LOCAL_STORAGE_ROOT
+  if (value === undefined) return undefined
+  const base = unaliasedPath(value)
+  if (!lstatSync(base, { throwIfNoEntry: false })?.isDirectory()) throw new Error('CIRNET_LOCAL_STORAGE_ROOT is unavailable: ' + base)
+  // The candidate has one integration owner even while commands run in other checkouts.
+  const ownerId = context.owner === 'cirnet-native-candidate' ? 'cirnet-remote' : context.owner.replace(/-ci$/, '')
+  const ownerRoots = context.owner.startsWith('git:')
+    ? context.roots.filter(root => root === context.owner.slice(4))
+    : context.roots
+  const ids = context.roots.map(root => {
+    let urls
+    try { urls = git(root, 'config', '--local', '--no-includes', '--null', '--get-all', 'remote.origin.url').split('\0') }
+    catch { throw new Error('Cannot establish a canonical CIRNETLAB origin for ' + root) }
+    const match = urls.length === 2 && urls[0].match(/^(?:https:\/\/github\.com\/|git@github\.com:|ssh:\/\/git@github\.com\/)cirnetlab\/([a-z0-9-]+?)(?:\.git)?$/i)
+    return match && match[1].toLowerCase()
+  })
+  const id = context.owner.startsWith('git:') ? ids[context.roots.indexOf(ownerRoots[0])] : ownerId
+  if (!id || !canonicalRepos.test(id) || ids.some(value => !value || !canonicalRepos.test(value)) ||
+      (!context.owner.startsWith('git:') && ids.filter(value => value === id).length !== 1)) {
+    throw new Error('CIRNET_LOCAL_STORAGE_ROOT requires a canonical GitHub origin for the artifact owner.')
+  }
+  // An otherwise valid override must not suppress a broken configured root.
+  validateDirectory(base, context)
+  return validateDirectory(join(base, '.cirnet-build-output', id), context)
+}
+
 function validateDirectory(directory, context) {
   if (!isAbsolute(directory)) throw new Error('Artifact directory must be absolute and outside the repository.')
-  const result = canonical(directory)
+  const result = process.env.CIRNET_LOCAL_STORAGE_ROOT === undefined ? canonical(directory) : unaliasedPath(directory)
   for (const protectedPath of protectedPaths(context)) {
     if (inside(protectedPath, result)) throw new Error(`Artifact directory must be outside every repository/worktree and Git directory: ${directory}`)
   }
@@ -132,14 +189,37 @@ function readSession(directory, context) {
   }
   return actual
 }
+function selectArtifactParent(context, explicitParent) {
+  const configured = configuredArtifactParent(context)
+  const inheritedParent = getenv('CIRNET_ARTIFACTS_DIR')
+  const selectedParent = inheritedParent === undefined ? undefined : validateDirectory(inheritedParent, context)
+  const parent = validateDirectory(explicitParent ?? selectedParent ?? configured ?? tmpdir(), context)
+  if (configured && explicitParent !== undefined && selectedParent && selectedParent !== parent) {
+    throw new Error('Explicit artifact parent conflicts with CIRNET_ARTIFACTS_DIR.')
+  }
+  return { parent, configured, inheritedParent }
+}
+
+export function getArtifactParent(options = {}) {
+  return selectArtifactParent(getArtifactContext(options), options.directory).parent
+}
+
 export function getArtifactDirectory(subdirectory = '', options = {}) {
   const context = getArtifactContext(options)
-  if (getenv('CIRNET_ARTIFACTS_DIR')) validateDirectory(getenv('CIRNET_ARTIFACTS_DIR'), context)
+  const explicitParent = options.directory
+  const inheritedSession = getenv('CIRNET_ARTIFACTS_SESSION')
+  const legacyReuse = process.env.CIRNET_LOCAL_STORAGE_ROOT === undefined && !explicitParent && inheritedSession
+  const { parent, configured, inheritedParent } = legacyReuse
+    ? { inheritedParent: getenv('CIRNET_ARTIFACTS_DIR') }
+    : selectArtifactParent(context, explicitParent)
   let session
-  if (!options.directory && getenv('CIRNET_ARTIFACTS_SESSION')) {
-    session = readSession(getenv('CIRNET_ARTIFACTS_SESSION'), context)
+  if (legacyReuse || (configured && inheritedSession !== undefined)) {
+    if (legacyReuse && inheritedParent) validateDirectory(inheritedParent, context)
+    session = readSession(inheritedSession, context)
+    if (configured && dirname(session) !== parent) {
+      throw new Error('Inherited artifact session does not belong to the selected artifact parent.')
+    }
   } else {
-    const parent = validateDirectory(options.directory ?? getenv('CIRNET_ARTIFACTS_DIR') ?? tmpdir(), context)
     const cacheKey = JSON.stringify([parent, context])
     session = sessions.get(cacheKey)
     if (session && !existsSync(session)) { sessions.delete(cacheKey); session = undefined }
@@ -152,12 +232,15 @@ export function getArtifactDirectory(subdirectory = '', options = {}) {
       sessions.set(cacheKey, session)
     }
   }
-  if (!options.directory) {
+  if (explicitParent === undefined) {
     setenv('CIRNET_ARTIFACTS_SESSION', session)
     setenv('CIRNET_ARTIFACTS_CONTEXT', JSON.stringify(context))
-    if (getenv('CIRNET_ARTIFACTS_DIR') !== undefined) setenv('CIRNET_ARTIFACTS_DIR', getenv('CIRNET_ARTIFACTS_DIR'))
+    if (inheritedParent !== undefined) setenv('CIRNET_ARTIFACTS_DIR', inheritedParent)
   }
-  if (isAbsolute(subdirectory) || subdirectory.split(/[\\/]/).includes('..')) throw new Error('Artifact subdirectory must stay inside its session.')
+  if (isAbsolute(subdirectory) || subdirectory.split(/[\\/]/).includes('..') ||
+      (configured && subdirectory.split(/[\\/]/).some(part => part === '.' || (process.platform === 'win32' && /[:]|[. ]$/.test(part))))) {
+    throw new Error('Artifact subdirectory must stay inside its session.')
+  }
   const output = validateDirectory(join(session, subdirectory), context)
   if (!inside(session, output)) throw new Error('Artifact subdirectory escapes its session.')
   mkdirSync(output, { recursive: true })
@@ -188,6 +271,9 @@ export function runArtifactCli(arguments_ = process.argv.slice(2)) {
     } else if (args[0] === '--cleanup') {
       if (args.length !== 2) throw new Error('Usage: --cleanup SESSION')
       cleanupArtifactSession(args[1], options)
+    } else if (args[0] === '--parent-info') {
+      if (args.length !== 1) throw new Error('Usage: --parent-info')
+      console.log(getArtifactParent(options))
     } else if (args[0] === '--context-info') {
       if (args.length !== 1) throw new Error('Usage: --context-info')
       console.log(JSON.stringify(getArtifactContext(options)))

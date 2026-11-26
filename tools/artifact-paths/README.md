@@ -19,6 +19,15 @@ screenshots = artifact_directory('screenshots')
 cleanup_artifact_session(session)
 ```
 
+Set `CIRNET_LOCAL_STORAGE_ROOT` to an existing absolute local directory outside Git.
+The configured default is `<root>/.cirnet-build-output/<canonical-repository>`.
+The owner must match a canonical CIRNETLAB Git origin in the context. Linked
+worktrees use their own Git context. Remote owns the native-candidate context.
+An explicit external parent or `CIRNET_ARTIFACTS_DIR` overrides the default.
+When centralized storage is configured, these settings must agree with any
+inherited session. Start an independent process without inherited artifact
+settings to allocate for another task.
+
 Invocation context is explicit through API `context`, CLI `--context JSON`, or inherited `CIRNET_ARTIFACTS_CONTEXT`. It binds a stable owner and a canonical rootset to the session. Integration callers list every involved checkout; standalone callers require only their own checkout. Every root expands to its Git administration paths and entire linked-worktree family. Enumeration failures reject allocation. A context that omits the current Git checkout is rejected. The nearest existing destination ancestor is also inspected independently: output inside an unlisted checkout, Git administration directory or bare Git repository is rejected. Only a known non-Git destination is allowed; other discovery failures fail closed. Git location override environment variables cannot substitute another repository during these checks.
 
 Without explicit or inherited context, the current working directory determines the Git checkout and owner `git:<canonical-root>`. Outside a checkout, context is required. Installed module location never selects repository ownership. Repository wrappers that support arbitrary CWD should pass their repository root explicitly.
@@ -30,6 +39,7 @@ node artifact-paths.mjs [subdirectory] [--directory EXTERNAL_PARENT] [--context 
 node artifact-paths.mjs --validate EXTERNAL_PATH [--context JSON]
 node artifact-paths.mjs --cleanup SESSION [--context JSON]
 node artifact-paths.mjs --context-info [--context JSON]
+node artifact-paths.mjs --parent-info [--context JSON]
 ```
 
 Session aliases, output traversal, repository symlink destinations and unowned cleanup are rejected. Cleanup removes only a verified canonical `cirnet-*` or valid legacy `netcircuit-*` session. It does not follow internal directory symlinks. As with the original allocator, protection is a point-in-time filesystem check, not an operating-system security boundary against hostile concurrent path replacement.
