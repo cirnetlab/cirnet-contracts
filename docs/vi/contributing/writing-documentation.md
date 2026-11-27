@@ -6,7 +6,7 @@ Giữ README gốc bằng tiếng Anh và liên kết đến cả hai mục lụ
 
 Dùng [changelog](../../changelogs/README.md) cho thay đổi phiên bản đã xác minh. Giữ một tệp `CHANGELOG_V<major>.md` cho mỗi phiên bản chính đã phát hành, đặt Unreleased trước các bản đã phát hành theo thứ tự giảm dần. Mỗi bản phát hành có tiêu đề SemVer, liên kết trong mục lục, ngày có bằng chứng và commit mà tag trỏ đến. Phân biệt mã nguồn hiện tại, ứng viên đã kiểm chứng và artifact đã công bố khi mô tả trạng thái phát hành. [Bằng chứng kiểm chứng](../native.md#bằng-chứng-kiểm-chứng)
 
-Với mỗi công việc AI, lưu kế hoạch trong `.superpowers/plans/` và đặc tả tương ứng, tiêu chí nghiệm thu, checklist trong `.superpowers/specs/`. Git đã bỏ qua cả hai thư mục. Dùng `- [ ]` cho việc còn mở và `- [x]` sau khi kiểm chứng.
+Dùng [Task Continuity](https://github.com/cirnetlab/cirnet-rules/blob/master/vi/docs/distribution.md#task-continuity) cho kế hoạch tạm thời, tiêu chí nghiệm thu và tiến độ. Giữ đặc tả thiết kế độc lập và kế hoạch dài hạn tại repo sở hữu rồi liên kết từ checkpoint. Đánh dấu hoàn tất sau khi kiểm chứng.
 
 Tham khảo [hồ sơ kiểm chứng và di chuyển gốc](../history.md) để tra lịch sử mã nguồn. Bảo toàn bản OpenAPI đã chốt để bàn giao, các mốc schema và định dạng truyền, fixture và dấu vân tay tài nguyên. Trước khi chuyển hoặc ngừng dùng tài liệu, kiểm tra tham chiếu từ Markdown, gói, quy trình build, CI và kiểm thử, đồng thời xác nhận thay đổi đã được cho phép.
 

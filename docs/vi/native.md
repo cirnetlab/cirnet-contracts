@@ -12,7 +12,7 @@ Trên Windows 64 bit, dùng host `x86_64-pc-windows-msvc` cùng Visual Studio C+
 
 Nếu Rustup chỉ có bí danh `stable`, kiểm tra `rustup run stable rustc -vV` và `rustup run stable cargo -vV`. Dùng `rustup run stable cargo` cho các lệnh bên dưới khi bí danh trỏ tới 1.99.1 trên đúng host.
 
-Gán `CIRNET_ARTIFACTS_SESSION` bằng phiên ngoài kho do bộ cấp phát quản lý rồi chạy các lệnh POSIX sau tại thư mục gốc của kho mã. Giữ nguyên shell để chạy các bước tiếp theo. [Cấp phát phiên](verification.md#cấp-phát-phiên) và [dọn phiên sau khi xem kết quả](verification.md#xem-kết-quả-và-dọn-phiên).
+Gán `CIRNET_ARTIFACTS_SESSION` bằng phiên ngoài kho do bộ cấp phát quản lý rồi chạy các lệnh POSIX sau tại thư mục gốc của kho mã. Giữ nguyên shell để chạy các bước tiếp theo. [Cấp phát phiên](verification.md#cấp-phát-phiên) và [dọn phiên sau khi xem kết quả](verification.md#rà-soát-và-dọn-dẹp).
 
 ~~~sh
 repo="$(pwd -P)"
