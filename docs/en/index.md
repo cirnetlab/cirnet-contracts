@@ -18,4 +18,4 @@ English · [Tiếng Việt](../vi/index.md) · [Repository README](../../README.
 - [Documentation conventions](contributing/writing-documentation.md) covers language pairs, release notes and evidence.
 - [Native verification](verification.md) covers generation checks, SDK packaging and installed artifacts.
 - [Rust Contracts](native.md) covers the build, CLI, parity fixtures, product packaging and CI scope.
-- [Development changelog](../changelogs/README.md)
+- [Development changelog](../../CHANGELOG.md)

@@ -1,3 +1,3 @@
-# Changelog · Nhật ký thay đổi
+# CIRNET Contracts changelog index
 
-- [0.3.0 development · Phát triển 0.3.0](CHANGELOG_V0.md)
+- [Version 0](CHANGELOG_V0.md)

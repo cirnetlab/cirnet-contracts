@@ -1,5 +1,7 @@
 # CIRNET Contracts
 
+[Changelog](CHANGELOG.md)
+
 Canonical CircuitGraph schemas, device catalogs, Hardware RPC and NCAP for CIRNET Lab. The Rust crate validates resources and encodes the supported wire formats. The TypeScript SDK provides public DTOs and offline validation.
 
 [Documentation](docs/en/index.md) · [Tài liệu tiếng Việt](docs/vi/index.md)

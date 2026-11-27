@@ -18,4 +18,4 @@
 - [Quy ước tài liệu](contributing/writing-documentation.md) hướng dẫn duy trì cặp ngôn ngữ, ghi chú phát hành và bằng chứng.
 - [Kiểm chứng native](verification.md) hướng dẫn kiểm tra sinh mã, đóng gói SDK và kiểm tra artifact đã cài.
 - [Contracts Rust](native.md) hướng dẫn build, lệnh CLI, fixture đối chứng, đóng gói sản phẩm và phạm vi CI.
-- [Nhật ký phát triển](../changelogs/README.md)
+- [Nhật ký phát triển](../../CHANGELOG.md)

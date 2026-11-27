@@ -12,7 +12,7 @@
 
 Không đưa địa chỉ thanh ghi FPGA, đường dẫn SPI Linux hoặc địa chỉ ma trận chuyển mạch thô vào đồ thị. Hardware Service phụ trách chuyển đổi sang thao tác phần cứng. Thay đổi phá vỡ tương thích cần phiên bản schema mới và cập nhật bên tiêu thụ.
 
-Cùng schema đọc được lắp đặt vật lý cứng 1.1 qua [schema mô-đun](../../../contracts/circuit-schema/module.schema.json). [Schema 1.2](../../../contracts/circuit-schema/circuit-v1.2.schema.json) bổ sung cụm lắp linh hoạt và bộ mô tả vật lý tự do được ghim. `AnySupportedCircuitGraph` chọn cấu trúc cũ hoặc 1.2 được hỗ trợ. Trình đọc 1.0 và 1.1 cũ giữ ranh giới phiên bản đã chốt. Xem [bố trí linh kiện](https://github.com/cirnetlab/cirnet-remote/blob/295797c/docs/COMPONENT_PLACEMENT.md) và [lắp đặt linh hoạt](../../../contracts/design-models/flexible-placement.md) để biết hành vi lưu trữ và API.
+Cùng schema đọc được lắp đặt vật lý cứng 1.1 qua [schema mô-đun](../../../contracts/circuit-schema/module.schema.json). [Schema 1.2](../../../contracts/circuit-schema/circuit-v1.2.schema.json) bổ sung cụm lắp linh hoạt và bộ mô tả vật lý tự do được ghim. `AnySupportedCircuitGraph` chọn cấu trúc cũ hoặc 1.2 được hỗ trợ. Trình đọc 1.0 và 1.1 cũ giữ ranh giới phiên bản đã chốt. Xem [bố trí linh kiện](https://github.com/cirnetlab/cirnet-remote/blob/master/docs/vi/architecture/component-placement.md) và [lắp đặt linh hoạt](../../../contracts/design-models/flexible-placement.md) để biết hành vi lưu trữ và API.
 
 ## Trường trình biên tập cũ
 

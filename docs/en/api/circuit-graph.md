@@ -12,7 +12,7 @@ English · [Tiếng Việt](../../vi/api/circuit-graph.md)
 
 Keep FPGA register addresses, Linux SPI paths and raw switching-fabric addresses out of the graph. The Hardware Service owns translation to hardware operations. Breaking schema changes require a new schema version and consumer updates.
 
-The same schema reads 1.1 rigid physical mounting through the [module schema](../../../contracts/circuit-schema/module.schema.json). The additive [1.2 schema](../../../contracts/circuit-schema/circuit-v1.2.schema.json) supports flexible assemblies and pinned free physical descriptors. `AnySupportedCircuitGraph` selects the supported legacy or 1.2 shape. Legacy 1.0 and 1.1 readers keep their frozen version boundary. See [component placement](https://github.com/cirnetlab/cirnet-remote/blob/295797c/docs/COMPONENT_PLACEMENT.md) and [flexible placement](../../../contracts/design-models/flexible-placement.md) for persistence and API behavior.
+The same schema reads 1.1 rigid physical mounting through the [module schema](../../../contracts/circuit-schema/module.schema.json). The additive [1.2 schema](../../../contracts/circuit-schema/circuit-v1.2.schema.json) supports flexible assemblies and pinned free physical descriptors. `AnySupportedCircuitGraph` selects the supported legacy or 1.2 shape. Legacy 1.0 and 1.1 readers keep their frozen version boundary. See [component placement](https://github.com/cirnetlab/cirnet-remote/blob/master/docs/en/architecture/component-placement.md) and [flexible placement](../../../contracts/design-models/flexible-placement.md) for persistence and API behavior.
 
 ## Legacy editor fields
 

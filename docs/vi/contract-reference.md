@@ -6,7 +6,7 @@
 
 [Manifest tài nguyên](../../contracts/manifest.json) ghi định danh, phiên bản, quyền sở hữu và phạm vi truy cập. URI schema dùng `https://cirnet.local/`. Registry ngoại tuyến cũng phân giải URI cũ `https://netcircuit.local/` mà không tải schema qua mạng.
 
-[Kiến trúc Ecosystem](https://github.com/cirnetlab/cirnet-remote/blob/master/docs/cirnetlab-architecture-vi.md) phân công quyền sở hữu hợp đồng dùng chung. [Kiến trúc Lab-First](https://github.com/cirnetlab/cirnet-remote/blob/master/docs/cirnet-architecture-lab-first-vi.md) quy định cách các dịch vụ Lab sử dụng các hợp đồng đó.
+[Kiến trúc Ecosystem](https://github.com/cirnetlab/cirnet-rules/blob/master/docs/tai-lieu-kien-tuc-he-thong/cirnetlab-architecture-vi.md) phân công quyền sở hữu hợp đồng dùng chung. [Kiến trúc Lab-First](https://github.com/cirnetlab/cirnet-rules/blob/master/docs/tai-lieu-kien-tuc-he-thong/cirnet-architecture-lab-first-vi.md) quy định cách các dịch vụ Lab sử dụng các hợp đồng đó.
 
 | Bên sở hữu | Ranh giới |
 | --- | --- |
