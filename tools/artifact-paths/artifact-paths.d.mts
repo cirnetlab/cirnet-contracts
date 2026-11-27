@@ -9,6 +9,12 @@ export interface ArtifactOptions {
 }
 export function getArtifactContext(options?: { context?: ArtifactContext }): ArtifactContext & { version: 1 }
 export function getArtifactParent(options?: ArtifactOptions): string
+export function inspectArtifactSession(options?: Pick<ArtifactOptions, 'context'>): {
+  directory: string
+  context: ArtifactContext & { version: 1 }
+  markerSha256: string
+}
+export function getExistingArtifactDirectory(subdirectory?: string, options?: Pick<ArtifactOptions, 'context'>): string
 export function getArtifactDirectory(subdirectory?: string, options?: ArtifactOptions): string
 export function validateArtifactDirectory(directory: string, options?: { context?: ArtifactContext }): string
 export function cleanupArtifactSession(directory: string, options?: { context?: ArtifactContext }): void

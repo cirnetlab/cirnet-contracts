@@ -4,7 +4,7 @@ import { existsSync, realpathSync, lstatSync, mkdirSync, mkdtempSync, writeFileS
 import { tmpdir } from 'node:os'
 import { resolve, dirname, join, relative, isAbsolute, basename, parse } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { randomUUID } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 
 const marker = '.cirnet-artifact-session.json'
 const legacyMarker = '.netcircuit-artifact-session.json'
@@ -17,6 +17,11 @@ function getenv(name) {
   return current ?? legacy
 }
 function setenv(name, value) { process.env[name] = value; process.env[name.replace(/^CIRNET_/, 'NETCIRCUIT_')] = value }
+function selectedTaskKey() {
+  const key = process.env.CIRNET_ARTIFACTS_TASK_KEY
+  if (key !== undefined && !/^[a-f0-9]{32}$/.test(key)) throw new Error('Invalid CIRNET_ARTIFACTS_TASK_KEY.')
+  return key
+}
 const sessions = new Map()
 function canonical(path) {
   const absolute = resolve(path)
@@ -128,7 +133,7 @@ function unaliasedPath(directory) {
 
 const canonicalRepos = /^cirnet-(?:rules|contracts|remote|interface|simulator|hardware|embedded-hardware|cli)$/
 
-function configuredArtifactParent(context) {
+function configuredArtifactParent(context, protection) {
   const value = process.env.CIRNET_LOCAL_STORAGE_ROOT
   if (value === undefined) return undefined
   const base = unaliasedPath(value)
@@ -151,14 +156,14 @@ function configuredArtifactParent(context) {
     throw new Error('CIRNET_LOCAL_STORAGE_ROOT requires a canonical GitHub origin for the artifact owner.')
   }
   // An otherwise valid override must not suppress a broken configured root.
-  validateDirectory(base, context)
-  return validateDirectory(join(base, '.cirnet-build-output', id), context)
+  validateDirectory(base, context, protection)
+  return validateDirectory(join(base, '.cirnet-build-output', id), context, protection)
 }
 
-function validateDirectory(directory, context) {
+function validateDirectory(directory, context, protection = protectedPaths(context)) {
   if (!isAbsolute(directory)) throw new Error('Artifact directory must be absolute and outside the repository.')
   const result = process.env.CIRNET_LOCAL_STORAGE_ROOT === undefined ? canonical(directory) : unaliasedPath(directory)
-  for (const protectedPath of protectedPaths(context)) {
+  for (const protectedPath of protection) {
     if (inside(protectedPath, result)) throw new Error(`Artifact directory must be outside every repository/worktree and Git directory: ${directory}`)
   }
   // Independently discover unrelated checkouts/bare Git at the destination too.
@@ -169,31 +174,39 @@ function validateDirectory(directory, context) {
 export function validateArtifactDirectory(directory, options = {}) {
   return validateDirectory(directory, getArtifactContext(options))
 }
-function readSession(directory, context) {
-  const actual = validateDirectory(directory, context)
+function readSession(directory, context, protection) {
+  const actual = validateDirectory(directory, context, protection)
   if (resolve(directory) !== actual || lstatSync(actual).isSymbolicLink()) throw new Error('Artifact session cannot be a symlink alias.')
   const markers = [marker, legacyMarker].filter(name => existsSync(join(actual, name)))
   if (!markers.length) throw new Error('Refusing an unowned artifact session.')
-  const records = markers.map(name => {
+  const markerBytes = markers.map(name => {
     const path = join(actual, name)
     if (lstatSync(path).isSymbolicLink() || !lstatSync(path).isFile()) throw new Error('Artifact marker must be a regular owned file.')
-    return JSON.parse(readFileSync(path, 'utf8'))
+    return readFileSync(path)
   })
+  const records = markerBytes.map(bytes => JSON.parse(bytes))
   if (records.some(record => JSON.stringify(record) !== JSON.stringify(records[0]))) throw new Error('Conflicting artifact ownership markers.')
   const ownership = records[0]
   const compatibleLegacy = ownership.version === 1 && context.roots.length === 1 &&
     ownership.repository === context.roots[0] && context.owner === `git:${context.roots[0]}`
   const ownedContext = ownership.version === 2 && JSON.stringify(ownership.context) === JSON.stringify(context)
+  if (ownership.taskKey !== selectedTaskKey()) throw new Error('Artifact session belongs to a different task.')
   if ((!compatibleLegacy && !ownedContext) || ownership.directory !== actual || !/^(?:cirnet|netcircuit)-[A-Za-z0-9]+$/.test(basename(actual))) {
     throw new Error('Refusing an unowned artifact session.')
   }
-  return actual
+  return { directory: actual, context, markerSha256: createHash('sha256').update(markerBytes[0]).digest('hex') }
 }
-function selectArtifactParent(context, explicitParent) {
-  const configured = configuredArtifactParent(context)
+
+function selectArtifactParent(context, protection, explicitParent, inheritedSession) {
+  const configured = configuredArtifactParent(context, protection)
   const inheritedParent = getenv('CIRNET_ARTIFACTS_DIR')
-  const selectedParent = inheritedParent === undefined ? undefined : validateDirectory(inheritedParent, context)
-  const parent = validateDirectory(explicitParent ?? selectedParent ?? configured ?? tmpdir(), context)
+  const selectedParent = inheritedParent === undefined ? undefined : validateDirectory(inheritedParent, context, protection)
+  if (configured && selectedParent && !inside(configured, selectedParent) && explicitParent === undefined && !inheritedSession) {
+    throw new Error('Select a new alternate parent explicitly with --directory. CIRNET_ARTIFACTS_DIR is outside the configured repository namespace.')
+  }
+  const parent = explicitParent === undefined
+    ? selectedParent ?? configured ?? validateDirectory(tmpdir(), context, protection)
+    : validateDirectory(explicitParent, context, protection)
   if (configured && explicitParent !== undefined && selectedParent && selectedParent !== parent) {
     throw new Error('Explicit artifact parent conflicts with CIRNET_ARTIFACTS_DIR.')
   }
@@ -201,34 +214,81 @@ function selectArtifactParent(context, explicitParent) {
 }
 
 export function getArtifactParent(options = {}) {
-  return selectArtifactParent(getArtifactContext(options), options.directory).parent
+  const context = getArtifactContext(options)
+  const protection = protectedPaths(context)
+  const inherited = getenv('CIRNET_ARTIFACTS_SESSION')
+  const { parent, configured } = selectArtifactParent(context, protection, options.directory, inherited)
+  if (configured && inherited !== undefined && dirname(readSession(inherited, context, protection).directory) !== parent) {
+    throw new Error('Inherited artifact session does not belong to the selected artifact parent.')
+  }
+  return parent
+}
+
+function validateSubdirectory(subdirectory) {
+  if (typeof subdirectory !== 'string' || isAbsolute(subdirectory) ||
+      subdirectory.split(/[\\/]/).some(part => part === '..' || part.includes('\0') ||
+        (process.platform === 'win32' && (/[:*?"<>|]|[. ]$/.test(part) || /^(?:CON|PRN|AUX|NUL|COM[1-9¹²³]|LPT[1-9¹²³])(?:\.|$)/i.test(part))))) {
+    throw new Error('Artifact subdirectory must stay inside its session.')
+  }
+}
+
+export function inspectArtifactSession(options = {}) {
+  const context = getArtifactContext(options)
+  const inherited = getenv('CIRNET_ARTIFACTS_SESSION')
+  if (!inherited) throw new Error('Set CIRNET_ARTIFACTS_SESSION to an existing owned session.')
+  const protection = protectedPaths(context)
+  const session = readSession(inherited, context, protection)
+  if (process.env.CIRNET_LOCAL_STORAGE_ROOT !== undefined) {
+    const { parent } = selectArtifactParent(context, protection, undefined, inherited)
+    if (dirname(session.directory) !== parent) {
+      throw new Error('Inherited artifact session does not belong to the selected artifact parent.')
+    }
+  } else if (getenv('CIRNET_ARTIFACTS_DIR')) {
+    validateDirectory(getenv('CIRNET_ARTIFACTS_DIR'), context, protection)
+  }
+  return session
+}
+
+export function getExistingArtifactDirectory(subdirectory = '', options = {}) {
+  validateSubdirectory(subdirectory)
+  const session = inspectArtifactSession(options).directory
+  const directory = join(session, subdirectory)
+  if (!lstatSync(directory, { throwIfNoEntry: false })?.isDirectory() || realpathSync(directory) !== directory) {
+    throw new Error('Expected an existing ordinary artifact directory: ' + directory)
+  }
+  rejectGitDestination(directory)
+  return directory
 }
 
 export function getArtifactDirectory(subdirectory = '', options = {}) {
+  validateSubdirectory(subdirectory)
+  const taskKey = selectedTaskKey()
   const context = getArtifactContext(options)
+  const protection = protectedPaths(context)
   const explicitParent = options.directory
   const inheritedSession = getenv('CIRNET_ARTIFACTS_SESSION')
   const legacyReuse = process.env.CIRNET_LOCAL_STORAGE_ROOT === undefined && !explicitParent && inheritedSession
   const { parent, configured, inheritedParent } = legacyReuse
     ? { inheritedParent: getenv('CIRNET_ARTIFACTS_DIR') }
-    : selectArtifactParent(context, explicitParent)
+    : selectArtifactParent(context, protection, explicitParent, inheritedSession)
   let session
   if (legacyReuse || (configured && inheritedSession !== undefined)) {
-    if (legacyReuse && inheritedParent) validateDirectory(inheritedParent, context)
-    session = readSession(inheritedSession, context)
+    if (legacyReuse && inheritedParent) validateDirectory(inheritedParent, context, protection)
+    session = readSession(inheritedSession, context, protection).directory
     if (configured && dirname(session) !== parent) {
       throw new Error('Inherited artifact session does not belong to the selected artifact parent.')
     }
   } else {
-    const cacheKey = JSON.stringify([parent, context])
+    const cacheKey = JSON.stringify([parent, context, taskKey])
     session = sessions.get(cacheKey)
     if (session && !existsSync(session)) { sessions.delete(cacheKey); session = undefined }
+    if (session) readSession(session, context, protection)
     if (!session) {
       mkdirSync(parent, { recursive: true })
       // Recheck after creation; a pre-existing symlink must never redirect output.
-      const checked = validateDirectory(parent, context)
+      const checked = validateDirectory(parent, context, protection)
       session = realpathSync(mkdtempSync(join(checked, 'cirnet-')))
-      writeFileSync(join(session, marker), JSON.stringify({ version: 2, directory: session, context, id: randomUUID(), createdAt: new Date().toISOString() }) + '\n', { flag: 'wx' })
+      writeFileSync(join(session, marker), JSON.stringify({ version: 2, directory: session, context, taskKey, id: randomUUID(), createdAt: new Date().toISOString() }) + '\n', { flag: 'wx' })
       sessions.set(cacheKey, session)
     }
   }
@@ -237,18 +297,14 @@ export function getArtifactDirectory(subdirectory = '', options = {}) {
     setenv('CIRNET_ARTIFACTS_CONTEXT', JSON.stringify(context))
     if (inheritedParent !== undefined) setenv('CIRNET_ARTIFACTS_DIR', inheritedParent)
   }
-  if (isAbsolute(subdirectory) || subdirectory.split(/[\\/]/).includes('..') ||
-      (configured && subdirectory.split(/[\\/]/).some(part => part === '.' || (process.platform === 'win32' && /[:]|[. ]$/.test(part))))) {
-    throw new Error('Artifact subdirectory must stay inside its session.')
-  }
-  const output = validateDirectory(join(session, subdirectory), context)
+  const output = validateDirectory(join(session, subdirectory), context, protection)
   if (!inside(session, output)) throw new Error('Artifact subdirectory escapes its session.')
   mkdirSync(output, { recursive: true })
-  if (!inside(session, validateDirectory(output, context))) throw new Error('Artifact output changed while creating it.')
+  if (!inside(session, validateDirectory(output, context, protection))) throw new Error('Artifact output changed while creating it.')
   return output
 }
 export function cleanupArtifactSession(directory, options = {}) {
-  const session = readSession(directory, getArtifactContext(options))
+  const session = readSession(directory, getArtifactContext(options)).directory
   // rm does not follow directory symlinks within the owned session.
   rmSync(session, { recursive: true, force: false })
   for (const [key, value] of sessions) if (value === session) sessions.delete(key)
@@ -271,6 +327,9 @@ export function runArtifactCli(arguments_ = process.argv.slice(2)) {
     } else if (args[0] === '--cleanup') {
       if (args.length !== 2) throw new Error('Usage: --cleanup SESSION')
       cleanupArtifactSession(args[1], options)
+    } else if (args[0] === '--session-info') {
+      if (args.length !== 1) throw new Error('Usage: --session-info')
+      console.log(JSON.stringify(inspectArtifactSession(options)))
     } else if (args[0] === '--parent-info') {
       if (args.length !== 1) throw new Error('Usage: --parent-info')
       console.log(getArtifactParent(options))

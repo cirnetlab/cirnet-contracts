@@ -40,6 +40,7 @@ node artifact-paths.mjs --validate EXTERNAL_PATH [--context JSON]
 node artifact-paths.mjs --cleanup SESSION [--context JSON]
 node artifact-paths.mjs --context-info [--context JSON]
 node artifact-paths.mjs --parent-info [--context JSON]
+node artifact-paths.mjs --session-info [--context JSON]
 ```
 
 Session aliases, output traversal, repository symlink destinations and unowned cleanup are rejected. Cleanup removes only a verified canonical `cirnet-*` or valid legacy `netcircuit-*` session. It does not follow internal directory symlinks. As with the original allocator, protection is a point-in-time filesystem check, not an operating-system security boundary against hostile concurrent path replacement.
@@ -53,3 +54,15 @@ is absent. Canonical values win; implicit allocation exports both prefixes to
 child processes. New sessions use `.cirnet-artifact-session.json`; old v1/v2
 markers remain readable under the same ownership and containment rules.
 Conflicting dual markers or a marker symlink fail closed.
+
+`--session-info` validates an inherited session and emits its canonical path, context,
+and marker SHA-256 without making directories. `getExistingArtifactDirectory`
+selects an existing child without allocation. For a new task-bound session set
+`CIRNET_ARTIFACTS_TASK_KEY` to the original Task Continuity key before allocation
+and when resuming. A mismatched or missing key cannot reuse that session.
+
+With centralized storage configured, a new ambient `CIRNET_ARTIFACTS_DIR`
+must stay in the repository namespace. Select an authorized alternate parent with
+the explicit `--directory` parameter. An inherited, validated session can
+keep its explicitly selected parent. Cleanup still requires separate review of
+current references, active users, and retained dependencies.

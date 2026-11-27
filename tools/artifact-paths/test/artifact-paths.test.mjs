@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawnSync, execFileSync } from 'node:child_process'
-import { mkdirSync, mkdtempSync, writeFileSync, readFileSync, existsSync, symlinkSync, realpathSync, cpSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, writeFileSync, readFileSync, existsSync, symlinkSync, realpathSync, cpSync, readdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -28,7 +28,7 @@ mkdirSync(outside)
 const context = { owner: 'allocator-integration', roots: [repoA, repoB, source] }
 function environment(extra = {}) {
   const env = { ...process.env }
-  for (const key of ['CIRNET_LOCAL_STORAGE_ROOT', 'CIRNET_ARTIFACTS_DIR', 'CIRNET_ARTIFACTS_SESSION', 'CIRNET_ARTIFACTS_CONTEXT', 'NETCIRCUIT_ARTIFACTS_DIR', 'NETCIRCUIT_ARTIFACTS_SESSION', 'NETCIRCUIT_ARTIFACTS_CONTEXT']) delete env[key]
+  for (const key of ['CIRNET_ARTIFACTS_TASK_KEY', 'CIRNET_LOCAL_STORAGE_ROOT', 'CIRNET_ARTIFACTS_DIR', 'CIRNET_ARTIFACTS_SESSION', 'CIRNET_ARTIFACTS_CONTEXT', 'NETCIRCUIT_ARTIFACTS_DIR', 'NETCIRCUIT_ARTIFACTS_SESSION', 'NETCIRCUIT_ARTIFACTS_CONTEXT']) delete env[key]
   return { ...env, ...extra }
 }
 function invoke(args = [], { cwd = outside, env = environment(), executable = cli } = {}) {
@@ -328,4 +328,26 @@ test('configured storage derives Git owner, reuses an inherited session and reje
   const plan = invoke(['--parent-info', ...ctxArgs(integration)], { cwd: repoA, env })
   assert.equal(plan.status, 0, plan.stderr)
   assert.equal(plan.stdout.trim(), join(base, '.cirnet-build-output', 'cirnet-remote'))
+})
+
+test('task-bound inspection is read-only and refuses a different task or ambient external parent', () => {
+  const base = join(outside, 'task-storage')
+  mkdirSync(base)
+  const env = environment({ CIRNET_LOCAL_STORAGE_ROOT: base, CIRNET_ARTIFACTS_TASK_KEY: 'a'.repeat(32) })
+  assert.notEqual(invoke(['--session-info'], { cwd: repoA, env }).status, 0)
+  assert.notEqual(invoke(['../escape'], { cwd: repoA, env }).status, 0)
+  assert.notEqual(invoke([], { cwd: repoA, env: { ...env, CIRNET_ARTIFACTS_DIR: outside } }).status, 0)
+  assert.deepEqual(readdirSync(base), [])
+  const first = invoke([], { cwd: repoA, env })
+  assert.equal(first.status, 0, first.stderr)
+  const session = first.stdout.trim()
+  const resumed = { ...env, CIRNET_ARTIFACTS_SESSION: session }
+  const inspected = invoke(['--session-info'], { cwd: repoA, env: resumed })
+  assert.equal(inspected.status, 0, inspected.stderr)
+  assert.equal(JSON.parse(inspected.stdout).directory, session)
+  assert.match(JSON.parse(inspected.stdout).markerSha256, /^[a-f0-9]{64}$/)
+  assert.match(invoke(['--session-info'], { cwd: repoA, env: {
+    ...resumed, CIRNET_ARTIFACTS_TASK_KEY: 'b'.repeat(32),
+  } }).stderr, /different task/)
+  assert.deepEqual(readdirSync(dirname(session)), [session.split(/[\\/]/).at(-1)])
 })
